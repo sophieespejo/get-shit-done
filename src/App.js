@@ -18,7 +18,7 @@ function App() {
                 />
               </Navbar.Brand>
             </Row>
-            <Row className="">
+            <Row className="navbarTxt">
               <Navbar.Toggle />
               <Navbar.Collapse className="justify-content-center">
                 <Nav>
