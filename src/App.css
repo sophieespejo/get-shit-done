@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar>.container{
+  display: block !important;
+}
+
+.navbar-expand, .navbar-collapse {
+  flex-direction: column;
+}
+
+.navbarBG{
+  background-color: #95a2f1;
+}
