@@ -2,8 +2,6 @@ import React from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { Container, Row, Col, Button } from "react-bootstrap";
 import TaskComponent from '../Components/TaskComponent';
 
 
@@ -25,7 +23,6 @@ export default function TaskDashboardPage() {
             <Card>
               <Card.Body>{plusIcon}</Card.Body>
             </Card>
-          <h3 className="headerTxt mt-2">To-Do</h3>
           <TaskComponent />
           </Col>
           <Col className="inProgressContainer">
