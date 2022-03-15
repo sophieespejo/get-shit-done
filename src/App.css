@@ -36,3 +36,49 @@
     transform: rotate(360deg);
   }
 }
+
+body{
+  background-color: #e5e3e6 !important;
+}
+
+.navbar>.container{
+  display: block !important;
+}
+
+.navbar-expand, .navbar-collapse {
+  flex-direction: column;
+}
+
+.navbarBG{
+  background-color: #7951A8;
+}
+.navbarTxt {
+  font-family: 'Hubballi';
+  font-size: 1.3rem;
+}
+
+.nav-link{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.headerTxt{
+  font-family: 'Alef';
+  font-weight: bold;
+}
+
+.fa-circle-plus{
+  font-size:50px !important;
+}
+
+.addProjectBtn{
+  background-color: transparent !important;
+  color:#282c34 !important;
+  border-color: transparent !important;
+}
+
+.editBtn{
+  background-color: #7951A8 !important;
+  border-color: transparent !important;
+}
+
