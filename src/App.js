@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Navbar, Container, Nav, Row, Col } from "react-bootstrap";
 import logo from "./Assets/logo.png";
 import ProjectDashboardPage from "./Pages/ProjectDashboardPage";
+import TaskDashboardPage from "./Pages/TaskDashboardPage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             </Row>
           </Container>
         </Navbar>
+        <TaskDashboardPage/>
         <Routes>
           <Route path="/" ></Route>
           <Route path="/projectDashboard" element={<ProjectDashboardPage />}></Route>

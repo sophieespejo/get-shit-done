@@ -81,3 +81,11 @@ body{
   background-color: #7951A8 !important;
   border-color: transparent !important;
 }
+
+.fa-magnifying-glass{
+  font-size: 100px !important;
+}
+
+.taskContainer{
+  background-color: rgba(0, 0, 0, 0.229);
+}
