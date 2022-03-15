@@ -37,6 +37,10 @@
   }
 }
 
+body{
+  background-color: #e5e3e6 !important;
+}
+
 .navbar>.container{
   display: block !important;
 }
@@ -46,7 +50,7 @@
 }
 
 .navbarBG{
-  background-color: #95a2f1;
+  background-color: #7951A8;
 }
 .navbarTxt {
   font-family: 'Hubballi';
@@ -61,4 +65,19 @@
 .headerTxt{
   font-family: 'Alef';
   font-weight: bold;
+}
+
+.fa-circle-plus{
+  font-size:50px !important;
+}
+
+.addProjectBtn{
+  background-color: transparent !important;
+  color:#282c34 !important;
+  border-color: transparent !important;
+}
+
+.editBtn{
+  background-color: #7951A8 !important;
+  border-color: transparent !important;
 }
