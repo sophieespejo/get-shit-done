@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Card, Button, Modal} from 'react-bootstrap'; 
+import {Card, Button, Modal, Form} from 'react-bootstrap'; 
 
 export default function TaskComponent() {
 
@@ -27,7 +27,28 @@ export default function TaskComponent() {
         <Modal.Header closeButton>
           <Modal.Title>Edit Task</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          <Form>
+          <Form.Group className="mb-3" controlId="formGroupEmail">
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control
+                    type="title"
+                    placeholder="Enter title"
+                    // value={blogTitle}
+                    // onChange={(e) => setBlogTitle(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formGroupPassword">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    type="description"
+                    placeholder="Description"
+                    // value={blogDescription}
+                    // onChange={(e) => setBlogDescription(e.target.value)}
+                  />
+                </Form.Group>
+          </Form>
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
