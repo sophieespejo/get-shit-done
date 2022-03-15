@@ -8,16 +8,18 @@ export default function TaskDashboardPage() {
       <Container className="mt-3">
         <Row className="mb-3 text-center">
           <h1>Name of the project</h1>
+          <h3>Due Date:</h3>
+          <h3>Status: </h3>
         </Row>
         <Row className="text-center taskContainer">
           <Col className="toDoContainer">
-          <h3 >To-Do</h3>
+          <h3 className="headerTxt mt-2">To-Do</h3>
           </Col>
           <Col className="inProgressContainer">
-          <h3>In Progress</h3>
+          <h3 className="headerTxt mt-2">In Progress</h3>
           </Col>
           <Col className="completedContainer">
-          <h3>Completed</h3>
+          <h3 className="headerTxt mt-2">Completed</h3>
           </Col>
         </Row>
       </Container>
