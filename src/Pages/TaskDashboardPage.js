@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Row, Col, Button } from "react-bootstrap";
+import TaskComponent from '../Components/TaskComponent';
 
 
 export default function TaskDashboardPage() {
@@ -14,6 +15,7 @@ export default function TaskDashboardPage() {
         <Row className="text-center taskContainer">
           <Col className="toDoContainer">
           <h3 className="headerTxt mt-2">To-Do</h3>
+          <TaskComponent />
           </Col>
           <Col className="inProgressContainer">
           <h3 className="headerTxt mt-2">In Progress</h3>
