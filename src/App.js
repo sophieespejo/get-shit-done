@@ -1,3 +1,4 @@
+
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -5,6 +6,8 @@ import { Navbar, Container, Nav, Row, Col } from "react-bootstrap";
 import logo from "./Assets/logo.png";
 import ProjectDashboardPage from "./Pages/ProjectDashboardPage";
 import TaskDashboardPage from "./Pages/TaskDashboardPage";
+import CreateAccount from "./Pages/CreateAccount";
+import Login from "./Pages/Login";
 
 function App() {
   return (
@@ -28,7 +31,7 @@ function App() {
                     Project Dashboard{" "}
                   </Nav.Link>
 
-                  <Nav.Link as={Link} to="/">
+                  <Nav.Link as={Link} to="../">
                     {" "}
                     Login/Create an Account{" "}
                   </Nav.Link>
@@ -42,8 +45,10 @@ function App() {
         </Navbar>
         <TaskDashboardPage/>
         <Routes>
-          <Route path="/" ></Route>
+          <Route index element={<Login />} ></Route>
           <Route path="/projectDashboard" element={<ProjectDashboardPage />}></Route>
+          {/* <Route path="login" element={<Login></Login>} /> */}
+          <Route path="/createaccount" element={<CreateAccount />} />
         </Routes>
       </BrowserRouter>
     </>
