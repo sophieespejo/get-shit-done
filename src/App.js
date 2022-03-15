@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Navbar, Container, Nav, Row, Col } from "react-bootstrap";
 import logo from "./Assets/logo.png";
+import ProjectDashboardPage from "./Pages/ProjectDashboardPage";
 
 function App() {
   return (
@@ -22,15 +23,15 @@ function App() {
               <Navbar.Toggle />
               <Navbar.Collapse className="justify-content-center">
                 <Nav>
-                  <Nav.Link as={Link} to="/">
+                  <Nav.Link as={Link} to="/projectDashboard">
                     Project Dashboard{" "}
                   </Nav.Link>
 
-                  <Nav.Link as={Link} to="/dashboard">
+                  <Nav.Link as={Link} to="/">
                     {" "}
                     Login/Create an Account{" "}
                   </Nav.Link>
-                  <Nav.Link as={Link} to="/createAcct">
+                  <Nav.Link as={Link} to="/">
                     Sign Out 
                   </Nav.Link>
                 </Nav>
@@ -38,6 +39,10 @@ function App() {
             </Row>
           </Container>
         </Navbar>
+        <Routes>
+          <Route path="/" ></Route>
+          <Route path="/projectDashboard" element={<ProjectDashboardPage />}></Route>
+        </Routes>
       </BrowserRouter>
     </>
   );

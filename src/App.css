@@ -52,3 +52,13 @@
   font-family: 'Hubballi';
   font-size: 1.3rem;
 }
+
+.nav-link{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.headerTxt{
+  font-family: 'Alef';
+  font-weight: bold;
+}
