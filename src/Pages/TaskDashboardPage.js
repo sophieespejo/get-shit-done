@@ -1,8 +1,12 @@
-import React from 'react'
-import { Container, Row, Col, Button } from "react-bootstrap";
-
+import React from "react";
+import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function TaskDashboardPage() {
+
+  const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
+
   return (
     <div>
       <Container className="mt-3">
@@ -13,16 +17,19 @@ export default function TaskDashboardPage() {
         </Row>
         <Row className="text-center taskContainer">
           <Col className="toDoContainer">
-          <h3 className="headerTxt mt-2">To-Do</h3>
+            <h3 className="headerTxt mt-2">To-Do</h3>
+            <Card>
+              <Card.Body>{plusIcon}</Card.Body>
+            </Card>
           </Col>
           <Col className="inProgressContainer">
-          <h3 className="headerTxt mt-2">In Progress</h3>
+            <h3 className="headerTxt mt-2">In Progress</h3>
           </Col>
           <Col className="completedContainer">
-          <h3 className="headerTxt mt-2">Completed</h3>
+            <h3 className="headerTxt mt-2">Completed</h3>
           </Col>
         </Row>
       </Container>
     </div>
-  )
+  );
 }
