@@ -5,7 +5,7 @@ export default function TaskComponent() {
   return (
     <>
       <div>TaskComponent</div>
-      <Card style={{ width: '22rem' }}>
+      <Card style={{ width: '100%' }}>
         <Card.Body>
           <Card.Title>Task Name</Card.Title>
           <Card.Text>
