@@ -14,7 +14,7 @@ function checkToken(){
 //Needs to be changed later
 async function createAccount(createdUser){
     //wait for fetch to for api
-    let res = await fetch('getshitdonebackend.database.windows.net/', {
+    let res = await fetch('getshitdonebackend.database.windows.net/Users/AddUser', {
         method: "POST",
         headers: {
             'Content-Type': "application/json"
