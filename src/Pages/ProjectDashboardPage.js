@@ -34,13 +34,12 @@ export default function ProjectDashboardPage() {
 
   const [allUsers, setAllUsers] = useState([]);
 
-  useEffect(() => {
+  useEffect(async() => {
     
-      setTimeout(async () => {
         let allFetchedUsers = await getAllUsers();
         console.log(allFetchedUsers)
         setAllUsers(allFetchedUsers);
-      }, 1000)
+      
   }, [])
 
   const [blogItems, setBlogItems] = useState([
