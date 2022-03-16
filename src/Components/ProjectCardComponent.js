@@ -2,9 +2,13 @@ import React from 'react'
 import {Container, Row, Col, Card, Button} from 'react-bootstrap'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function ProjectCardComponent() {
+
+    let navigate = useNavigate();
+    
     const editIcon = <FontAwesomeIcon icon={faEdit} />
 
   return (
@@ -17,7 +21,7 @@ export default function ProjectCardComponent() {
                 <p>Priority: <span>whateverr</span></p>
                 <p>Status: <span>whateverrr</span></p>
                 </Card.Text>
-                <Button className="editBtn">View Project</Button>
+                <Button className="editBtn" onClick={() => navigate("/taskDashboard")}>View Project</Button>
             </Card.Body>
         </Card>
     </div>

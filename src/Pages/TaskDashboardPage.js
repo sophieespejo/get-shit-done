@@ -20,7 +20,7 @@ export default function TaskDashboardPage() {
         <Row className="text-center taskContainer">
           <Col className="toDoContainer">
             <h3 className="headerTxt mt-2">To-Do</h3>
-            <Card>
+            <Card className="mb-2">
               <Card.Body>{plusIcon}</Card.Body>
             </Card>
           <TaskComponent />

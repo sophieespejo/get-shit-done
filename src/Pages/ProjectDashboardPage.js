@@ -4,8 +4,11 @@ import ProjectCardComponent from '../Components/ProjectCardComponent';
 import NewProjectComponent from '../Components/NewProjectComponent';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useNavigate } from "react-router-dom";
 
 export default function ProjectDashboardPage() {
+
+  let navigate = useNavigate();
 
   const [blogItems, setBlogItems] = useState([ {
     Id: 1,
@@ -76,7 +79,7 @@ export default function ProjectDashboardPage() {
                             <ListGroup.Item key={i} className="d-flex">
                               <Col>{item.Title}</Col>
                               <Col className=" d-flex justify-content-end">
-                                <Button className="editBtn">View Project {viewIcon}</Button>
+                                <Button className="editBtn" onClick={() => navigate("/taskDashboard")}>View Project {viewIcon}</Button>
                               </Col>
                             </ListGroup.Item>
                           ) : null}

@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar sticky="top" className="navbarBG">
+        <Navbar className="navbarBG">
           <Container className="justify-content-center d-flex flex-wrap">
             <Row className="justify-content-center pb-0 mb-0">
               <Navbar.Brand className=" text-center" href="/">
@@ -43,12 +43,12 @@ function App() {
             </Row>
           </Container>
         </Navbar>
-        <TaskDashboardPage/>
         <Routes>
           <Route index element={<Login />} ></Route>
           <Route path="/projectDashboard" element={<ProjectDashboardPage />}></Route>
           {/* <Route path="login" element={<Login></Login>} /> */}
           <Route path="/createaccount" element={<CreateAccount />} />
+          <Route path="/taskDashboard" element={<TaskDashboardPage />} />
         </Routes>
       </BrowserRouter>
     </>
