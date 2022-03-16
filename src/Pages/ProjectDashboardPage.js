@@ -11,13 +11,14 @@ import {
 } from "react-bootstrap";
 import ProjectCardComponent from "../Components/ProjectCardComponent";
 import NewProjectComponent from "../Components/NewProjectComponent";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
 
 
 export default function ProjectDashboardPage() {
+  const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
   // for admin edit userRoles modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -142,7 +143,7 @@ export default function ProjectDashboardPage() {
             <h3>All Staff</h3>
           </Col>
           <Col className="d-flex justify-content-end">
-            <Button onClick={handleShow1}>Add a new user</Button>
+            <Button onClick={handleShow1}>Add a new user {addUserIcon} </Button>
           </Col>
           {/* Map thru archived projects here */}
           <Accordion defaultActiveKey="1">

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Container, Row, Col, Card, Button} from 'react-bootstrap'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router-dom'
 
@@ -10,6 +10,7 @@ export default function ProjectCardComponent() {
     let navigate = useNavigate();
     
     const editIcon = <FontAwesomeIcon icon={faEdit} />
+
 
   return (
     <div>
