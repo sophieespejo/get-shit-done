@@ -145,7 +145,7 @@ export default function ProjectDashboardPage() {
                             </>
                           ) : null }
                         {/* check to see if user.isAdmin */}
-                          {item.isArchived ? (
+                          {item.isArchived && item.isPublished ? (
                             <Col className=" d-flex justify-content-end">
                                 <Button variant = "danger" className="">Delete user</Button>
                                 <Button variant = "info" className="">Change role</Button>
