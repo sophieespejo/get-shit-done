@@ -42,6 +42,7 @@ async function createAccount(createdUser){
 }
 
 //Needs to be changed for Log in, check if works
+
 async function logIn(userInfo){
 
     let res = await fetch('http://getshitdonebackend.database.windows.net/User/Login', {
@@ -74,4 +75,12 @@ async function logIn(userInfo){
     return data;
 }
 
-export { createAccount }
+//GetAllUsers
+async function getAllUsers(){
+    let res = await fetch(`http://getshitdonebackend.database.windows.net/Users/GetAllUsers`);
+    let data = await res.json();
+    console.log(data);
+    return data;
+}
+
+export { createAccount, checkToken, getAllUsers, logIn }
