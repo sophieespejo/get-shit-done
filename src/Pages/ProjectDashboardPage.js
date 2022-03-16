@@ -15,16 +15,20 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
-export default function ProjectDashboardPage() {
-  const [show, setShow] = useState(false);
 
+
+export default function ProjectDashboardPage() {
+  // for admin edit userRoles modal
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  //for admin addUser modal
   const [show1, setShow1] = useState(false);
-
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+
+  const [allUsers, setAllUsers] = useState([]);
 
   let navigate = useNavigate();
 
@@ -203,25 +207,6 @@ export default function ProjectDashboardPage() {
                           </ListGroup.Item>
                         ) : null}
                       </>
-                      // <>
-                      // {/* check to see if the user.isProjectManager */}
-                      // <ListGroup.Item key={i} className="d-flex">
-                      //   {item.isProjectManager ? (
-                      //     <>
-                      //       {/* user.FullName */}
-                      //       <Col>{item.Title}</Col>
-                      //     </>
-                      //   ) : null }
-                      // {/* check to see if user.isAdmin */}
-                      // {/* check useContext to see if the logged is an admin */}
-                      //   {item.isPublished ? (
-                      //     <Col className=" d-flex justify-content-end">
-                      //         <Button variant = "danger" className="">Delete user</Button>
-                      //         <Button variant = "info" className="">Change role</Button>
-                      //       </Col>
-                      //   ) : null}
-                      //   </ListGroup.Item>
-                      // </>
                     );
                   })}
                 </ListGroup>
