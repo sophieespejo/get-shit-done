@@ -17,6 +17,10 @@ const Login = () => {
                     <Col className="d-flex justify-content-center mt-3">
                         <Form>
                             <Form.Group className="mb-3 " controlId="formBasicEmail">
+                                <Form.Label>Full Name</Form.Label>
+                                <Form.Control type="text" placeholder="Enter Full Name" />
+                            </Form.Group>
+                            <Form.Group className="mb-3 " controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
                                 <Form.Control type="text" placeholder="Enter username" />
                             </Form.Group>
