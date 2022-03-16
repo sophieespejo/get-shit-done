@@ -76,36 +76,36 @@ async function logIn(userInfo){
 
 //GetAllUsers
 async function getAllUsers(){
-    let res = await fetch(`http://getshitdonebackend.database.windows.net/User/GetAllUsers`);
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/GetAllUsers`);
     let data = await res.json();
     console.log(data);
     return data;
 }
 
 //Update User
-async function updateUser(userData)
-{
-    let res = await fetch('http://getshitdonebackend.database.windows.net/User/UpdateUser', {
-        method: "POST",
-        headers: {
-            'Content-Type': "application/json"
-        },
-        body: JSON.stringify(userData)
-    });
-    if(!res.ok)
-    {
-        const message = `An error has occured ${res.status}`;
-        throw new Error(message);
-    }
-    let data = await res.json();
-    console.log(data);
-    return data;
-}
+// async function updateUser(userData)
+// {
+//     let res = await fetch(`http://getshitdonebackend.database.windows.net/User/UpdateUser/${userData}`, {
+//         method: "POST",
+//         headers: {
+//             'Content-Type': "application/json"
+//         },
+//         body: JSON.stringify(userData)
+//     });
+//     if(!res.ok)
+//     {
+//         const message = `An error has occured ${res.status}`;
+//         throw new Error(message);
+//     }
+//     let data = await res.json();
+//     console.log(data);
+//     return data;
+// }
 
 //Delete User
 async function deleteUser(userData)
 {
-    let res = await fetch('http://localhost:5122/blog/deleteblogitem', {
+    let res = await fetch(`http://getshitdonebackend.database.windows.net/User/DeleteUser/${userData}`, {
         method: "POST",
         headers: {
             'Content-Type': "application/json"
