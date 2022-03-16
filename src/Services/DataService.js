@@ -11,10 +11,10 @@ function checkToken(){
     return result;
 }
 
-//Needs to be changed later
+//Create Account
 async function createAccount(createdUser){
     //wait for fetch to for api
-    let res = await fetch('getshitdonebackend.database.windows.net/Users/AddUser', {
+    let res = await fetch('getshitdonebackend.database.windows.net/User/AddUser', {
         method: "POST",
         headers: {
             'Content-Type': "application/json"
@@ -41,8 +41,7 @@ async function createAccount(createdUser){
     return successfulCreateAcct;
 }
 
-//Needs to be changed for Log in, check if works
-
+//Login
 async function logIn(userInfo){
 
     let res = await fetch('http://getshitdonebackend.database.windows.net/User/Login', {
@@ -77,10 +76,52 @@ async function logIn(userInfo){
 
 //GetAllUsers
 async function getAllUsers(){
-    let res = await fetch(`http://getshitdonebackend.database.windows.net/Users/GetAllUsers`);
+    let res = await fetch(`http://getshitdonebackend.database.windows.net/User/GetAllUsers`);
     let data = await res.json();
     console.log(data);
     return data;
 }
 
-export { createAccount, checkToken, getAllUsers, logIn }
+//Update User
+async function updateUser(userData)
+{
+    let res = await fetch('http://getshitdonebackend.database.windows.net/User/UpdateUser', {
+        method: "POST",
+        headers: {
+            'Content-Type': "application/json"
+        },
+        body: JSON.stringify(userData)
+    });
+    if(!res.ok)
+    {
+        const message = `An error has occured ${res.status}`;
+        throw new Error(message);
+    }
+    let data = await res.json();
+    console.log(data);
+    return data;
+}
+
+//Delete User
+async function deleteUser(userData)
+{
+    let res = await fetch('http://localhost:5122/blog/deleteblogitem', {
+        method: "POST",
+        headers: {
+            'Content-Type': "application/json"
+        },
+        body: JSON.stringify(userData)
+    });
+    if(!res.ok)
+    {
+        const message = `An error has occured ${res.status}`;
+        throw new Error(message);
+    }
+    let data = await res.json();
+    console.log(data);
+    return data;
+}
+
+
+
+export { createAccount, checkToken, getAllUsers, logIn, updateUser, deleteUser }
