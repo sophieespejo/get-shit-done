@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Modal, Form, FloatingLabel, Col, Row, ListGroup } from "react-bootstrap";
+import { Card, Button, Modal, Form, FloatingLabel, Col, Row, ListGroup, ModalBody } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function TaskComponent() {
@@ -47,6 +47,15 @@ export default function TaskComponent() {
       </Card>
 
       <Modal size="lg" show={show} onHide={handleClose}>
+        {/* check if user is specialist */}
+        {/* return ( {user.isSpecialist ?  (
+          <Modal.Header closeButton>
+          <Modal.Title>View Task</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+        </Modal.Body>
+        ): }) */}
         <Modal.Header closeButton>
           <Modal.Title>Edit Task</Modal.Title>
         </Modal.Header>

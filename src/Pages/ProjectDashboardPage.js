@@ -13,6 +13,7 @@ export default function ProjectDashboardPage() {
   const [blogItems, setBlogItems] = useState([ {
     Id: 1,
     isArchived: true,
+    isPublished: true,
     Title: "Growing Tomatos",
     Publisher: "Walaa AlSalmi",
     Date: "01-12-2022",
@@ -24,6 +25,7 @@ export default function ProjectDashboardPage() {
   {
     Id: 2,
     isArchived: true,
+    isPublished: true,
     Title: "Growing Peppers",
     Date: "01-06-2022",
     Publisher: "Tom Finland",
@@ -34,6 +36,7 @@ export default function ProjectDashboardPage() {
   {
     Id: 3,
     isArchived: true,
+    isPublished: false,
     Title: "Growing Eggplants",
     Publisher: "Sam Bilton",
     Date: "12-24-2021",
@@ -44,6 +47,7 @@ export default function ProjectDashboardPage() {
   {
     Id: 4,
     isArchived: true,
+    isPublished: false,
     Title: "Growing Zucchinis",
     Publisher: "Tina Freedman",
     Date: "12-15-2021",
@@ -89,6 +93,97 @@ export default function ProjectDashboardPage() {
                   </ListGroup>
                 </Accordion.Body>
               </Accordion.Item>
+              </Accordion>
+            </Row>
+        </Container>
+
+        {/* see all users and roles */}
+        <Container>
+            <Row className="mt-5">
+              <h3>All Staff</h3>
+              {/* Map thru archived projects here */}
+              <Accordion defaultActiveKey="1">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Admin {viewIcon}</Accordion.Header>
+                <Accordion.Body>
+                  <ListGroup>
+                    {/* map thru all users */}
+                    {blogItems.map((item, i) => {
+                      return (
+                        <>
+                            <ListGroup.Item key={i} className="d-flex">
+                              {/* user.FullName */}
+                              <Col>{item.Title}</Col>
+                        {/* check to see if user.isAdmin */}
+                          {item.isArchived && item.isPublished ? (
+                            <Col className=" d-flex justify-content-end">
+                                <Button variant = "danger" className="">Delete user</Button>
+                                <Button variant = "info" className="">Change role</Button>
+                              </Col>
+                          ) : null}
+                          </ListGroup.Item>
+                        </>
+                      );
+                    })}
+                  </ListGroup>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="3">
+                <Accordion.Header>Project Managers</Accordion.Header>
+                <Accordion.Body>
+                  <ListGroup>
+                    {/* map thru all users */}
+                    {blogItems.map((item, i) => {
+                      return (
+                        <>
+                        <ListGroup.Item key={i} className="d-flex">
+                        {/* check to see if the user.isProjectManager */}
+                          {item.isPublished ? (
+                            <>
+                              {/* user.FullName */}
+                              <Col>{item.Title}</Col>
+                            </>
+                          ) : null }
+                        {/* check to see if user.isAdmin */}
+                          {item.isArchived ? (
+                            <Col className=" d-flex justify-content-end">
+                                <Button variant = "danger" className="">Delete user</Button>
+                                <Button variant = "info" className="">Change role</Button>
+                              </Col>
+                          ) : null}
+                          </ListGroup.Item>
+                        </>
+                      );
+                    })}
+                  </ListGroup>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>Specialists</Accordion.Header>
+                <Accordion.Body>
+                  <ListGroup>
+                    {/* map thru all users */}
+                    {blogItems.map((item, i) => {
+                      return (
+                        <>
+                            <ListGroup.Item key={i} className="d-flex">
+                              {/* user.FullName */}
+                              <Col>{item.Title}</Col>
+                        {/* check to see if user.isAdmin */}
+                          {item.isArchived ? (
+                            <Col className=" d-flex justify-content-end">
+                                <Button variant = "danger" className="">Delete user</Button>
+                                <Button variant = "info" className="">Change role</Button>
+                              </Col>
+                          ) : null}
+                          </ListGroup.Item>
+                        </>
+                      );
+                    })}
+                  </ListGroup>
+                </Accordion.Body>
+              </Accordion.Item>
+                    
               </Accordion>
             </Row>
         </Container>
