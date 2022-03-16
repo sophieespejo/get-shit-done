@@ -12,8 +12,10 @@ export default function ProjectDashboardPage() {
 
   const [blogItems, setBlogItems] = useState([ {
     Id: 1,
+    isPublished: true, 
     isArchived: true,
-    isPublished: true,
+    isProjectManager: true,
+    isAdmin: false,
     Title: "Growing Tomatos",
     Publisher: "Walaa AlSalmi",
     Date: "01-12-2022",
@@ -25,7 +27,9 @@ export default function ProjectDashboardPage() {
   {
     Id: 2,
     isArchived: true,
-    isPublished: true,
+    isPublished: true, 
+    isProjectManager: true,
+    isAdmin: false,
     Title: "Growing Peppers",
     Date: "01-06-2022",
     Publisher: "Tom Finland",
@@ -36,7 +40,9 @@ export default function ProjectDashboardPage() {
   {
     Id: 3,
     isArchived: true,
-    isPublished: false,
+    isPublished: true, 
+    isProjectManager: false,
+    isAdmin: true,
     Title: "Growing Eggplants",
     Publisher: "Sam Bilton",
     Date: "12-24-2021",
@@ -47,7 +53,9 @@ export default function ProjectDashboardPage() {
   {
     Id: 4,
     isArchived: true,
-    isPublished: false,
+    isPublished: true, 
+    isProjectManager: false,
+    isAdmin: true,
     Title: "Growing Zucchinis",
     Publisher: "Tina Freedman",
     Date: "12-15-2021",
@@ -115,7 +123,7 @@ export default function ProjectDashboardPage() {
                               {/* user.FullName */}
                               <Col>{item.Title}</Col>
                         {/* check to see if user.isAdmin */}
-                          {item.isArchived && item.isPublished ? (
+                          {item.isPublished ? (
                             <Col className=" d-flex justify-content-end">
                                 <Button variant = "danger" className="">Delete user</Button>
                                 <Button variant = "info" className="">Change role</Button>
@@ -138,14 +146,15 @@ export default function ProjectDashboardPage() {
                         <>
                         <ListGroup.Item key={i} className="d-flex">
                         {/* check to see if the user.isProjectManager */}
-                          {item.isPublished ? (
+                          {item.isProjectManager ? (
                             <>
                               {/* user.FullName */}
                               <Col>{item.Title}</Col>
                             </>
                           ) : null }
                         {/* check to see if user.isAdmin */}
-                          {item.isArchived && item.isPublished ? (
+                        {/* check useContext to see if the logged is an admin */}
+                          {item.isPublished ? (
                             <Col className=" d-flex justify-content-end">
                                 <Button variant = "danger" className="">Delete user</Button>
                                 <Button variant = "info" className="">Change role</Button>
@@ -166,11 +175,12 @@ export default function ProjectDashboardPage() {
                     {blogItems.map((item, i) => {
                       return (
                         <>
+                        {/* map thru specialists */}
                             <ListGroup.Item key={i} className="d-flex">
                               {/* user.FullName */}
                               <Col>{item.Title}</Col>
                         {/* check to see if user.isAdmin */}
-                          {item.isArchived ? (
+                          {item.isPublished ? (
                             <Col className=" d-flex justify-content-end">
                                 <Button variant = "danger" className="">Delete user</Button>
                                 <Button variant = "info" className="">Change role</Button>
