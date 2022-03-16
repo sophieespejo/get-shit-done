@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -14,11 +14,13 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import { checkToken, getAllUsers } from "../Services/DataService";
 
 
 
 export default function ProjectDashboardPage() {
   const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
+  let navigate = useNavigate();
   // for admin edit userRoles modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -29,9 +31,17 @@ export default function ProjectDashboardPage() {
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
 
+
   const [allUsers, setAllUsers] = useState([]);
 
-  let navigate = useNavigate();
+  useEffect(() => {
+    
+      setTimeout(async () => {
+        let allFetchedUsers = await getAllUsers();
+        console.log(allFetchedUsers)
+        setAllUsers(allFetchedUsers);
+      }, 1000)
+  }, [])
 
   const [blogItems, setBlogItems] = useState([
     {
@@ -152,28 +162,28 @@ export default function ProjectDashboardPage() {
               <Accordion.Body>
                 <ListGroup>
                   {/* map thru all users */}
-                  {blogItems.map((item, i) => {
+                  {allUsers.map((user, i) => {
                     return (
                       <>
-                        <ListGroup.Item key={i} className="d-flex">
-                          {/* user.FullName */}
-                          <Col>{item.Title}</Col>
-                          {/* check to see if user.isAdmin */}
-                          {item.isPublished ? (
-                            <Col className=" d-flex justify-content-end">
-                              <Button variant="danger" className="">
-                                Delete user
-                              </Button>
-                              <Button
-                                variant="info"
-                                className=""
-                                onClick={handleShow}
-                              >
-                                Change role
-                              </Button>
-                            </Col>
-                          ) : null}
-                        </ListGroup.Item>
+                        {user.isAdmin ? (
+                          <ListGroup.Item key={i} className="d-flex">
+                            <Col>{user.FullName}</Col>
+                            {user.isPublished ? (
+                              <Col className=" d-flex justify-content-end">
+                                <Button variant="danger" className="">
+                                  Delete user
+                                </Button>
+                                <Button
+                                  variant="info"
+                                  className=""
+                                  onClick={handleShow}
+                                >
+                                  Change role
+                                </Button>
+                              </Col>
+                            ) : null}
+                          </ListGroup.Item>
+                        ) : null}
                       </>
                     );
                   })}
@@ -185,13 +195,13 @@ export default function ProjectDashboardPage() {
               <Accordion.Body>
                 <ListGroup>
                   {/* map thru all users */}
-                  {blogItems.map((item, i) => {
+                  {allUsers.map((user, i) => {
                     return (
                       <>
-                        {item.isProjectManager ? (
+                        {user.isProjectManager ? (
                           <ListGroup.Item key={i} className="d-flex">
-                            <Col>{item.Title}</Col>
-                            {item.isPublished ? (
+                            <Col>{user.FullName}</Col>
+                            {user.isPublished ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
                                   Delete user
@@ -218,29 +228,28 @@ export default function ProjectDashboardPage() {
               <Accordion.Body>
                 <ListGroup>
                   {/* map thru all users */}
-                  {blogItems.map((item, i) => {
+                  {allUsers.map((user, i) => {
                     return (
                       <>
-                        {/* map thru specialists */}
-                        <ListGroup.Item key={i} className="d-flex">
-                          {/* user.FullName */}
-                          <Col>{item.Title}</Col>
-                          {/* check to see if user.isAdmin */}
-                          {item.isPublished ? (
-                            <Col className=" d-flex justify-content-end">
-                              <Button variant="danger" className="">
-                                Delete user
-                              </Button>
-                              <Button
-                                variant="info"
-                                className=""
-                                onClick={handleShow}
-                              >
-                                Change role
-                              </Button>
-                            </Col>
-                          ) : null}
-                        </ListGroup.Item>
+                        {user.isSpecialist ? (
+                          <ListGroup.Item key={i} className="d-flex">
+                            <Col>{user.FullName}</Col>
+                            {user.isPublished ? (
+                              <Col className=" d-flex justify-content-end">
+                                <Button variant="danger" className="">
+                                  Delete user
+                                </Button>
+                                <Button
+                                  variant="info"
+                                  className=""
+                                  onClick={handleShow}
+                                >
+                                  Change role
+                                </Button>
+                              </Col>
+                            ) : null}
+                          </ListGroup.Item>
+                        ) : null}
                       </>
                     );
                   })}
