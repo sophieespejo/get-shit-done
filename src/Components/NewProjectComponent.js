@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import {Container, Row, Col, Card, Button, Modal, Form, ListGroup} from 'react-bootstrap'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { getAllUsers, updateProjectItem } from '../Services/DataService';
 
 export default function NewProjectComponent() {
 
@@ -9,6 +10,46 @@ export default function NewProjectComponent() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [allSpecialist, setAllSpecialist] = useState([]);
+
+    const [projectTitle, setProjectTitle] = useState("");
+    const [projectDescription, setProjectDescription] = useState("");
+    const [projectDueDate, setProjectDueDate] = useState("");
+    const [projectMembersId, setProjectMembersId] = useState("");
+    const [projectMembersUsername, setProjectMembersUsername] = useState("");
+
+
+    let updatedProject;
+
+    const handleSubmit = async (e, {user}) => {
+
+      // setProjectMembersUsername(e);
+      console.log(user);
+
+      updatedProject = {
+        Id: 0,
+        // UserId: UserId,
+        Title: projectTitle,
+        Description: projectDescription,
+        DateCreated: new Date(),
+        DueDate: projectDueDate,
+        Status: "",
+        MembersId: projectMembersId,
+        MembersUsername: projectMembersUsername,
+        IsDeleted: false,
+        IsArchived: false
+      }
+    }
+
+    useEffect(async () => {
+      let allFetchedUsers = await getAllUsers();
+      // console.log(allFetchedUsers)
+
+      setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
+      // setAllSpecialist(allFetchedUsers);
+    }, [])
+
+
 
   return (
     <div>
@@ -28,32 +69,29 @@ export default function NewProjectComponent() {
             <Form>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Project Title: </Form.Label>
-                <Form.Control type="email" placeholder="Enter project title" />
+                <Form.Control type="email" placeholder="Enter project title" onChange={({target:{value}}) => setProjectTitle(value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="">
                 <Form.Label>Description: </Form.Label>
-                <Form.Control as="textarea" type="text" placeholder="Description" />
+                <Form.Control as="textarea" type="text" placeholder="Description" onChange={({target:{value}}) => setProjectDescription(value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Project Deadline: </Form.Label>
-                <Form.Control type="date" placeholder="duedate" />
+                <Form.Control type="date" placeholder="duedate" onChange={({target:{value}}) => setProjectDueDate(value)}/>
               </Form.Group>
-              <Form.Group>
-                <Form.Label>Add Specialists</Form.Label>
-                {/* map thru all users.isSpecialist */}
-                <Form.Select
-                  aria-label="Default select example"
-                  className="mt-2"
-                // value={blogCategory}
-                // onChange={({ target: { value } }) => setBlogCategory(value)}
-                >
-                  <option>Select a Specialist</option>
-                  {}
-                  <option value="Admin">Admin</option>
-                  <option value="PM">Project Manager</option>
-                  <option value="Specialist">Specialist</option>
-                </Form.Select>
-              </Form.Group>
+            <Form.Label>Add Specialists:</Form.Label>
+            <ListGroup as="ul">
+              {
+                allSpecialist.map((user, idx) => {
+                  return (
+                    <ListGroup.Item as="li" onClick={handleSubmit({user})} >
+                      {user.fullName}
+                    </ListGroup.Item>
+                  )
+                }) 
+              }
+              </ListGroup>
+              
             </Form>
           </Modal.Body>
           <Modal.Footer>
