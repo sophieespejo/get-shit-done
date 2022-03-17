@@ -1,17 +1,29 @@
 import React, {useState, useEffect, useContext } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { Outlet, Link } from 'react-router-dom';
-import UserContext from '../Context/UserContext';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { logIn } from '../Services/DataService';
 
 
 
-const Login = () => {
-    
-    let userData = useContext(UserContext);
-    console.log(userData);
-    const handleChange = (e) => {
-        userData.setUsername(e.target.value);
+
+export default function Login() {    
+    let navigate = useNavigate();
+    const [Username, setUsername] = useState("");
+    const [Password, setPassword] = useState("");
+
+    const handleSubmit = async () => {
+        let userData = {
+            Username,
+            Password
+        }
+        let token = await logIn(userData);
+        if(token.token != null){
+            localStorage.setItem("Token", token.token);
+            //GetLoggedInUserData(Username);
+            navigate("/projectDashboard");
+        }
     }
+
 
 
     return (
@@ -29,16 +41,20 @@ const Login = () => {
                         <Form>
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
+<<<<<<< HEAD
                                 <Form.Control type="text" placeholder="Enter username" onChange={handleChange} />
+=======
+                                <Form.Control type="text" placeholder="Enter username" onChange={({ target }) => setUsername(target.value)}/>
+>>>>>>> cd3a17753f35a4357ede9504868a0d7efc9356b0
                             </Form.Group>
                             {/* span contentEditable onKeyDown={(e) => console.log(e.target.textContent)} */}
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" />
+                                <Form.Control type="password" placeholder="Password" onChange={({ target }) => setPassword(target.value)}/>
                             </Form.Group>
                             <Container>
                                 <Row className="d-grid gap-2 mt-2 mb-2 ">
-                                    <Button variant="primary" size="sm" className="editBtn" type="submit">
+                                    <Button variant="primary" size="sm" className="editBtn" type="submit" onClick={handleSubmit}>
                                         Login
                                     </Button>
                                 </Row>
@@ -56,5 +72,3 @@ const Login = () => {
 
     )
 }
-
-export default Login;
