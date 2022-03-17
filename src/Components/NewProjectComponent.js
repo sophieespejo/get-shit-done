@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {Container, Row, Col, Card, Button, Modal, Form, ListGroup} from 'react-bootstrap'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getAllUsers, updateProjectItem } from '../Services/DataService';
+import { getAllUsers, AddProjectItem, getAllProjectItems } from '../Services/DataService';
 
 export default function NewProjectComponent() {
 
@@ -19,20 +19,22 @@ export default function NewProjectComponent() {
     // const [projectMembersUsername, setProjectMembersUsername] = useState("");
 
     let projectMembersUsername = [];
+    let stringOfMemberUsernames = "";
 
     const addUserToArray = (username) => {
       projectMembersUsername.push(username);
       console.log(projectMembersUsername);
+      stringOfMemberUsernames = projectMembersUsername.toString();
     }
 
-    let updatedProject;
+    let newProject;
 
     const handleSubmit = async () => {
 
       // setProjectMembersUsername(e);
       // console.log(projectMembersUsername);
 
-      updatedProject = {
+       newProject = {
         Id: 0,
         // UserId: UserId,
         Title: projectTitle,
@@ -41,10 +43,13 @@ export default function NewProjectComponent() {
         DueDate: projectDueDate,
         Status: "",
         MembersId: projectMembersId,
-        MembersUsername: projectMembersUsername,
+        MembersUsername: stringOfMemberUsernames,
         IsDeleted: false,
         IsArchived: false
       }
+
+      AddProjectItem(newProject);
+      console.log(getAllProjectItems());
     }
 
     useEffect(async () => {
