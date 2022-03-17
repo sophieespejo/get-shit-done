@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Card, Button, Modal, Form, FloatingLabel, Col, Row, ListGroup, ModalBody } from "react-bootstrap";
+import { Card, Button, Container, Modal, Form, FloatingLabel, Col, Row, ListGroup, ModalBody } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function TaskComponent() {
   
@@ -9,19 +11,21 @@ export default function TaskComponent() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
 
   return (
     <>
       <Card style={{ width: "100%" }}>
         <Card.Body>
-          <Card.Title>Task Name</Card.Title>
+          <Card.Title>
+            Task Name</Card.Title>
           <Card.Text>
             <p>Task Description</p>
             <p>Due Date:</p>
             <p>Assignee: </p>
           </Card.Text>
           <Row>
-            <Col>
+            <Col className="">
               <Form.Group>
                 <Form.Select
                     aria-label="Default select example"
@@ -29,7 +33,7 @@ export default function TaskComponent() {
                     // value={blogCategory}
                     // onChange={({ target: { value } }) => setBlogCategory(value)}
                   >
-                    <option>Update Status</option>
+                    <option>Status</option>
                     <option value="ToDo">To-Do</option>
                     <option value="InProgress">In Progress</option>
                     <option value="Done">Done</option>
@@ -37,7 +41,12 @@ export default function TaskComponent() {
               </Form.Group>
             </Col>
             <Col>
-              <Button variant="primary" onClick={handleShow}>
+            <Button variant="info">Update Status</Button>
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              <Button variant="success" onClick={handleShow}>
                 View/Edit Task
               </Button>
             </Col>
