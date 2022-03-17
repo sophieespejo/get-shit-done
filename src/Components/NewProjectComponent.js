@@ -4,10 +4,6 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getAllUsers, AddProjectItem, getAllProjectItems } from '../Services/DataService';
 import UserContext from '../Context/UserContext';
-<<<<<<< HEAD
-=======
-import { getUserByUsername } from '../Services/DataService';
->>>>>>> 69912378873a11302614c0d9999f7f46358e902e
 
 export default function NewProjectComponent() {
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
@@ -35,9 +31,6 @@ export default function NewProjectComponent() {
 
     let newProject;
 
-    let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName } = useContext(UserContext);
-
-
     const handleSubmit = async () => {
 
       // setProjectMembersUsername(e);
@@ -45,11 +38,7 @@ export default function NewProjectComponent() {
 
       newProject = { 
         Id: 0,
-<<<<<<< HEAD
         UserId: userItems.id,
-=======
-        UserId: UserContext.userId, 
->>>>>>> 69912378873a11302614c0d9999f7f46358e902e
         Title: projectTitle,
         Description: projectDescription,
         DateCreated: new Date(),
