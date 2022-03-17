@@ -151,7 +151,7 @@ export default function ProjectDashboardPage() {
 
       {/* see all users and roles */}
       <Container>
-        <Row className="mt-5">
+        <Row className="mt-5 mb-5">
           <Col>
             <h3>All Staff</h3>
           </Col>
@@ -237,6 +237,39 @@ export default function ProjectDashboardPage() {
                     return (
                       <>
                         {user.isSpecialist ? (
+                          <ListGroup.Item key={i} className="d-flex">
+                            <Col>{user.fullName}</Col>
+                            {user.isPublished ? (
+                              <Col className=" d-flex justify-content-end">
+                                <Button variant="danger" className="">
+                                  Delete user
+                                </Button>
+                                <Button
+                                  variant="info"
+                                  className=""
+                                  onClick={handleShow}
+                                >
+                                  Change role
+                                </Button>
+                              </Col>
+                            ) : null}
+                          </ListGroup.Item>
+                        ) : null}
+                      </>
+                    );
+                  })}
+                </ListGroup>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="4">
+              <Accordion.Header>Roles Not Assigned</Accordion.Header>
+              <Accordion.Body>
+                <ListGroup>
+                  {/* map thru all users */}
+                  {allUsers.map((user, i) => {
+                    return (
+                      <>
+                        {!user.isSpecialist && !user.isProjectManager && !user.isAdmin ? (
                           <ListGroup.Item key={i} className="d-flex">
                             <Col>{user.fullName}</Col>
                             {user.isPublished ? (
