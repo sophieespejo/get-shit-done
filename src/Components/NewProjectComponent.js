@@ -21,10 +21,10 @@ export default function NewProjectComponent() {
 
     let updatedProject;
 
-    const handleSubmit = async (e, {user}) => {
+    const handleSubmit = async () => {
 
       // setProjectMembersUsername(e);
-      console.log(user);
+      // console.log(projectMembersUsername);
 
       updatedProject = {
         Id: 0,
@@ -84,7 +84,7 @@ export default function NewProjectComponent() {
               {
                 allSpecialist.map((user, idx) => {
                   return (
-                    <ListGroup.Item as="li" onClick={handleSubmit({user})} >
+                    <ListGroup.Item as="li" >
                       {user.fullName}
                     </ListGroup.Item>
                   )
@@ -98,7 +98,7 @@ export default function NewProjectComponent() {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleClose}>
+            <Button variant="primary" onClick={handleSubmit}>
               Save Changes
             </Button>
           </Modal.Footer>
