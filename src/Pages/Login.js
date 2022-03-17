@@ -7,7 +7,7 @@ import { getUserByUsername } from '../Services/DataService';
 
 export default function Login() {    
     let navigate = useNavigate();
-    let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName } = useContext(UserContext);
+    let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
     const handleChange = (e) => {
          
        setUsername(e.target.value);
@@ -33,10 +33,11 @@ export default function Login() {
             localStorage.setItem("Token", token.token);
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
-            let userItems =  getUserByUsername(username).then(data => data);
+            let userItems = await getUserByUsername(username)
+            setUserItems(userItems);
+            console.log(userItems);
             let checkAdmin = userItems.isAdmin;
             console.log(checkAdmin);
-            console.log(userItems);
         }
         if(!token){
             toggleShowA();

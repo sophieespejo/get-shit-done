@@ -8,6 +8,7 @@ export default function useUser(){
     const [isProjectManager, setIsProjectManager] = useState("");
     const [isSpecialist, setIsSpecialist] = useState("");
     const [fullName, setFullName] = useState("");
+    const [userItems, setUserItems] = useState("");
 
-    return { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName } 
+    return { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } 
 }

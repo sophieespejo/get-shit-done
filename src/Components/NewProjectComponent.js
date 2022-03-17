@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {Container, Row, Col, Card, Button, Modal, Form, ListGroup} from 'react-bootstrap'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getAllUsers, AddProjectItem, getAllProjectItems } from '../Services/DataService';
+import UserContext from '../Context/UserContext';
 
 export default function NewProjectComponent() {
+  let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
 
     const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
     const [show, setShow] = useState(false);
@@ -36,7 +38,7 @@ export default function NewProjectComponent() {
 
        newProject = {
         Id: 0,
-        // UserId: UserId,
+        UserId: userItems.id,
         Title: projectTitle,
         Description: projectDescription,
         DateCreated: new Date(),
