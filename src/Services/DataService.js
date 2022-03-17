@@ -110,10 +110,10 @@ async function getUserByUsername(UserName) {
 //     return data;
 // }
 
-//Delete User
-async function deleteUser(userData)
+//Delete User Account
+async function deleteUser(userToDelete)
 {
-    let res = await fetch(`http://getshitdonebackend.database.windows.net/User/DeleteUser/${userData}`, {
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/DeleteUser/${userToDelete}`, {
         method: "POST",
         headers: {
             'Content-Type': "application/json"
