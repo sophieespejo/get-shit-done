@@ -48,11 +48,7 @@ export default function Login() {
                         <Form>
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
-<<<<<<< HEAD
-                                <Form.Control type="text" placeholder="Enter username" onChange={handleChange} />
-=======
                                 <Form.Control type="text" placeholder="Enter username" onChange={({ target }) => setUsername(target.value)}/>
->>>>>>> cd3a17753f35a4357ede9504868a0d7efc9356b0
                             </Form.Group>
                             {/* span contentEditable onKeyDown={(e) => console.log(e.target.textContent)} */}
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicPassword">
