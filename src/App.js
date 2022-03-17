@@ -8,15 +8,20 @@ import ProjectDashboardPage from "./Pages/ProjectDashboardPage";
 import TaskDashboardPage from "./Pages/TaskDashboardPage";
 import CreateAccount from "./Pages/CreateAccount";
 import Login from "./Pages/Login";
+import React,{ useContext } from 'react';
 
 function App() {
+  
+  // <useContext.Provider>
+  //   <App/>
+  // </useContext.Provider>
   return (
     <>
       <BrowserRouter>
         <Navbar className="navbarBG">
           <Container className="justify-content-center d-flex flex-wrap">
             <Row className="justify-content-center pb-0 mb-0">
-              <Navbar.Brand className=" text-center" href="/">
+              <Navbar.Brand className="text-center" href="/">
                 <img
                   src= {logo}
                   className="img-fluid"

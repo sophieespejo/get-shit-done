@@ -163,17 +163,13 @@ async function getTaskItemsByProjectID(ProjectID) {
 }
 
 //Get a taskItem by the Title of TaskItem
-async function getTaskItemByTitle(ProjectID) {
+async function getTaskItemByTitle(Title) {
 
-    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/Users/GetTaskItemsByProjectID/${ProjectID}`);
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/Users/GetTaskItemByTitle/${Title}`);
     let data = await res.json();
     console.log(data);
     return data;
 }
-
-
-
-
 
 
 export { createAccount, checkToken, getAllUsers, logIn, deleteUser }
