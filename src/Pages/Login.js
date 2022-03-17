@@ -19,6 +19,8 @@ export default function Login() {
     const [showA, setShowA] = useState(true);
     const toggleShowA = () => setShowA(!showA);
 
+    let userItems;
+
     const handleSubmit = async () => {
         let userData = {
             Username: username,
@@ -98,3 +100,5 @@ export default function Login() {
 
     )
 }
+
+export { userItems };
