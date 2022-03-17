@@ -19,6 +19,8 @@ export default function Login() {
     const [showA, setShowA] = useState(true);
     const toggleShowA = () => setShowA(!showA);
 
+    let userItems;
+
     const handleSubmit = async () => {
         let userData = {
             Username: username,
@@ -33,7 +35,7 @@ export default function Login() {
             localStorage.setItem("Token", token.token);
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
-            let userItems =  getUserByUsername(username).then(data => data);
+            userItems =  getUserByUsername(username).then(data => data);
             setUserId(userItems.userId);
             setUsername(userItems.username);
             let checkAdmin = userItems.isAdmin;
@@ -107,3 +109,5 @@ export default function Login() {
 
     )
 }
+
+export { userItems };
