@@ -299,7 +299,7 @@ export default function ProjectDashboardPage() {
               </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="4">
-              <Accordion.Header>Roles Not Assigned</Accordion.Header>
+              <Accordion.Header>Staff With Roles Not Assigned</Accordion.Header>
               <Accordion.Body>
                 <ListGroup>
                   {/* map thru all users */}

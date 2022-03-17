@@ -186,7 +186,7 @@ async function getProjectItemById(Id){
     return data;
 }
 
-// Get a LIST of ProjectItems by a specific userId
+// Get a LIST of ProjectItems by a specific userId (PMs)
 
 async function getProjectItemsByUserId(UserId){
 
@@ -195,7 +195,7 @@ async function getProjectItemsByUserId(UserId){
     return data;
 }
 
-//Get Project Item by Title of a ProjectItem
+//Get Project Item by Title of a ProjectItem (Specialist)
 async function getProjectItemByTitle(Title){
 
     let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/ProjectItem/GetProjectItemByTitle/${Title}`);
