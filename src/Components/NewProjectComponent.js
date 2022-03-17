@@ -16,8 +16,14 @@ export default function NewProjectComponent() {
     const [projectDescription, setProjectDescription] = useState("");
     const [projectDueDate, setProjectDueDate] = useState("");
     const [projectMembersId, setProjectMembersId] = useState("");
-    const [projectMembersUsername, setProjectMembersUsername] = useState("");
+    // const [projectMembersUsername, setProjectMembersUsername] = useState("");
 
+    let projectMembersUsername = [];
+
+    const addUserToArray = (username) => {
+      projectMembersUsername.push(username);
+      console.log(projectMembersUsername);
+    }
 
     let updatedProject;
 
@@ -84,7 +90,7 @@ export default function NewProjectComponent() {
               {
                 allSpecialist.map((user, idx) => {
                   return (
-                    <ListGroup.Item as="li" >
+                    <ListGroup.Item action as="li" onClick={() => addUserToArray(user.username)}>
                       {user.fullName}
                     </ListGroup.Item>
                   )
