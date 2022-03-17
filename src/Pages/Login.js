@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useContext } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import React, {useState, useEffect } from 'react';
+import { Form, Button, Container, Row, Col, Toast, ToastContainer } from 'react-bootstrap';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { logIn } from '../Services/DataService';
 
@@ -8,19 +8,26 @@ import { logIn } from '../Services/DataService';
 
 export default function Login() {    
     let navigate = useNavigate();
-    const [Username, setUsername] = useState("");
-    const [Password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [showA, setShowA] = useState(true);
+    const toggleShowA = () => setShowA(!showA);
 
     const handleSubmit = async () => {
         let userData = {
-            Username,
-            Password
+            Username: username,
+            Password: password
         }
         let token = await logIn(userData);
+        
         if(token.token != null){
             localStorage.setItem("Token", token.token);
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
+        }
+        else{
+            toggleShowA();
         }
     }
 
@@ -66,7 +73,19 @@ export default function Login() {
                     </Col>
                 </Row>
             </Container>
-
+            <ToastContainer position="top-center">
+        <Toast show={!showA} onClose={toggleShowA}>
+          <Toast.Header>
+            <img
+              src="holder.js/20x20?text=%20"
+              className="rounded me-2"
+              alt=""
+            />
+            <strong className="me-auto">Unable to login</strong>
+          </Toast.Header>
+          <Toast.Body>Please try again</Toast.Body>
+        </Toast>
+      </ToastContainer>
             
         </>
 
