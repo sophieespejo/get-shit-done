@@ -124,4 +124,4 @@ async function deleteUser(userData)
 
 
 
-export { createAccount, checkToken, getAllUsers, logIn,  deleteUser }
+export { createAccount, checkToken, getAllUsers, logIn, deleteUser }

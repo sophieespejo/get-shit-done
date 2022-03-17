@@ -1,29 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { createAccount } from '../Services/DataService';
 
-const Login = () => {
-
-    let navigate = useNavigate();
-
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [fullname, setFullName] = useState("");
-
-    const handleSubmit = async () => {
-        let userData = {
-            Id: 0,
-            Fullname: fullname,
-            Username: username,
-            Password: password,
-        }
-        // console.log(userData);
-        let result = await createAccount(userData);
-        result ? (
-            navigate("/Login")
-        ) : alert("Unable to create an account. Please try again.")
-    };
+const CreateAccount = () => {
 
         return (
             <>
@@ -51,7 +30,7 @@ const Login = () => {
                                     <Form.Control type="password" placeholder="Password" />
                                     {/* <Link to="../">Login</Link> */}
                                 </Form.Group>
-                                <Button variant="primary" type="submit" onClick={handleSubmit}>
+                                <Button variant="primary" type="submit">
                                     submit
                                 </Button>
                             </Form>
@@ -63,4 +42,4 @@ const Login = () => {
         )
     }
 
-    export default Login;
+    export default CreateAccount;
