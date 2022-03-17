@@ -20,7 +20,7 @@ const Login = () => {
                                 <Form.Label>Username</Form.Label>
                                 <Form.Control type="text" placeholder="Enter username" />
                             </Form.Group>
-
+                            {/* span contentEditable onKeyDown={(e) => console.log(e.target.textContent)} */}
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" placeholder="Password" />

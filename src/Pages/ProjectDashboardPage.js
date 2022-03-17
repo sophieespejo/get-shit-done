@@ -37,7 +37,7 @@ export default function ProjectDashboardPage() {
   useEffect(async() => {
     
         let allFetchedUsers = await getAllUsers();
-        console.log(allFetchedUsers)
+        // console.log(allFetchedUsers)
         setAllUsers(allFetchedUsers);
       
   }, [])
@@ -166,7 +166,7 @@ export default function ProjectDashboardPage() {
                       <>
                         {user.isAdmin ? (
                           <ListGroup.Item key={i} className="d-flex">
-                            <Col>{user.FullName}</Col>
+                            <Col>{user.fullName}</Col>
                             {user.isPublished ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
@@ -199,7 +199,7 @@ export default function ProjectDashboardPage() {
                       <>
                         {user.isProjectManager ? (
                           <ListGroup.Item key={i} className="d-flex">
-                            <Col>{user.FullName}</Col>
+                            <Col>{user.fullName}</Col>
                             {user.isPublished ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
@@ -232,7 +232,7 @@ export default function ProjectDashboardPage() {
                       <>
                         {user.isSpecialist ? (
                           <ListGroup.Item key={i} className="d-flex">
-                            <Col>{user.FullName}</Col>
+                            <Col>{user.fullName}</Col>
                             {user.isPublished ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
