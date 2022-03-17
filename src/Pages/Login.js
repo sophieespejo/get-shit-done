@@ -1,11 +1,17 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Outlet, Link } from 'react-router-dom';
+import UserContext from '../Context/UserContext';
 
 
 
 const Login = () => {
     
+    let userData = useContext(UserContext);
+    console.log(userData);
+    const handleChange = (e) => {
+        userData.setUsername(e.target.value);
+    }
 
 
     return (
@@ -23,7 +29,7 @@ const Login = () => {
                         <Form>
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" placeholder="Enter username" />
+                                <Form.Control type="text" placeholder="Enter username" onChange={handleChange} />
                             </Form.Group>
                             {/* span contentEditable onKeyDown={(e) => console.log(e.target.textContent)} */}
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicPassword">
