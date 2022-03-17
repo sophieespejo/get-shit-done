@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Container, Row, Col, Accordion, ListGroup, Button } from "react-bootstrap";
 import ProjectCardComponent from '../Components/ProjectCardComponent';
 import NewProjectComponent from '../Components/NewProjectComponent';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import UserContext from '../Context/UserContext';
+
+
 
 export default function ProjectDashboardPage() {
+
 
   const [blogItems, setBlogItems] = useState([ {
     Id: 1,
