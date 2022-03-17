@@ -34,12 +34,49 @@ export default function ProjectDashboardPage() {
 
   const [allUsers, setAllUsers] = useState([]);
 
-  useEffect(async() => {
-    
-        let allFetchedUsers = await getAllUsers();
-        // console.log(allFetchedUsers)
-        setAllUsers(allFetchedUsers);
-      
+
+//This is just example used to test
+//   const NewProject = {
+//     Id: 0,
+//     UserId: "",
+//     Title: "",
+//     Image: "",
+//     Description: "",
+//     DateCreated: new Date(),
+//     DueDate: "",
+//     Status: "",
+//     MembersId: "",
+//     MembersUsername: "",
+//     IsDeleted: false,
+//     IsArchived: false
+// }
+
+// console.log(NewProject);
+
+// AddNewProject(NewProject)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  useEffect(async () => {
+
+    let allFetchedUsers = await getAllUsers();
+    // console.log(allFetchedUsers)
+    setAllUsers(allFetchedUsers);
+
   }, [])
 
   const [blogItems, setBlogItems] = useState([
@@ -277,8 +314,8 @@ export default function ProjectDashboardPage() {
                 <Form.Select
                   aria-label="Default select example"
                   className="mt-2"
-                  // value={blogCategory}
-                  // onChange={({ target: { value } }) => setBlogCategory(value)}
+                // value={blogCategory}
+                // onChange={({ target: { value } }) => setBlogCategory(value)}
                 >
                   <option>Select Role</option>
                   <option value="Admin">Admin</option>
@@ -322,8 +359,8 @@ export default function ProjectDashboardPage() {
                 <Form.Select
                   aria-label="Default select example"
                   className="mt-2"
-                  // value={blogCategory}
-                  // onChange={({ target: { value } }) => setBlogCategory(value)}
+                // value={blogCategory}
+                // onChange={({ target: { value } }) => setBlogCategory(value)}
                 >
                   <option>Select Role</option>
                   <option value="Admin">Admin</option>
