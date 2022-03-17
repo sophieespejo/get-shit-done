@@ -60,18 +60,6 @@ async function logIn(userInfo){
         throw new Error(message);
     }
     let data = await res.json();
-    // console.log(data.token);
-    // if(!data.token)
-    // {
-    //     successfulLogin = false;
-    //     alert("unable to login");
-    // }
-    // else{
-    //     successfulLogin = true;
-    //     localStorage.setItem('Token', JSON.stringify(data.token));
-    // }
-    // console.log(successfulLogin);
-    // return successfulLogin;
     return data;
 }
 
