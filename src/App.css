@@ -98,6 +98,15 @@ body{
   background-color: rgba(0, 0, 0, 0.427);
 }
 
+.loginTxt{
+  font-family: 'Alef'
+}
+
 .taskContainer{
   min-height: 700px;
+}
+
+.loginContainer{
+  background-color: rgba(145, 140, 140, 0.523);
+  border-radius: 15px;
 }
