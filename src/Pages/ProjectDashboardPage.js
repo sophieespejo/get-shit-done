@@ -105,15 +105,19 @@ export default function ProjectDashboardPage() {
         <h4 className="headerTxt">Your Current Projects:</h4>
         <Row xs={2} lg={4} className="g-3">
           {/* Map thru current projects here */}
+          {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
           {Array.from({ length: 6 }).map((_, idx) => (
             <ProjectCardComponent />
           ))}
+          {/* only have this as an option for admin and PM, not specialists */}
+          {/* check userContext isAdmin || isProjectManager then return, else null */}
           <NewProjectComponent />
         </Row>
       </Container>
       <Container>
         <Row className="mt-5">
           {/* Map thru archived projects here */}
+          {/* should this be viewable to specialists or just admin and PM? */}
           <Accordion defaultActiveKey="1">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Archived Projects{viewIcon}</Accordion.Header>
@@ -151,6 +155,7 @@ export default function ProjectDashboardPage() {
           <Col>
             <h3>All Staff</h3>
           </Col>
+          {/* only have this button show up if user isAdmin */}
           <Col className="d-flex justify-content-end">
             <Button onClick={handleShow1}>Add a new user {addUserIcon} </Button>
           </Col>
@@ -167,6 +172,7 @@ export default function ProjectDashboardPage() {
                         {user.isAdmin ? (
                           <ListGroup.Item key={i} className="d-flex">
                             <Col>{user.fullName}</Col>
+                            {/* buttons will only be shown if user isAdmin */}
                             {user.isPublished ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
