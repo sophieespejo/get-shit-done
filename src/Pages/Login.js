@@ -7,14 +7,14 @@ import { getUserByUsername } from '../Services/DataService';
 
 export default function Login() {    
     let navigate = useNavigate();
-    let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName } = useContext(UserContext);
+    let { userItems, setUserItems } = useContext(UserContext);
     const handleChange = (e) => {
          
        setUsername(e.target.value);
     }
 
     const [password, setPassword] = useState("");
-    // const [username, setUsername] = useState("");
+    const [username, setUsername] = useState("");
 
     const [showA, setShowA] = useState(true);
     const toggleShowA = () => setShowA(!showA);
@@ -33,17 +33,8 @@ export default function Login() {
             localStorage.setItem("Token", token.token);
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
-            let userItems =  getUserByUsername(username).then(data => data);
-            setUserId(userItems.userId);
-            setUsername(userItems.username);
-            let checkAdmin = userItems.isAdmin;
-            console.log(checkAdmin);
-            console.log(userItems);
-            setIsProjectManager(userItems.isProjectManager);
-            setIsSpecialist(userItems.isSpecialist);
-            setFullName(userItems.fullName);
-            
-            console.log(userItems);
+            let userItemsFromDataService =  getUserByUsername(username).then(data => data);
+            setUserItems(userItemsFromDataService);
         }
         if(!token){
             toggleShowA();
