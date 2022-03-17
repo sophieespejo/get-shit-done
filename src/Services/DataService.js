@@ -76,9 +76,9 @@ async function logIn(userInfo){
 
 //GetAllUsers
 async function getAllUsers(){
-    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/GetAllUsers`);
+    let res = await fetch("https://dylanmcfarlinbackend.azurewebsites.net/User/GetAllUsers");
     let data = await res.json();
-    console.log(data);
+    // console.log(data);
     return data;
 }
 
