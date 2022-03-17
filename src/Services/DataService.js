@@ -110,10 +110,10 @@ async function getUserByUsername(UserName) {
 //     return data;
 // }
 
-//Delete User Account
-async function deleteUser(userToDelete)
+//Delete User Account, need clarification with userToDelete and what data is being passed in, not sure if its userName?
+async function deleteUser(userData)
 {
-    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/DeleteUser/${userToDelete}`, {
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/DeleteUser/${userData.userName}`, {
         method: "POST",
         headers: {
             'Content-Type': "application/json"
@@ -129,6 +129,50 @@ async function deleteUser(userToDelete)
     console.log(data);
     return data;
 }
+
+//UpdateUserRole, need clarification
+
+
+//Add A New Task Item
+
+
+//Get All Task Items
+async function getAllTaskItems(){
+
+    let res = await fetch('https://dylanmcfarlinbackend.azurewebsites.net/User/GetAllTaskItems');
+    let data = await res.json();
+    return data;
+}
+
+//Get a TaskItem by ID
+async function getTaskItemsById(UserID) {
+
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/GetTaskItemsById/${UserID}`);
+    let data = await res.json();
+    console.log(data);
+    return data;
+}
+
+//Get a List of TaskItems by the parent ProjectItem Id, need clarification on what to send over
+async function getTaskItemsByProjectID(ProjectID) {
+
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/Users/GetTaskItemsByProjectID/${ProjectID}`);
+    let data = await res.json();
+    console.log(data);
+    return data;
+}
+
+//Get a taskItem by the Title of TaskItem
+async function getTaskItemByTitle(ProjectID) {
+
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/Users/GetTaskItemsByProjectID/${ProjectID}`);
+    let data = await res.json();
+    console.log(data);
+    return data;
+}
+
+
+
 
 
 
