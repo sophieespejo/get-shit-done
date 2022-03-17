@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Outlet, Link } from 'react-router-dom';
 
+
 const Login = () => {
     
+
+
     return (
         <>
             <Container>
@@ -21,7 +24,7 @@ const Login = () => {
                                 <Form.Label>Username</Form.Label>
                                 <Form.Control type="text" placeholder="Enter username" />
                             </Form.Group>
-
+                            {/* span contentEditable onKeyDown={(e) => console.log(e.target.textContent)} */}
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" placeholder="Password" />

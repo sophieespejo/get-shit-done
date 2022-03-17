@@ -89,3 +89,15 @@ body{
 .toDoContainer{
   background-color: rgba(0, 0, 0, 0.229);
 }
+
+.inProgressContainer{
+  background-color: rgba(0, 0, 0, 0.284);
+}
+
+.completedContainer{
+  background-color: rgba(0, 0, 0, 0.427);
+}
+
+.taskContainer{
+  min-height: 700px;
+}
