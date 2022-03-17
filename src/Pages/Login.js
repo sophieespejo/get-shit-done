@@ -7,17 +7,23 @@ import { getUserByUsername } from '../Services/DataService';
 
 export default function Login() {    
     let navigate = useNavigate();
+<<<<<<< HEAD
     let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
+=======
+    let { userItems, setUserItems } = useContext(UserContext);
+>>>>>>> 69912378873a11302614c0d9999f7f46358e902e
     const handleChange = (e) => {
          
        setUsername(e.target.value);
     }
 
     const [password, setPassword] = useState("");
-    // const [username, setUsername] = useState("");
+    const [username, setUsername] = useState("");
 
     const [showA, setShowA] = useState(true);
     const toggleShowA = () => setShowA(!showA);
+
+    let userItems;
 
     const handleSubmit = async () => {
         let userData = {
@@ -101,3 +107,5 @@ export default function Login() {
 
     )
 }
+
+export { userItems };

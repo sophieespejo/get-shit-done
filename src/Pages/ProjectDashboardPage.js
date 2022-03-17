@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Container,
   Row,
@@ -16,12 +16,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { checkToken, getAllUsers } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
-import { getUserByUsername } from '../Services/DataService';
 
 
 export default function ProjectDashboardPage() {
   const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
   let navigate = useNavigate();
+  let { userItems } = useContext(UserContext);
   // for admin edit userRoles modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -35,7 +35,7 @@ export default function ProjectDashboardPage() {
 
   const [allUsers, setAllUsers] = useState([]);
 
-
+console.log(userItems);
 //This is just example used to test
 //   const NewProject = {
 //     Id: 0,
@@ -140,7 +140,7 @@ export default function ProjectDashboardPage() {
   return (
     <>
       <Container className="mt-5">
-        <h4 className="headerTxt">Your Current Projects:</h4>
+        <h4 className="headerTxt">Your Current Projects: {userItems.id} </h4>
         <Row xs={2} lg={4} className="g-3">
           {/* Map thru current projects here */}
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
