@@ -33,11 +33,12 @@ export default function Login() {
             localStorage.setItem("Token", token.token);
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
-            let userItems = getUserByUsername(username);
+            let userItems =  getUserByUsername(username).then(data => data);
             setUserId(userItems.userId);
             setUsername(userItems.username);
-            let checkAdmin = setIsAdmin(userItems.isAdmin);
+            let checkAdmin = userItems.isAdmin;
             console.log(checkAdmin);
+            console.log(userItems);
             setIsProjectManager(userItems.isProjectManager);
             setIsSpecialist(userItems.isSpecialist);
             setFullName(userItems.fullName);
