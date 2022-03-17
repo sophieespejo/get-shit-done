@@ -27,7 +27,7 @@ export default function Login() {
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
         }
-        else{
+        if(!token){
             toggleShowA();
         }
     }
