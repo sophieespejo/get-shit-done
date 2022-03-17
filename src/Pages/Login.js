@@ -4,8 +4,6 @@ import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { logIn } from '../Services/DataService';
 
 
-
-
 export default function Login() {    
     let navigate = useNavigate();
     const [username, setUsername] = useState("");
