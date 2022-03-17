@@ -72,10 +72,10 @@ async function getAllUsers(){
 }
 
 //Get User By Username
-async function getUserByUsername(UserName) {
-    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/${UserName}`);
+async function getUserByUsername(Username) {
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/UserByUsername/${Username}`);
     let data = await res.json();
-    console.log(data);
+    // console.log(data);
     return data;
 }
 
@@ -261,4 +261,4 @@ async function getTaskItemsByStatus(Status) {
 
 
 
-export { createAccount, checkToken, getAllUsers, logIn, deleteUser }
+export { createAccount, checkToken, getAllUsers, logIn, deleteUser, getUserByUsername }

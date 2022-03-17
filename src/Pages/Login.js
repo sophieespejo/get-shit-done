@@ -1,13 +1,20 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import { Form, Button, Container, Row, Col, Toast, ToastContainer } from 'react-bootstrap';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { logIn } from '../Services/DataService';
-
+import UserContext from '../Context/UserContext';
+import { getUserByUsername } from '../Services/DataService';
 
 export default function Login() {    
     let navigate = useNavigate();
-    const [username, setUsername] = useState("");
+    let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName } = useContext(UserContext);
+    const handleChange = (e) => {
+         
+       setUsername(e.target.value);
+    }
+
     const [password, setPassword] = useState("");
+    // const [username, setUsername] = useState("");
 
     const [showA, setShowA] = useState(true);
     const toggleShowA = () => setShowA(!showA);
@@ -26,6 +33,16 @@ export default function Login() {
             localStorage.setItem("Token", token.token);
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
+            let userItems = getUserByUsername(username);
+            setUserId(userItems.userId);
+            setUsername(userItems.username);
+            let checkAdmin = setIsAdmin(userItems.isAdmin);
+            console.log(checkAdmin);
+            setIsProjectManager(userItems.isProjectManager);
+            setIsSpecialist(userItems.isSpecialist);
+            setFullName(userItems.fullName);
+            
+            console.log(userItems);
         }
         if(!token){
             toggleShowA();
@@ -49,7 +66,7 @@ export default function Login() {
                         <Form>
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" placeholder="Enter username" onChange={({ target: {value} }) => setUsername(value)}/>
+                                <Form.Control type="text" placeholder="Enter username" onChange={handleChange}/>
                             </Form.Group>
                             {/* span contentEditable onKeyDown={(e) => console.log(e.target.textContent)} */}
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicPassword">

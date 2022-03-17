@@ -2,10 +2,12 @@ import { useState } from "react";
 
 export default function useUser(){
 
-    const [userId, SetUserId] = useState("");
-    const [username, SetUsername] = useState("");
-    const [isAdmin, SetIsAdmin] = useState("");
-    const [isProjectManager, SetIsProjectManager] = useState("");
+    const [userId, setUserId] = useState("");
+    const [username, setUsername] = useState("");
+    const [isAdmin, setIsAdmin] = useState("");
+    const [isProjectManager, setIsProjectManager] = useState("");
+    const [isSpecialist, setIsSpecialist] = useState("");
+    const [fullName, setFullName] = useState("");
 
-    return { userId, SetUserId, username, SetUsername, isAdmin, SetIsAdmin, isProjectManager, SetIsProjectManager } 
+    return { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName } 
 }
