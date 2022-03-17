@@ -1,10 +1,29 @@
 import React, {useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { logIn } from '../Services/DataService';
 
 
-const Login = () => {
-    
+
+
+export default function Login() {    
+    let navigate = useNavigate();
+    const [Username, setUsername] = useState("");
+    const [Password, setPassword] = useState("");
+
+    const handleSubmit = async () => {
+        let userData = {
+            Username,
+            Password
+        }
+        let token = await logIn(userData);
+        if(token.token != null){
+            localStorage.setItem("Token", token.token);
+            //GetLoggedInUserData(Username);
+            navigate("/projectDashboard");
+        }
+    }
+
 
 
     return (
@@ -22,16 +41,16 @@ const Login = () => {
                         <Form>
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicEmail">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text" placeholder="Enter username" />
+                                <Form.Control type="text" placeholder="Enter username" onChange={({ target }) => setUsername(target.value)}/>
                             </Form.Group>
                             {/* span contentEditable onKeyDown={(e) => console.log(e.target.textContent)} */}
                             <Form.Group className="mb-3 loginTxt" controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" />
+                                <Form.Control type="password" placeholder="Password" onChange={({ target }) => setPassword(target.value)}/>
                             </Form.Group>
                             <Container>
                                 <Row className="d-grid gap-2 mt-2 mb-2 ">
-                                    <Button variant="primary" size="sm" className="editBtn" type="submit">
+                                    <Button variant="primary" size="sm" className="editBtn" type="submit" onClick={handleSubmit}>
                                         Login
                                     </Button>
                                 </Row>
@@ -49,5 +68,3 @@ const Login = () => {
 
     )
 }
-
-export default Login;
