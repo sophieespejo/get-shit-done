@@ -23,6 +23,7 @@ export default function TaskDashboardPage() {
             <Card className="mb-2">
               <Card.Body>{plusIcon}</Card.Body>
             </Card>
+            {/* map through the tasks  */}
           <TaskComponent />
           </Col>
           <Col className="inProgressContainer">
