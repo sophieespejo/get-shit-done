@@ -41,11 +41,6 @@ export default function Login() {
             let checkAdmin = userItems.isAdmin;
             console.log(checkAdmin);
             console.log(userItems);
-            setIsProjectManager(userItems.isProjectManager);
-            setIsSpecialist(userItems.isSpecialist);
-            setFullName(userItems.fullName);
-            
-            console.log(userItems);
         }
         if(!token){
             toggleShowA();
