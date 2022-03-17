@@ -34,15 +34,8 @@ export default function Login() {
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
             let userItems =  getUserByUsername(username).then(data => data);
-            setUserId(userItems.userId);
-            setUsername(userItems.username);
             let checkAdmin = userItems.isAdmin;
             console.log(checkAdmin);
-            console.log(userItems);
-            setIsProjectManager(userItems.isProjectManager);
-            setIsSpecialist(userItems.isSpecialist);
-            setFullName(userItems.fullName);
-            
             console.log(userItems);
         }
         if(!token){

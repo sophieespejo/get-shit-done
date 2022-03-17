@@ -15,7 +15,8 @@ import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { checkToken, getAllUsers } from "../Services/DataService";
-
+import UserContext from '../Context/UserContext';
+import { getUserByUsername } from '../Services/DataService';
 
 
 export default function ProjectDashboardPage() {
