@@ -29,16 +29,17 @@ async function createAccount(createdUser){
         throw new Error(message);
     }
     let data = await res.json();
-    
-    if(data)
-    {
-        successfulCreateAcct = true;
-    }
-    else{
-        successfulCreateAcct = false;
-        alert("Unable to create an account. Please try again");
-    }
-    return successfulCreateAcct;
+    console.log(data);
+    return data;
+    // if(data)
+    // {
+    //     successfulCreateAcct = true;
+    // }
+    // else{
+    //     successfulCreateAcct = false;
+    //     alert("Unable to create an account. Please try again");
+    // }
+    // return successfulCreateAcct;
 }
 
 //Login
