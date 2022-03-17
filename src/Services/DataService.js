@@ -44,7 +44,7 @@ async function createAccount(createdUser){
 //Login
 async function logIn(userInfo){
 
-    let res = await fetch('http://getshitdonebackend.database.windows.net/User/Login', {
+    let res = await fetch('https://dylanmcfarlinbackend.azurewebsites.net/User/Login', {
         method: "POST",
         headers: {
             'Content-Type': "application/json"
@@ -79,6 +79,14 @@ async function getAllUsers(){
     let res = await fetch("https://dylanmcfarlinbackend.azurewebsites.net/User/GetAllUsers");
     let data = await res.json();
     // console.log(data);
+    return data;
+}
+
+//Get User By Username
+async function getUserByUsername(UserName) {
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/${UserName}`);
+    let data = await res.json();
+    console.log(data);
     return data;
 }
 
