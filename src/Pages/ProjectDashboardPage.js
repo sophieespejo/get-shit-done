@@ -14,14 +14,15 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers } from "../Services/DataService";
+import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 
 
 export default function ProjectDashboardPage() {
   const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
   let navigate = useNavigate();
-  let { userItems } = useContext(UserContext);
+  let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
+
   // for admin edit userRoles modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -31,6 +32,8 @@ export default function ProjectDashboardPage() {
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+
+  const [currentProjects, setCurrentProject] = useState([]);
 
 
   const [allUsers, setAllUsers] = useState([]);
@@ -72,11 +75,21 @@ console.log(userItems);
 
 
 
+
   useEffect(async () => {
 
-    let allFetchedUsers = await getAllUsers();
+    let allFetchedUsers;
+    allFetchedUsers = await getAllUsers();
+
     // console.log(allFetchedUsers)
     setAllUsers(allFetchedUsers);
+
+    // if (userItems.isAdmin) {
+    // } else if (userItems.isProjectManager) {
+    //   allFetchedUsers = await getProjectItemsByUserId(userItems.id);
+    // } else if (userItems.isSpecialist) {
+    //   allFetchedUsers = await getProjectItemsByAMemberUsername(userItems)
+    // }
 
   }, [])
 
