@@ -15,7 +15,7 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, getTaskItemsByProjectID } from "../Services/DataService";
+import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, getTaskItemsByProjectID, updateUser } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
@@ -83,6 +83,21 @@ export default function ProjectDashboardPage() {
     }, 3000);
       
   }, [userData])
+
+
+  //Delete a user
+  const handleDelete = async (user) => {
+    user.IsDeleted = !user.IsDeleted;
+    let result = await updateUser(user);
+    if(result){
+      //setBlogItems([]);
+      let allUpdatedUsers = await getAllUsers();
+      console.log(allUpdatedUsers);
+      setAllUsers(allUpdatedUsers);
+      }else{
+      alert(`User not Deleted`);
+      }
+  }
 
   const [blogItems, setBlogItems] = useState([
     {
@@ -239,7 +254,7 @@ export default function ProjectDashboardPage() {
                             {/* buttons will only be shown if user isAdmin */}
                             {userData.userItems.isAdmin  ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="">
+                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
                                   Delete user
                                 </Button>
                                 <Button
@@ -272,7 +287,7 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="">
+                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
                                   Delete user
                                 </Button>
                                 <Button
@@ -305,7 +320,7 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin  ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="">
+                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
                                   Delete user
                                 </Button>
                                 <Button
@@ -338,7 +353,7 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin  ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="">
+                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
                                   Delete user
                                 </Button>
                                 <Button
