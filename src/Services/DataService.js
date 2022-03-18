@@ -246,7 +246,7 @@ async function getProjectItemsByAMemberId(MemberId){
 // Get a LIST of all ProjectItems you are a member of by memberUsername
 async function getProjectItemsByAMemberUsername(MemberUsername){
 
-    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/ProjectItem/GetProjectItemByAMemberUsername/${MemberUsername}`);
+    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/ProjectItem/GetProjectItemsByAMemberUsername/${MemberUsername}`);
     let data = await res.json();
     return data;
 }

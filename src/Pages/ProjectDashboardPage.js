@@ -8,20 +8,36 @@ import {
   Button,
   Modal,
   Form,
+  Card
 } from "react-bootstrap";
 import ProjectCardComponent from "../Components/ProjectCardComponent";
 import NewProjectComponent from "../Components/NewProjectComponent";
-import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername } from "../Services/DataService";
+import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
+import ProjectContext from "../Context/ProjectContext";
 
 
 export default function ProjectDashboardPage() {
+  let userData = useContext(UserContext);
+  let clickedProject1 = useContext(ProjectContext);
+  console.log(userData.userItems)
+  console.log(userData.userItems.isSpecialist)
+
   const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
+  const editIcon = <FontAwesomeIcon icon={faEdit} />
   let navigate = useNavigate();
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
+  let { clickedProject, setClickedProject} = useContext(ProjectContext)
+
+  const handleClick = async (e, project) => {
+    let project1 = await getProjectItemByTitle(project.title);
+    setClickedProject(project1);
+    console.log(clickedProject);
+    navigate("/taskDashboard");
+  }
 
   // for admin edit userRoles modal
   const [show, setShow] = useState(false);
@@ -33,65 +49,36 @@ export default function ProjectDashboardPage() {
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
 
-  const [currentProjects, setCurrentProject] = useState([]);
+  const [currentProjects, setCurrentProjects] = useState([]);
 
 
   const [allUsers, setAllUsers] = useState([]);
 
-console.log(userItems);
-//This is just example used to test
-//   const NewProject = {
-//     Id: 0,
-//     UserId: "",
-//     Title: "",
-//     Image: "",
-//     Description: "",
-//     DateCreated: new Date(),
-//     DueDate: "",
-//     Status: "",
-//     MembersId: "",
-//     MembersUsername: "",
-//     IsDeleted: false,
-//     IsArchived: false
-// }
-
-// console.log(NewProject);
-
-// AddNewProject(NewProject)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  useEffect(async () => {
+  useEffect( async() => {
 
     let allFetchedUsers;
+    let currentFetchedProjects;
     allFetchedUsers = await getAllUsers();
-
     // console.log(allFetchedUsers)
     setAllUsers(allFetchedUsers);
-
-    // if (userItems.isAdmin) {
-    // } else if (userItems.isProjectManager) {
-    //   allFetchedUsers = await getProjectItemsByUserId(userItems.id);
-    // } else if (userItems.isSpecialist) {
-    //   allFetchedUsers = await getProjectItemsByAMemberUsername(userItems)
-    // }
-
-  }, [])
+    
+    setTimeout(async () => {
+      if (userData.userItems.isSpecialist) {
+        currentFetchedProjects = await getProjectItemsByAMemberUsername(userItems.username)
+        console.log("specialist")
+      } else if (userData.userItems.isProjectManager) {
+        currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
+        console.log("pm")
+      } else  {
+        currentFetchedProjects = await getAllProjectItems();
+        console.log("admin")
+      }
+      console.log(currentFetchedProjects);
+      setCurrentProjects(currentFetchedProjects);
+      
+    }, 3000);
+      
+  }, [userData])
 
   const [blogItems, setBlogItems] = useState([
     {
@@ -157,12 +144,29 @@ console.log(userItems);
         <Row xs={2} lg={4} className="g-3">
           {/* Map thru current projects here */}
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <ProjectCardComponent />
+          { currentProjects.map((project, idx) => (
+            <div>
+              <Card border="danger" style={{ width: '15rem', height: '15rem'}} className="shadow">
+                  <Card.Body >
+                      <Card.Title className="d-flex justify-content-between">{project.title} <Button className="editBtn">{editIcon}</Button></Card.Title>
+                      <Card.Text>
+                      <p>Due Date: <span>{project.dueDate}</span></p>
+                      <p>Priority: <span>whateverr</span></p>
+                      <p>Status: <span>whateverrr</span></p>
+                      </Card.Text>
+                      <Button className="editBtn" 
+                      // onClick={() => navigate("/taskDashboard")}
+                      onClick = {(e) => handleClick(e, project)}
+                      >View Project</Button>
+                  </Card.Body>
+              </Card>
+            </div>
           ))}
-          {/* only have this as an option for admin and PM, not specialists */}
-          {/* check userContext isAdmin || isProjectManager then return, else null */}
-          <NewProjectComponent />
+        {
+          userData.userItems.isAdmin ?  (
+              <NewProjectComponent />
+          ) : null 
+        }
         </Row>
       </Container>
       <Container>
@@ -174,7 +178,7 @@ console.log(userItems);
               <Accordion.Header>Archived Projects{viewIcon}</Accordion.Header>
               <Accordion.Body>
                 <ListGroup>
-                  {blogItems.map((item, i) => {
+                  {currentProjects.map((item, i) => {
                     return (
                       <>
                         {item.isArchived ? (
@@ -183,7 +187,8 @@ console.log(userItems);
                             <Col className=" d-flex justify-content-end">
                               <Button
                                 className="editBtn"
-                                onClick={() => navigate("/taskDashboard")}
+                                // onClick={() => navigate("/taskDashboard")}
+                                onClick = {() => handleClick(item.Title)}
                               >
                                 View Project {viewIcon}
                               </Button>
@@ -208,7 +213,11 @@ console.log(userItems);
           </Col>
           {/* only have this button show up if user isAdmin */}
           <Col className="d-flex justify-content-end">
-            <Button onClick={handleShow1}>Add a new user {addUserIcon} </Button>
+             {
+              userData.userItems.isAdmin ? (
+                 <Button onClick={handleShow1}>Add a new user {addUserIcon} </Button>
+              ) : null
+            }
           </Col>
           {/* Map thru archived projects here */}
           <Accordion defaultActiveKey="1">
@@ -224,7 +233,7 @@ console.log(userItems);
                           <ListGroup.Item key={i} className="d-flex">
                             <Col>{user.fullName}</Col>
                             {/* buttons will only be shown if user isAdmin */}
-                            {user.isPublished ? (
+                            {userData.userItems.isAdmin  ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
                                   Delete user
@@ -257,7 +266,7 @@ console.log(userItems);
                         {user.isProjectManager ? (
                           <ListGroup.Item key={i} className="d-flex">
                             <Col>{user.fullName}</Col>
-                            {user.isPublished ? (
+                            {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
                                   Delete user
@@ -290,7 +299,7 @@ console.log(userItems);
                         {user.isSpecialist ? (
                           <ListGroup.Item key={i} className="d-flex">
                             <Col>{user.fullName}</Col>
-                            {user.isPublished ? (
+                            {userData.userItems.isAdmin  ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
                                   Delete user
@@ -323,7 +332,7 @@ console.log(userItems);
                         {!user.isSpecialist && !user.isProjectManager && !user.isAdmin ? (
                           <ListGroup.Item key={i} className="d-flex">
                             <Col>{user.fullName}</Col>
-                            {user.isPublished ? (
+                            {userData.userItems.isAdmin  ? (
                               <Col className=" d-flex justify-content-end">
                                 <Button variant="danger" className="">
                                   Delete user
