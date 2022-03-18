@@ -124,14 +124,14 @@ async function deleteUser(userData)
 
 //UpdateUserRole, need clarification
 
-async function updateUserRole(userData, UserName, IsAdmin, isProjectManager, isSpecialist) {
+async function updateUserRole(UserName, IsAdmin, isProjectManager, isSpecialist) {
 
-    let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/User/DeleteUser/${UserName}/${IsAdmin}/${isProjectManager}/${isSpecialist}`, {
+    let res = await fetch('https://dylanmcfarlinbackend.azurewebsites.net/User/UpdateUserRole/'+UserName+'/'+IsAdmin+'/'+isProjectManager+'/'+isSpecialist, {
         method: "POST",
         headers: {
             'Content-Type': "application/json"
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify()
     });
     if(!res.ok)
     {

@@ -15,7 +15,7 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle } from "../Services/DataService";
+import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
 
@@ -53,11 +53,42 @@ export default function ProjectDashboardPage() {
 
 
   const [allUsers, setAllUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState({});
+
+  let allFetchedUsers;
+  let currentFetchedProjects;
+
+  const setRole = async (value) => {
+    // updatedUser = { 
+    //   Id: user.id,
+    //   Username: user.username,
+    //   FullName: user.fullName,
+    //   Salt: user.salt,
+    //   Hash: user.hash,
+    //   IsAdmin: value,
+    //   IsProjectManager: value,
+    //   IsSpecialist: value
+    // }
+
+    console.log(value);
+    console.log(selectedUser.username);
+
+
+    if (value == 'Admin') {
+      updateUserRole(selectedUser.username, true, false, false);
+    } else if (value == 'PM') {
+      updateUserRole(selectedUser.username, false, true, false);
+    } else if (value == 'Specialist') {
+      updateUserRole(selectedUser.username, false, false, true);
+    }
+
+    allFetchedUsers = await getAllUsers();
+    // console.log(allFetchedUsers)
+    setAllUsers(allFetchedUsers);
+  }
 
   useEffect( async() => {
 
-    let allFetchedUsers;
-    let currentFetchedProjects;
     allFetchedUsers = await getAllUsers();
     // console.log(allFetchedUsers)
     setAllUsers(allFetchedUsers);
@@ -241,7 +272,10 @@ export default function ProjectDashboardPage() {
                                 <Button
                                   variant="info"
                                   className=""
-                                  onClick={handleShow}
+                                  onClick={() => {
+                                    handleShow();
+                                    setSelectedUser(user);
+                                  }}
                                 >
                                   Change role
                                 </Button>
@@ -274,7 +308,10 @@ export default function ProjectDashboardPage() {
                                 <Button
                                   variant="info"
                                   className=""
-                                  onClick={handleShow}
+                                  onClick={() => {
+                                    handleShow();
+                                    setSelectedUser(user);
+                                  }}
                                 >
                                   Change role
                                 </Button>
@@ -307,7 +344,10 @@ export default function ProjectDashboardPage() {
                                 <Button
                                   variant="info"
                                   className=""
-                                  onClick={handleShow}
+                                  onClick={() => {
+                                    handleShow();
+                                    setSelectedUser(user);
+                                  }}
                                 >
                                   Change role
                                 </Button>
@@ -340,7 +380,10 @@ export default function ProjectDashboardPage() {
                                 <Button
                                   variant="info"
                                   className=""
-                                  onClick={handleShow}
+                                  onClick={() => {
+                                    handleShow();
+                                    setSelectedUser(user);
+                                  }}
                                 >
                                   Change role
                                 </Button>
@@ -363,7 +406,7 @@ export default function ProjectDashboardPage() {
           </Modal.Header>
           <Modal.Body>
             {/* get full name from e.target */}
-            <h3>Staff Name</h3>
+            <h3>{selectedUser.fullName}</h3>
             <Form>
               <Form.Group>
                 <Form.Label>Update Role</Form.Label>
@@ -371,7 +414,8 @@ export default function ProjectDashboardPage() {
                   aria-label="Default select example"
                   className="mt-2"
                 // value={blogCategory}
-                // onChange={({ target: { value } }) => setBlogCategory(value)}
+                onChange={({ target: { value } }) => setRole(value)}
+                // onChange={(e) => console.log(e)}
                 >
                   <option>Select Role</option>
                   <option value="Admin">Admin</option>
