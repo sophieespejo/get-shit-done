@@ -34,11 +34,11 @@ export default function Login() {
             localStorage.setItem("Token", token.token);
             //GetLoggedInUserData(Username);
             navigate("/projectDashboard");
-            let userItems = await getUserByUsername(username)
-            setUserItems(userItems);
+            let userItems1 = await getUserByUsername(username)
+            setUserItems(userItems1);
             console.log(userItems);
             let checkAdmin = userItems.isAdmin;
-            console.log(checkAdmin);
+            //console.log(checkAdmin);
         }
         if(!token){
             toggleShowA();

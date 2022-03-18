@@ -1,11 +1,15 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TaskComponent from '../Components/TaskComponent';
+import ProjectContext from "../Context/ProjectContext";
 
 
 export default function TaskDashboardPage() {
+
+  let projectData = useContext(ProjectContext);
+  console.log(projectData)
 
   const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
 
@@ -13,8 +17,8 @@ export default function TaskDashboardPage() {
     <div>
       <Container className="mt-3">
         <Row className="mb-3 text-center">
-          <h1>Name of the project</h1>
-          <h3>Due Date:</h3>
+          <h1>Name of the project:{projectData.clickedProject[0].title}</h1>
+          <h3>Due Date:{projectData.clickedProject[0].dueDate}</h3>
           <h3>Status: </h3>
         </Row>
         <Row className="text-center taskContainer">
