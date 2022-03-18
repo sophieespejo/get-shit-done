@@ -15,9 +15,10 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle } from "../Services/DataService";
+import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, getTaskItemsByProjectID } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
+import TaskContext from "../Context/TaskContext";
 
 
 export default function ProjectDashboardPage() {
@@ -31,11 +32,14 @@ export default function ProjectDashboardPage() {
   let navigate = useNavigate();
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
   let { clickedProject, setClickedProject} = useContext(ProjectContext)
+  let { allTasks, setAllTasks} = useContext(TaskContext);
 
   const handleClick = async (e, project) => {
     let project1 = await getProjectItemByTitle(project.title);
     setClickedProject(project1);
     console.log(clickedProject);
+    let allTasks = await getTaskItemsByProjectID(project.id);
+    setAllTasks(allTasks);
     navigate("/taskDashboard");
   }
 

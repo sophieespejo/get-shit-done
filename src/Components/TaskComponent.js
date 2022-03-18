@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Card, Button, Container, Modal, Form, FloatingLabel, Col, Row, ListGroup, ModalBody } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TaskContext from "../Context/TaskContext";
 
 export default function TaskComponent() {
   
+  let taskData = useContext(TaskContext);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -15,45 +18,52 @@ export default function TaskComponent() {
 
   return (
     <>
-      <Card style={{ width: "100%" }}>
-        <Card.Body>
-          <Card.Title>
-            Task Name</Card.Title>
-          <Card.Text>
-            <p>Task Description</p>
-            <p>Due Date:</p>
-            <p>Assignee: </p>
-          </Card.Text>
-          <Row>
-            <Col className="">
-              <Form.Group>
-                <Form.Select
-                    aria-label="Default select example"
-                    className=""
-                    // value={blogCategory}
-                    // onChange={({ target: { value } }) => setBlogCategory(value)}
-                  >
-                    <option>Status</option>
-                    <option value="ToDo">To-Do</option>
-                    <option value="InProgress">In Progress</option>
-                    <option value="Done">Done</option>
-                  </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col>
-            <Button variant="info">Update Status</Button>
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col>
-              <Button variant="success" onClick={handleShow}>
-                View/Edit Task
-              </Button>
-            </Col>
-          </Row>
-          
-        </Card.Body>
-      </Card>
+    {
+      taskData.allTasks.map((task, idx) => {
+        return (
+        <Card style={{ width: "100%" }} className="mt-2 mb-2">
+          <Card.Body>
+            <Card.Title>
+              {task.title}</Card.Title>
+            <Card.Text>
+              <p>Task Description</p>
+              <p>Due Date:</p>
+              <p>Assignee: </p>
+            </Card.Text>
+            <Row>
+              <Col className="">
+                <Form.Group>
+                  <Form.Select
+                      aria-label="Default select example"
+                      className=""
+                      // value={blogCategory}
+                      // onChange={({ target: { value } }) => setBlogCategory(value)}
+                    >
+                      <option>Status</option>
+                      <option value="ToDo">To-Do</option>
+                      <option value="InProgress">In Progress</option>
+                      <option value="Done">Done</option>
+                    </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col>
+              <Button variant="info">Update Status</Button>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col>
+                <Button variant="success" onClick={handleShow}>
+                  View/Edit Task
+                </Button>
+              </Col>
+            </Row>
+            
+          </Card.Body>
+        </Card>
+
+        )
+      })
+    }
 
       <Modal size="lg" show={show} onHide={handleClose}>
         {/* check if user is specialist */}

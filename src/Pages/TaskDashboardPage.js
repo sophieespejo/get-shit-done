@@ -4,18 +4,23 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TaskComponent from '../Components/TaskComponent';
 import ProjectContext from "../Context/ProjectContext";
+import TaskContext from "../Context/TaskContext";
+import UserContext from '../Context/UserContext';
 
 
 export default function TaskDashboardPage() {
 
   let projectData = useContext(ProjectContext);
   console.log(projectData)
+  let taskData = useContext(TaskContext);
+  let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
+  let userData = useContext(UserContext);
 
   const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
 
   return (
     <div>
-      <Container className="mt-3">
+      <Container className="mt-3 mb-5">
         <Row className="mb-3 text-center">
           <h1>Name of the project:{projectData.clickedProject[0].title}</h1>
           <h3>Due Date:{projectData.clickedProject[0].dueDate}</h3>
@@ -24,11 +29,22 @@ export default function TaskDashboardPage() {
         <Row className="text-center taskContainer">
           <Col className="toDoContainer">
             <h3 className="headerTxt mt-2">To-Do</h3>
+            {
+          userData.userItems.isAdmin ?  (
             <Card className="mb-2">
               <Card.Body>{plusIcon}</Card.Body>
             </Card>
+          ) : null 
+        }
             {/* map through the tasks  */}
-          <TaskComponent />
+            {/* {
+              taskData.allTasks.map((task, i) => {
+                return (
+                  <TaskComponent />
+                )
+              })
+            } */}
+            <TaskComponent/>
           </Col>
           <Col className="inProgressContainer">
             <h3 className="headerTxt mt-2">In Progress</h3>
