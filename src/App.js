@@ -8,7 +8,7 @@ function App() {
   
   return (
      <UserContext.Provider value={useUser()}>
-         <Home/>   
+         <Home/> 
      </UserContext.Provider>
   );
 }
