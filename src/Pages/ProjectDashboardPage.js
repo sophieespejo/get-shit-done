@@ -15,7 +15,7 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, getTaskItemsByProjectID } from "../Services/DataService";
+import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, getTaskItemsByProjectID, updateUser } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
