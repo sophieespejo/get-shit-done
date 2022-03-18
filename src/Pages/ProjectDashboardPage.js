@@ -15,28 +15,36 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle } from "../Services/DataService";
+import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
+import TaskContext from "../Context/TaskContext";
 
 
 export default function ProjectDashboardPage() {
   let userData = useContext(UserContext);
   let clickedProject1 = useContext(ProjectContext);
-  console.log(userData.userItems)
-  console.log(userData.userItems.isSpecialist)
+  // console.log(userData.userItems)
+  // console.log(userData.userItems.isSpecialist)
 
   const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
   const editIcon = <FontAwesomeIcon icon={faEdit} />
   let navigate = useNavigate();
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
+<<<<<<< HEAD
   let { clickedProject, setClickedProject } = useContext(ProjectContext)
   const [currentClickedProject, setCurrentClickedProject] = useState({});
+=======
+  let { clickedProject, setClickedProject} = useContext(ProjectContext)
+  let { allTasks, setAllTasks} = useContext(TaskContext);
+>>>>>>> 497bd1a0e1682ab6fd832e0088fdc7af44dd52cd
 
   const handleClick = async (e, project) => {
     let project1 = await getProjectItemByTitle(project.title);
     setClickedProject(project1);
-    console.log(clickedProject);
+    // console.log(clickedProject);
+    let allTasks = await getTaskItemsByProjectID(project.id);
+    setAllTasks(allTasks);
     navigate("/taskDashboard");
   }
 
@@ -54,6 +62,39 @@ export default function ProjectDashboardPage() {
 
 
   const [allUsers, setAllUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState({});
+
+  let allFetchedUsers;
+  let currentFetchedProjects;
+
+  const setRole = async (value) => {
+    // updatedUser = { 
+    //   Id: user.id,
+    //   Username: user.username,
+    //   FullName: user.fullName,
+    //   Salt: user.salt,
+    //   Hash: user.hash,
+    //   IsAdmin: value,
+    //   IsProjectManager: value,
+    //   IsSpecialist: value
+    // }
+
+    console.log(value);
+    console.log(selectedUser.username);
+
+
+    if (value == 'Admin') {
+      updateUserRole(selectedUser.username, true, false, false);
+    } else if (value == 'PM') {
+      updateUserRole(selectedUser.username, false, true, false);
+    } else if (value == 'Specialist') {
+      updateUserRole(selectedUser.username, false, false, true);
+    }
+
+    allFetchedUsers = await getAllUsers();
+    // console.log(allFetchedUsers)
+    setAllUsers(allFetchedUsers);
+  }
 
   //This is the modal for clicking edit button on task thing
   const [show2, setShow2] = useState(false);
@@ -78,8 +119,6 @@ export default function ProjectDashboardPage() {
 
   useEffect(async () => {
 
-    let allFetchedUsers;
-    let currentFetchedProjects;
     allFetchedUsers = await getAllUsers();
     // console.log(allFetchedUsers)
     setAllUsers(allFetchedUsers);
@@ -87,15 +126,15 @@ export default function ProjectDashboardPage() {
     setTimeout(async () => {
       if (userData.userItems.isSpecialist) {
         currentFetchedProjects = await getProjectItemsByAMemberUsername(userItems.username)
-        console.log("specialist")
+        // console.log("specialist")
       } else if (userData.userItems.isProjectManager) {
         currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
         console.log("pm")
       } else {
         currentFetchedProjects = await getAllProjectItems();
-        console.log("admin")
+        // console.log("admin")
       }
-      console.log(currentFetchedProjects);
+      // console.log(currentFetchedProjects);
       setCurrentProjects(currentFetchedProjects);
 
     }, 3000);
@@ -258,13 +297,16 @@ export default function ProjectDashboardPage() {
                             {/* buttons will only be shown if user isAdmin */}
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="">
+                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
                                   Delete user
                                 </Button>
                                 <Button
                                   variant="info"
                                   className=""
-                                  onClick={handleShow}
+                                  onClick={() => {
+                                    handleShow();
+                                    setSelectedUser(user);
+                                  }}
                                 >
                                   Change role
                                 </Button>
@@ -291,13 +333,16 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="">
+                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
                                   Delete user
                                 </Button>
                                 <Button
                                   variant="info"
                                   className=""
-                                  onClick={handleShow}
+                                  onClick={() => {
+                                    handleShow();
+                                    setSelectedUser(user);
+                                  }}
                                 >
                                   Change role
                                 </Button>
@@ -324,13 +369,16 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="">
+                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
                                   Delete user
                                 </Button>
                                 <Button
                                   variant="info"
                                   className=""
-                                  onClick={handleShow}
+                                  onClick={() => {
+                                    handleShow();
+                                    setSelectedUser(user);
+                                  }}
                                 >
                                   Change role
                                 </Button>
@@ -357,13 +405,16 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="">
+                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
                                   Delete user
                                 </Button>
                                 <Button
                                   variant="info"
                                   className=""
-                                  onClick={handleShow}
+                                  onClick={() => {
+                                    handleShow();
+                                    setSelectedUser(user);
+                                  }}
                                 >
                                   Change role
                                 </Button>
@@ -386,7 +437,7 @@ export default function ProjectDashboardPage() {
           </Modal.Header>
           <Modal.Body>
             {/* get full name from e.target */}
-            <h3>Staff Name</h3>
+            <h3>{selectedUser.fullName}</h3>
             <Form>
               <Form.Group>
                 <Form.Label>Update Role</Form.Label>
@@ -394,7 +445,8 @@ export default function ProjectDashboardPage() {
                   aria-label="Default select example"
                   className="mt-2"
                 // value={blogCategory}
-                // onChange={({ target: { value } }) => setBlogCategory(value)}
+                onChange={({ target: { value } }) => setRole(value)}
+                // onChange={(e) => console.log(e)}
                 >
                   <option>Select Role</option>
                   <option value="Admin">Admin</option>
