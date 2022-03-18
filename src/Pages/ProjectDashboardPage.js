@@ -31,20 +31,15 @@ export default function ProjectDashboardPage() {
   const editIcon = <FontAwesomeIcon icon={faEdit} />
   let navigate = useNavigate();
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
-<<<<<<< HEAD
   let { clickedProject, setClickedProject } = useContext(ProjectContext)
   const [currentClickedProject, setCurrentClickedProject] = useState({});
-=======
-  let { clickedProject, setClickedProject} = useContext(ProjectContext)
-  let { allTasks, setAllTasks} = useContext(TaskContext);
->>>>>>> 497bd1a0e1682ab6fd832e0088fdc7af44dd52cd
 
   const handleClick = async (e, project) => {
     let project1 = await getProjectItemByTitle(project.title);
     setClickedProject(project1);
     // console.log(clickedProject);
     let allTasks = await getTaskItemsByProjectID(project.id);
-    setAllTasks(allTasks);
+    // setAllTasks(allTasks);
     navigate("/taskDashboard");
   }
 
@@ -297,7 +292,7 @@ export default function ProjectDashboardPage() {
                             {/* buttons will only be shown if user isAdmin */}
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
+                                <Button variant="danger" className="" >
                                   Delete user
                                 </Button>
                                 <Button
@@ -333,7 +328,7 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
+                                <Button variant="danger" className="" >
                                   Delete user
                                 </Button>
                                 <Button
@@ -369,7 +364,7 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
+                                <Button variant="danger" className="" >
                                   Delete user
                                 </Button>
                                 <Button
@@ -405,7 +400,7 @@ export default function ProjectDashboardPage() {
                             <Col>{user.fullName}</Col>
                             {userData.userItems.isAdmin ? (
                               <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
+                                <Button variant="danger" className="" >
                                   Delete user
                                 </Button>
                                 <Button
