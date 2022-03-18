@@ -5,9 +5,10 @@ import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TaskContext from "../Context/TaskContext";
 
-export default function TaskComponent() {
+export default function TaskComponent({task}) {
   
   let taskData = useContext(TaskContext);
+
 
   const [show, setShow] = useState(false);
 
@@ -18,9 +19,7 @@ export default function TaskComponent() {
 
   return (
     <>
-    {
-      taskData.allTasks.map((task, idx) => {
-        return (
+
         <Card style={{ width: "100%" }} className="mt-2 mb-2">
           <Card.Body>
             <Card.Title>
@@ -57,13 +56,9 @@ export default function TaskComponent() {
                 </Button>
               </Col>
             </Row>
-            
           </Card.Body>
         </Card>
 
-        )
-      })
-    }
 
       <Modal size="lg" show={show} onHide={handleClose}>
         {/* check if user is specialist */}

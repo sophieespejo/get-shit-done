@@ -36,21 +36,38 @@ export default function TaskDashboardPage() {
             </Card>
           ) : null 
         }
-            {/* map through the tasks  */}
-            {/* {
-              taskData.allTasks.map((task, i) => {
-                return (
-                  <TaskComponent />
-                )
+        {/* map thru all tasks */}
+        {/* separate into 3 arrays, map into  */}
+            {/* <TaskComponent/> */}
+            {
+              taskData.allTasks.map((task) => {
+                console.log(task)
               })
-            } */}
-            <TaskComponent/>
+            }
+            { taskData.allTasks.filter((task) => task.status == "To do").map(todoTasks => {
+              
+              return (
+                <TaskComponent task={todoTasks}/>
+              )
+            })}
+
           </Col>
           <Col className="inProgressContainer">
             <h3 className="headerTxt mt-2">In Progress</h3>
+            { taskData.allTasks.filter((task) => task.status == "In Progress").map(inProgressTasks => {
+              
+              return (
+                <TaskComponent task={inProgressTasks}/>
+              )
+            })}
           </Col>
           <Col className="completedContainer">
             <h3 className="headerTxt mt-2">Completed</h3>
+            { taskData.allTasks.filter((task) => task.status == "Completed").map(completedTasks => {
+              return (
+                <TaskComponent task={completedTasks}/>
+              )
+            })}
           </Col>
         </Row>
       </Container>

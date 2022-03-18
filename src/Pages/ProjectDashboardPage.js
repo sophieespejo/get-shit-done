@@ -24,8 +24,8 @@ import TaskContext from "../Context/TaskContext";
 export default function ProjectDashboardPage() {
   let userData = useContext(UserContext);
   let clickedProject1 = useContext(ProjectContext);
-  console.log(userData.userItems)
-  console.log(userData.userItems.isSpecialist)
+  // console.log(userData.userItems)
+  // console.log(userData.userItems.isSpecialist)
 
   const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
   const editIcon = <FontAwesomeIcon icon={faEdit} />
@@ -37,7 +37,7 @@ export default function ProjectDashboardPage() {
   const handleClick = async (e, project) => {
     let project1 = await getProjectItemByTitle(project.title);
     setClickedProject(project1);
-    console.log(clickedProject);
+    // console.log(clickedProject);
     let allTasks = await getTaskItemsByProjectID(project.id);
     setAllTasks(allTasks);
     navigate("/taskDashboard");
@@ -69,15 +69,15 @@ export default function ProjectDashboardPage() {
     setTimeout(async () => {
       if (userData.userItems.isSpecialist) {
         currentFetchedProjects = await getProjectItemsByAMemberUsername(userItems.username)
-        console.log("specialist")
+        // console.log("specialist")
       } else if (userData.userItems.isProjectManager) {
         currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
-        console.log("pm")
+        // console.log("pm")
       } else  {
         currentFetchedProjects = await getAllProjectItems();
-        console.log("admin")
+        // console.log("admin")
       }
-      console.log(currentFetchedProjects);
+      // console.log(currentFetchedProjects);
       setCurrentProjects(currentFetchedProjects);
       
     }, 3000);
