@@ -31,15 +31,15 @@ export default function ProjectDashboardPage() {
   const editIcon = <FontAwesomeIcon icon={faEdit} />
   let navigate = useNavigate();
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
-  let { clickedProject, setClickedProject} = useContext(ProjectContext)
-  let { allTasks, setAllTasks} = useContext(TaskContext);
+  let { clickedProject, setClickedProject } = useContext(ProjectContext)
+  const [currentClickedProject, setCurrentClickedProject] = useState({});
 
   const handleClick = async (e, project) => {
     let project1 = await getProjectItemByTitle(project.title);
     setClickedProject(project1);
     // console.log(clickedProject);
     let allTasks = await getTaskItemsByProjectID(project.id);
-    setAllTasks(allTasks);
+    // setAllTasks(allTasks);
     navigate("/taskDashboard");
   }
 
@@ -108,100 +108,54 @@ export default function ProjectDashboardPage() {
     setAllUsers(allFetchedUsers);
   }
 
-  useEffect( async() => {
+  //This is the modal for clicking edit button on task thing
+  const [show2, setShow2] = useState(false);
+
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => {
+    setShow2(true);
+
+  }
+
+  const handleClick2 = async (e, project) => {
+    let project2 = await getProjectItemByTitle(project.title);
+    setClickedProject(project2);
+    console.log(clickedProject);
+    // navigate("/taskDashboard");
+    setCurrentClickedProject(project);
+    console.log('asdfasdf')
+    setShow2(true);
+  }
+
+
+
+  useEffect(async () => {
 
     allFetchedUsers = await getAllUsers();
     // console.log(allFetchedUsers)
     setAllUsers(allFetchedUsers);
-    
+
     setTimeout(async () => {
       if (userData.userItems.isSpecialist) {
         currentFetchedProjects = await getProjectItemsByAMemberUsername(userItems.username)
         // console.log("specialist")
       } else if (userData.userItems.isProjectManager) {
         currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
-        // console.log("pm")
-      } else  {
+        console.log("pm")
+      } else {
         currentFetchedProjects = await getAllProjectItems();
         // console.log("admin")
       }
       // console.log(currentFetchedProjects);
       setCurrentProjects(currentFetchedProjects);
-      
+
     }, 3000);
-      
+
   }, [userData])
 
 
-  //Delete a user
-  const handleDelete = async (user) => {
-    user.IsDeleted = !user.IsDeleted;
-    let result = await updateUser(user);
-    if(result){
-      //setBlogItems([]);
-      let allUpdatedUsers = await getAllUsers();
-      console.log(allUpdatedUsers);
-      setAllUsers(allUpdatedUsers);
-      }else{
-      alert(`User not Deleted`);
-      }
-  }
 
-  const [blogItems, setBlogItems] = useState([
-    {
-      Id: 1,
-      isPublished: true,
-      isArchived: true,
-      isProjectManager: true,
-      isAdmin: false,
-      Title: "Growing Tomatos",
-      Publisher: "Walaa AlSalmi",
-      Date: "01-12-2022",
-      Text: "Devote a prime, sunny spot to growing tomatoes. Tomatoes need at least 6 to 8 hours of sun to bring out their best flavors. You will need to stake, trellis, or cage most tomato plants to keep them off the ground. Decide on a support plan before you set out your plants, then add that support directly after planting. You will need to stake, trellis, or cage most tomato plants to keep them off the ground. Decide on a support plan before you set out your plants.",
-      Image:
-        "https://www.almanac.com/sites/default/files/styles/landscape/public/image_nodes/tomatoes_helios4eos_gettyimages-edit.jpeg?itok=m9c3T-XV",
-    },
-
-    {
-      Id: 2,
-      isArchived: true,
-      isPublished: true,
-      isProjectManager: true,
-      isAdmin: false,
-      Title: "Growing Peppers",
-      Date: "01-06-2022",
-      Publisher: "Tom Finland",
-      Text: "Set pepper plant seedlings out after the last spring frost. They grow well in raised beds, containers, and in-ground gardens. Plant them 18 to 24 inches apart in a sunny, well-drained spot. Pepper plants need at least 6-8 hours of sunlight per day. They grow well in raised beds, containers, and in-ground gardens. Plant them 18 to 24 inches apart in a sunny, well-drained spot. Pepper plants need at least 6-8 hours of sunlight per day.",
-      Image:
-        "https://www.farmersalmanac.com/wp-content/uploads/2020/11/Planting-Guide-Bell-Peppers-A105431708.jpg",
-    },
-    {
-      Id: 3,
-      isArchived: true,
-      isPublished: true,
-      isProjectManager: false,
-      isAdmin: true,
-      Title: "Growing Eggplants",
-      Publisher: "Sam Bilton",
-      Date: "12-24-2021",
-      Text: "Start eggplant seeds indoors up to 10 weeks before the last frost date. Plant the seeds 1/4inch deep, water after planting and cover loosely with plastic to retain moisture. Transplant the seedlings to the garden when soil temperatures reach 60 degrees. Transplant the seedlings to the garden when soil temperatures reach 60 degrees.",
-      Image:
-        "https://cleangreensimple.com/wp-content/uploads/2020/05/growing-eggplant.jpg",
-    },
-    {
-      Id: 4,
-      isArchived: true,
-      isPublished: true,
-      isProjectManager: false,
-      isAdmin: true,
-      Title: "Growing Zucchinis",
-      Publisher: "Tina Freedman",
-      Date: "12-15-2021",
-      Text: "Zucchini needs full sun (at least 6 to 8 hours) and consistently moist soil that is high in organic matter. Some zucchini varieties are vining types that require a trellis or a lot of room to sprawl. There are also bush types suitable for container gardening and small space gardening. There are also bush types suitable for container gardening and small space gardening.",
-      Image:
-        "https://greenhouseemporium.com/wp-content/uploads/2020/02/How_to_Grow_Zucchini_2.jpg",
-    },
-  ]);
+  //Function to show model when edit button is clicked
 
   const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
   return (
@@ -218,19 +172,72 @@ export default function ProjectDashboardPage() {
           }
           { currentProjects.map((project, idx) => (
             <div>
-              <Card border="danger" style={{ width: '15rem', height: '15rem'}} className="shadow">
-                  <Card.Body >
-                      <Card.Title className="d-flex justify-content-between">{project.title} <Button className="editBtn">{editIcon}</Button></Card.Title>
-                      <Card.Text>
-                      <p>Due Date: <span>{project.dueDate}</span></p>
-                      <p>Priority: <span>whateverr</span></p>
-                      <p>Status: <span>whateverrr</span></p>
-                      </Card.Text>
-                      <Button className="editBtn" 
-                      // onClick={() => navigate("/taskDashboard")}
-                      onClick = {(e) => handleClick(e, project)}
-                      >View Project</Button>
-                  </Card.Body>
+              <Card border="danger" style={{ width: '15rem', height: '15rem' }} className="shadow">
+                <Card.Body >
+                  <Card.Title className="d-flex justify-content-between">{project.title}
+                    <Button className="editBtn" onClick={(e) => handleClick2(e, project)}>{editIcon}</Button>
+
+                    <Modal show={show2} onHide={handleClose2}>
+
+                      <Modal.Header closeButton>
+                        <Modal.Title>Add a new user</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Form>
+                          <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>{currentClickedProject.title}</Form.Label>
+                            <Form.Control type="email" placeholder="Enter full name" />
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="text" placeholder="Username" />
+                          </Form.Group>
+                          <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" placeholder="Password" />
+                          </Form.Group>
+                          <Form.Group>
+                            <Form.Label>Add a Role</Form.Label>
+                            <Form.Select
+                              aria-label="Default select example"
+                              className="mt-2"
+                            // value={blogCategory}
+                            // onChange={({ target: { value } }) => setBlogCategory(value)}
+                            >
+                              <option>Select Role</option>
+                              <option value="Admin">Admin</option>
+                              <option value="PM">Project Manager</option>
+                              <option value="Specialist">Specialist</option>
+                            </Form.Select>
+                          </Form.Group>
+                        </Form>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose1}>
+                          Close
+                        </Button>
+                        <Button variant="primary" onClick={handleClose1}>
+                          Save Changes
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+
+
+                  </Card.Title>
+                  <Card.Text>
+                    <p>Due Date: <span>{project.dueDate}</span></p>
+                    <p>Priority: <span>whateverr</span></p>
+                    <p>Status: <span>whateverrr</span></p>
+                  </Card.Text>
+                  {
+            userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
+              <Button className="editBtn"
+                // onClick={() => navigate("/taskDashboard")}
+                onClick={(e) => handleClick(e, project)}
+              >View Project</Button>
+            ) : null
+          }
+                </Card.Body>
               </Card>
             </div>
           ))}
