@@ -110,3 +110,7 @@ body{
   background-color: rgba(145, 140, 140, 0.523);
   border-radius: 15px;
 }
+
+.white{
+  color: white !important;
+}

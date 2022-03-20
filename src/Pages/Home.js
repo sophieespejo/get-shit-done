@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import {Navbar, Container, Nav, Row, Col } from "react-bootstrap";
 import "../App.css";
+import Personnel from './Personnel';
 
 function Home() {
   return (
@@ -27,15 +28,19 @@ function Home() {
               <Navbar.Toggle />
               <Navbar.Collapse className="justify-content-center">
                 <Nav>
-                  <Nav.Link as={Link} to="/projectDashboard">
+                  <Nav.Link as={Link} to="/projectDashboard" className='white'>
                     Project Dashboard{" "}
                   </Nav.Link>
 
-                  <Nav.Link as={Link} to="../">
+                  <Nav.Link as={Link} to="/personnel" className='white'>
+                    Personnel{" "}
+                  </Nav.Link>
+
+                  <Nav.Link as={Link} to="../" className='white'>
                     {" "}
                     Login/Create an Account{" "}
                   </Nav.Link>
-                  <Nav.Link as={Link} to="/">
+                  <Nav.Link as={Link} to="/" className='white'>
                     Sign Out 
                   </Nav.Link>
                 </Nav>
@@ -50,6 +55,7 @@ function Home() {
           <Route path="/createaccount" element={<CreateAccount />} />
           <Route path="/Home" element={<Home/>} />
           <Route path="/taskDashboard" element={<TaskDashboardPage />} />
+          <Route path="/personnel" element={<Personnel/>} />
         </Routes>
       </BrowserRouter>
     </>
