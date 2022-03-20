@@ -161,12 +161,12 @@ export default function ProjectDashboardPage() {
   return (
     <>
       <Container className="mt-5">
-        <h4 className="headerTxt">Your Current Projects: {userItems.id} </h4>
+        <h4 className="headerTxt">Your Current Projects: </h4>
         <Row xs={2} lg={4} className="g-3">
           {/* Map thru current projects here */}
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
           {
-            userData.userItems.isAdmin ?  (
+            userData.userItems.isAdmin || userData.userItems.isProjectManager ?  (
                 <NewProjectComponent />
             ) : null 
           }
@@ -226,15 +226,18 @@ export default function ProjectDashboardPage() {
                   </Card.Title>
                   <Card.Text>
                     <p>Due Date: <span>{project.dueDate}</span></p>
-                    <p>Priority: <span>whateverr</span></p>
-                    <p>Status: <span>whateverrr</span></p>
+                    <p>{project.description}</p>
+                    <p>Status: <span>*figure out logic*</span></p>
                   </Card.Text>
                   {
             userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
-              <Button className="editBtn"
-                // onClick={() => navigate("/taskDashboard")}
-                onClick={(e) => handleClick(e, project)}
-              >View Project</Button>
+              <Row>
+                <Button className="editBtn"
+                  // onClick={() => navigate("/taskDashboard")}
+                  onClick={(e) => handleClick(e, project)}
+                >View</Button>
+                <Button variant="info">Archive</Button>
+              </Row>
             ) : null
           }
                 </Card.Body>
