@@ -50,25 +50,8 @@ export default function ProjectDashboardPage() {
 
   //for admin addUser modal
   const [show1, setShow1] = useState(false);
+  const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
-
-
-  const [fullname, setFullname] = useState("");
-  const [Username, setUserName] = useState("");
-  const [Password, setPassword] = useState("");
-
-  const handleClose1 = async () => {
-    let userData = {
-      Id: 0,
-      Username: Username,
-      FullName: fullname,
-      Password: Password,
-    };
-    setShow1(false)
-    let result = await createAccount(userData);
-    console.log(result);
-  };
-
 
   const [currentProjects, setCurrentProjects] = useState([]);
 
@@ -77,7 +60,6 @@ export default function ProjectDashboardPage() {
   const [selectedUser, setSelectedUser] = useState({});
 
   let allFetchedUsers;
-  let currentFetchedProjects;
 
   const setRole = async (value) => {
     // updatedUser = { 
@@ -136,6 +118,7 @@ export default function ProjectDashboardPage() {
     setAllUsers(allFetchedUsers);
 
     setTimeout(async () => {
+      let currentFetchedProjects;
       if (userData.userItems.isSpecialist) {
         currentFetchedProjects = await getProjectItemsByAMemberId(userItems.id)
         // console.log("specialist")
@@ -151,26 +134,26 @@ export default function ProjectDashboardPage() {
 
     }, 3000);
 
-  }, [userData])
+  }, [])
 
 
 
   //Function to show model when edit button is clicked
-
+  
   const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
   return (
     <>
       <Container className="mt-5">
-        <h4 className="headerTxt">Your Current Projects: </h4>
+        <h4 className="headerTxt">Your Current Projects: {userItems.id} </h4>
         <Row xs={2} lg={4} className="g-3">
+          {
+            userData.userItems.isAdmin ? (
+              <NewProjectComponent />
+            ) : null
+          }
           {/* Map thru current projects here */}
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
-          {
-            userData.userItems.isAdmin || userData.userItems.isProjectManager ?  (
-                <NewProjectComponent />
-            ) : null 
-          }
-          { currentProjects.map((project, idx) => (
+          {currentProjects.map((project, idx) => (
             <div>
               <Card border="danger" style={{ width: '15rem', height: '15rem' }} className="shadow">
                 <Card.Body >
@@ -226,17 +209,21 @@ export default function ProjectDashboardPage() {
                   </Card.Title>
                   <Card.Text>
                     <p>Due Date: <span>{project.dueDate}</span></p>
-                    <p>{project.description}</p>
-                    <p>Status: <span>*figure out logic*</span></p>
+                    <p>Priority: <span>whateverr</span></p>
+                    <p>Status: <span>whateverrr</span></p>
                   </Card.Text>
                   {
             userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
               <Row>
-                <Button className="editBtn"
-                  // onClick={() => navigate("/taskDashboard")}
-                  onClick={(e) => handleClick(e, project)}
-                >View</Button>
-                <Button variant="info">Archive</Button>
+                <Col>
+                  <Button className="editBtn"
+                    // onClick={() => navigate("/taskDashboard")}
+                    onClick={(e) => handleClick(e, project)}
+                  >View</Button>
+                </Col>
+                <Col>
+                  <Button variant="info">Archive</Button>
+                </Col>
               </Row>
             ) : null
           }
@@ -244,7 +231,6 @@ export default function ProjectDashboardPage() {
               </Card>
             </div>
           ))}
-          <div className="mb-4"></div>
         </Row>
       </Container>
       <Container>

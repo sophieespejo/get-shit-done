@@ -62,6 +62,7 @@ function Personnel() {
     let currentFetchedProjects;
   
     const setRole = async (value) => {
+      let result1;
       // updatedUser = { 
       //   Id: user.id,
       //   Username: user.username,
@@ -78,41 +79,27 @@ function Personnel() {
   
   
       if (value == 'Admin') {
-        updateUserRole(selectedUser.username, true, false, false);
+         result1 = await updateUserRole(selectedUser.username, true, false, false);
       } else if (value == 'PM') {
-        updateUserRole(selectedUser.username, false, true, false);
+         result1 = await updateUserRole(selectedUser.username, false, true, false);
       } else if (value == 'Specialist') {
-        updateUserRole(selectedUser.username, false, false, true);
+         result1 = await updateUserRole(selectedUser.username, false, false, true);
       }
-  
-      allFetchedUsers = await getAllUsers();
+      if (result1){
+        allFetchedUsers = await getAllUsers();
+      }else{
+        alert("error")
+      }
       // console.log(allFetchedUsers)
-      setAllUsers(allFetchedUsers);
+      setAllUsers([...allFetchedUsers]);
     }
   
     useEffect( async() => {
   
       allFetchedUsers = await getAllUsers();
-      // console.log(allFetchedUsers)
-      setAllUsers(allFetchedUsers);
-      
-      setTimeout(async () => {
-        if (userData.userItems.isSpecialist) {
-          currentFetchedProjects = await getProjectItemsByAMemberUsername(userItems.username)
-          // console.log("specialist")
-        } else if (userData.userItems.isProjectManager) {
-          currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
-          // console.log("pm")
-        } else  {
-          currentFetchedProjects = await getAllProjectItems();
-          // console.log("admin")
-        }
-        // console.log(currentFetchedProjects);
-        setCurrentProjects(currentFetchedProjects);
+      setAllUsers([...allFetchedUsers]);
         
-      }, 3000);
-        
-    }, [userData])
+    }, [])
   
   
     //Delete a user
@@ -134,11 +121,11 @@ function Personnel() {
   {/* see all users and roles */}
   <Container>
     <Row className="mt-5 mb-5">
-      <Col>
+      <Col className="mb-2">
         <h3>All Staff</h3>
       </Col>
       {/* only have this button show up if user isAdmin */}
-      <Col className="d-flex justify-content-end">
+      <Col className="d-flex justify-content-end mb-2">
          {
           userData.userItems.isAdmin ? (
              <Button onClick={handleShow1}>Add a new user {addUserIcon} </Button>
