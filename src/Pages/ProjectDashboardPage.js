@@ -15,7 +15,7 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID, createAccount } from "../Services/DataService";
+import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID, createAccount, getProjectItemsByAMemberId } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
@@ -50,25 +50,8 @@ export default function ProjectDashboardPage() {
 
   //for admin addUser modal
   const [show1, setShow1] = useState(false);
+  const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
-
-
-  const [fullname, setFullname] = useState("");
-  const [Username, setUserName] = useState("");
-  const [Password, setPassword] = useState("");
-
-  const handleClose1 = async () => {
-    let userData = {
-      Id: 0,
-      Username: Username,
-      FullName: fullname,
-      Password: Password,
-    };
-    setShow1(false)
-    let result = await createAccount(userData);
-    console.log(result);
-  };
-
 
   const [currentProjects, setCurrentProjects] = useState([]);
 
@@ -77,7 +60,6 @@ export default function ProjectDashboardPage() {
   const [selectedUser, setSelectedUser] = useState({});
 
   let allFetchedUsers;
-  let currentFetchedProjects;
 
   const setRole = async (value) => {
     // updatedUser = { 
@@ -136,8 +118,9 @@ export default function ProjectDashboardPage() {
     setAllUsers(allFetchedUsers);
 
     setTimeout(async () => {
+      let currentFetchedProjects;
       if (userData.userItems.isSpecialist) {
-        currentFetchedProjects = await getProjectItemsByAMemberUsername(userItems.username)
+        currentFetchedProjects = await getProjectItemsByAMemberId(userItems.id)
         // console.log("specialist")
       } else if (userData.userItems.isProjectManager) {
         currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
@@ -156,21 +139,21 @@ export default function ProjectDashboardPage() {
 
 
   //Function to show model when edit button is clicked
-
+  
   const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
   return (
     <>
       <Container className="mt-5">
         <h4 className="headerTxt">Your Current Projects: {userItems.id} </h4>
         <Row xs={2} lg={4} className="g-3">
+          {
+            userData.userItems.isAdmin ? (
+              <NewProjectComponent />
+            ) : null
+          }
           {/* Map thru current projects here */}
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
-          {
-            userData.userItems.isAdmin ?  (
-                <NewProjectComponent />
-            ) : null 
-          }
-          { currentProjects.map((project, idx) => (
+          {currentProjects.map((project, idx) => (
             <div>
               <Card border="danger" style={{ width: '15rem', height: '15rem' }} className="shadow">
                 <Card.Body >
@@ -231,19 +214,62 @@ export default function ProjectDashboardPage() {
                   </Card.Text>
                   {
             userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
-              <Button className="editBtn"
-                // onClick={() => navigate("/taskDashboard")}
-                onClick={(e) => handleClick(e, project)}
-              >View Project</Button>
+              <Row>
+                <Col>
+                  <Button className="editBtn"
+                    // onClick={() => navigate("/taskDashboard")}
+                    onClick={(e) => handleClick(e, project)}
+                  >View</Button>
+                </Col>
+                <Col>
+                  <Button variant="info">Archive</Button>
+                </Col>
+              </Row>
             ) : null
           }
                 </Card.Body>
               </Card>
             </div>
           ))}
-          <div className="mb-4"></div>
         </Row>
       </Container>
+      <Container>
+    <Row className="mt-5">
+      {/* Map thru archived projects here */}
+      {/* should this be viewable to specialists or just admin and PM? */}
+      <Accordion defaultActiveKey="1">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>Archived Projects{viewIcon}</Accordion.Header>
+          <Accordion.Body>
+            <ListGroup>
+              {currentProjects.map((item, i) => {
+                return (
+                  <>
+                    {item.isArchived ? (
+                      <ListGroup.Item key={i} className="d-flex">
+                        <Col>{item.Title}</Col>
+                        <Col className=" d-flex justify-content-end">
+                          <Button
+                            className="editBtn"
+                            // onClick={() => navigate("/taskDashboard")}
+                            onClick = {() => handleClick(item.Title)}
+                          >
+                            View Project {viewIcon}
+                          </Button>
+                        </Col>
+                      </ListGroup.Item>
+                    ) : null}
+                  </>
+                );
+              })}
+            </ListGroup>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    </Row>
+  </Container>
+  <div className="mb-5"></div>
+
     </>
   );
 }

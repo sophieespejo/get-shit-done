@@ -17,7 +17,6 @@ export default function NewProjectComponent() {
     const [projectTitle, setProjectTitle] = useState("");
     const [projectDescription, setProjectDescription] = useState("");
     const [projectDueDate, setProjectDueDate] = useState("");
-    const [projectMembersId, setProjectMembersId] = useState("");
     // const [projectMembersUsername, setProjectMembersUsername] = useState("");
 
     let projectMembersUsername = [];
@@ -27,6 +26,15 @@ export default function NewProjectComponent() {
       projectMembersUsername.push(username);
       console.log(projectMembersUsername);
       stringOfMemberUsernames = projectMembersUsername.toString();
+    }
+
+    let projectMembersId = [];
+    let stringOfMemberIds = "";
+
+    const addUserToArrayId = (id) => {
+      projectMembersId.push(id);
+      console.log(projectMembersId);
+      stringOfMemberIds = projectMembersId.toString();
     }
 
     let newProject;
@@ -44,7 +52,7 @@ export default function NewProjectComponent() {
         DateCreated: new Date(),
         DueDate: projectDueDate,
         Status: "",
-        MembersId: projectMembersId,
+        MembersId: stringOfMemberIds,
         MembersUsername: stringOfMemberUsernames,
         IsDeleted: false,
         IsArchived: false
@@ -67,7 +75,7 @@ export default function NewProjectComponent() {
 
   return (
     <div>
-         <Card style={{ width: '15rem', height: '15rem'}} className="shadow">
+         <Card style={{ width: '15rem', height: '15rem'}} className="shadow pointer" onClick={handleShow}>
             <Card.Body className="d-flex justify-content-center">
                 <Button className="addProjectBtn" onClick={handleShow}>
                     {plusIcon}
@@ -98,7 +106,7 @@ export default function NewProjectComponent() {
               {
                 allSpecialist.map((user, idx) => {
                   return (
-                    <ListGroup.Item action as="li" onClick={() => addUserToArray(user.username)}>
+                    <ListGroup.Item action as="li" onClick={() => addUserToArrayId(user.id)}>
                       {user.fullName}
                     </ListGroup.Item>
                   )
