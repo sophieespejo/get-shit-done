@@ -77,7 +77,6 @@ export default function ProjectDashboardPage() {
   const [selectedUser, setSelectedUser] = useState({});
 
   let allFetchedUsers;
-  let currentFetchedProjects;
 
   const setRole = async (value) => {
     // updatedUser = { 
@@ -136,6 +135,7 @@ export default function ProjectDashboardPage() {
     setAllUsers(allFetchedUsers);
 
     setTimeout(async () => {
+      let currentFetchedProjects;
       if (userData.userItems.isSpecialist) {
         currentFetchedProjects = await getProjectItemsByAMemberUsername(userItems.username)
         // console.log("specialist")
@@ -151,7 +151,7 @@ export default function ProjectDashboardPage() {
 
     }, 3000);
 
-  }, [userData])
+  }, [])
 
 
 
@@ -232,11 +232,15 @@ export default function ProjectDashboardPage() {
                   {
             userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
               <Row>
-                <Button className="editBtn"
-                  // onClick={() => navigate("/taskDashboard")}
-                  onClick={(e) => handleClick(e, project)}
-                >View</Button>
-                <Button variant="info">Archive</Button>
+                <Col>
+                  <Button className="editBtn"
+                    // onClick={() => navigate("/taskDashboard")}
+                    onClick={(e) => handleClick(e, project)}
+                  >View</Button>
+                </Col>
+                <Col>
+                  <Button variant="info">Archive</Button>
+                </Col>
               </Row>
             ) : null
           }
