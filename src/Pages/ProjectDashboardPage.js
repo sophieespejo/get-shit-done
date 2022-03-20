@@ -15,7 +15,7 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID } from "../Services/DataService";
+import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID, createAccount } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
@@ -50,8 +50,25 @@ export default function ProjectDashboardPage() {
 
   //for admin addUser modal
   const [show1, setShow1] = useState(false);
-  const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+
+
+  const [fullname, setFullname] = useState("");
+  const [Username, setUserName] = useState("");
+  const [Password, setPassword] = useState("");
+
+  const handleClose1 = async () => {
+    let userData = {
+      Id: 0,
+      Username: Username,
+      FullName: fullname,
+      Password: Password,
+    };
+    setShow1(false)
+    let result = await createAccount(userData);
+    console.log(result);
+  };
+
 
   const [currentProjects, setCurrentProjects] = useState([]);
 
@@ -194,6 +211,11 @@ export default function ProjectDashboardPage() {
         <Row xs={2} lg={4} className="g-3">
           {/* Map thru current projects here */}
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
+          {
+            userData.userItems.isAdmin ?  (
+                <NewProjectComponent />
+            ) : null 
+          }
           { currentProjects.map((project, idx) => (
             <div>
               <Card border="danger" style={{ width: '15rem', height: '15rem'}} className="shadow">
@@ -212,292 +234,8 @@ export default function ProjectDashboardPage() {
               </Card>
             </div>
           ))}
-        {
-          userData.userItems.isAdmin ?  (
-              <NewProjectComponent />
-          ) : null 
-        }
+          <div className="mb-4"></div>
         </Row>
-      </Container>
-      <Container>
-        <Row className="mt-5">
-          {/* Map thru archived projects here */}
-          {/* should this be viewable to specialists or just admin and PM? */}
-          <Accordion defaultActiveKey="1">
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Archived Projects{viewIcon}</Accordion.Header>
-              <Accordion.Body>
-                <ListGroup>
-                  {currentProjects.map((item, i) => {
-                    return (
-                      <>
-                        {item.isArchived ? (
-                          <ListGroup.Item key={i} className="d-flex">
-                            <Col>{item.Title}</Col>
-                            <Col className=" d-flex justify-content-end">
-                              <Button
-                                className="editBtn"
-                                // onClick={() => navigate("/taskDashboard")}
-                                onClick = {() => handleClick(item.Title)}
-                              >
-                                View Project {viewIcon}
-                              </Button>
-                            </Col>
-                          </ListGroup.Item>
-                        ) : null}
-                      </>
-                    );
-                  })}
-                </ListGroup>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-        </Row>
-      </Container>
-
-      {/* see all users and roles */}
-      <Container>
-        <Row className="mt-5 mb-5">
-          <Col>
-            <h3>All Staff</h3>
-          </Col>
-          {/* only have this button show up if user isAdmin */}
-          <Col className="d-flex justify-content-end">
-             {
-              userData.userItems.isAdmin ? (
-                 <Button onClick={handleShow1}>Add a new user {addUserIcon} </Button>
-              ) : null
-            }
-          </Col>
-          {/* Map thru archived projects here */}
-          <Accordion defaultActiveKey="1">
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Admin {viewIcon}</Accordion.Header>
-              <Accordion.Body>
-                <ListGroup>
-                  {/* map thru all users */}
-                  {allUsers.map((user, i) => {
-                    return (
-                      <>
-                        {user.isAdmin ? (
-                          <ListGroup.Item key={i} className="d-flex">
-                            <Col>{user.fullName}</Col>
-                            {/* buttons will only be shown if user isAdmin */}
-                            {userData.userItems.isAdmin  ? (
-                              <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
-                                  Delete user
-                                </Button>
-                                <Button
-                                  variant="info"
-                                  className=""
-                                  onClick={() => {
-                                    handleShow();
-                                    setSelectedUser(user);
-                                  }}
-                                >
-                                  Change role
-                                </Button>
-                              </Col>
-                            ) : null}
-                          </ListGroup.Item>
-                        ) : null}
-                      </>
-                    );
-                  })}
-                </ListGroup>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="3">
-              <Accordion.Header>Project Managers</Accordion.Header>
-              <Accordion.Body>
-                <ListGroup>
-                  {/* map thru all users */}
-                  {allUsers.map((user, i) => {
-                    return (
-                      <>
-                        {user.isProjectManager ? (
-                          <ListGroup.Item key={i} className="d-flex">
-                            <Col>{user.fullName}</Col>
-                            {userData.userItems.isAdmin ? (
-                              <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
-                                  Delete user
-                                </Button>
-                                <Button
-                                  variant="info"
-                                  className=""
-                                  onClick={() => {
-                                    handleShow();
-                                    setSelectedUser(user);
-                                  }}
-                                >
-                                  Change role
-                                </Button>
-                              </Col>
-                            ) : null}
-                          </ListGroup.Item>
-                        ) : null}
-                      </>
-                    );
-                  })}
-                </ListGroup>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="2">
-              <Accordion.Header>Specialists</Accordion.Header>
-              <Accordion.Body>
-                <ListGroup>
-                  {/* map thru all users */}
-                  {allUsers.map((user, i) => {
-                    return (
-                      <>
-                        {user.isSpecialist ? (
-                          <ListGroup.Item key={i} className="d-flex">
-                            <Col>{user.fullName}</Col>
-                            {userData.userItems.isAdmin  ? (
-                              <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
-                                  Delete user
-                                </Button>
-                                <Button
-                                  variant="info"
-                                  className=""
-                                  onClick={() => {
-                                    handleShow();
-                                    setSelectedUser(user);
-                                  }}
-                                >
-                                  Change role
-                                </Button>
-                              </Col>
-                            ) : null}
-                          </ListGroup.Item>
-                        ) : null}
-                      </>
-                    );
-                  })}
-                </ListGroup>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="4">
-              <Accordion.Header>Staff With Roles Not Assigned</Accordion.Header>
-              <Accordion.Body>
-                <ListGroup>
-                  {/* map thru all users */}
-                  {allUsers.map((user, i) => {
-                    return (
-                      <>
-                        {!user.isSpecialist && !user.isProjectManager && !user.isAdmin ? (
-                          <ListGroup.Item key={i} className="d-flex">
-                            <Col>{user.fullName}</Col>
-                            {userData.userItems.isAdmin  ? (
-                              <Col className=" d-flex justify-content-end">
-                                <Button variant="danger" className="" onClick={() => handleDelete(user)}>
-                                  Delete user
-                                </Button>
-                                <Button
-                                  variant="info"
-                                  className=""
-                                  onClick={() => {
-                                    handleShow();
-                                    setSelectedUser(user);
-                                  }}
-                                >
-                                  Change role
-                                </Button>
-                              </Col>
-                            ) : null}
-                          </ListGroup.Item>
-                        ) : null}
-                      </>
-                    );
-                  })}
-                </ListGroup>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-        </Row>
-
-        <Modal show={show} onHide={handleClose} animation={false}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit User</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {/* get full name from e.target */}
-            <h3>{selectedUser.fullName}</h3>
-            <Form>
-              <Form.Group>
-                <Form.Label>Update Role</Form.Label>
-                <Form.Select
-                  aria-label="Default select example"
-                  className="mt-2"
-                // value={blogCategory}
-                onChange={({ target: { value } }) => setRole(value)}
-                // onChange={(e) => console.log(e)}
-                >
-                  <option>Select Role</option>
-                  <option value="Admin">Admin</option>
-                  <option value="PM">Project Manager</option>
-                  <option value="Specialist">Specialist</option>
-                </Form.Select>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            {/* tie this button to function that will update user role */}
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal show={show1} onHide={handleClose1}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add a new user</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Full Name</Form.Label>
-                <Form.Control type="email" placeholder="Enter full name" />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Username" />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Add a Role</Form.Label>
-                <Form.Select
-                  aria-label="Default select example"
-                  className="mt-2"
-                // value={blogCategory}
-                // onChange={({ target: { value } }) => setBlogCategory(value)}
-                >
-                  <option>Select Role</option>
-                  <option value="Admin">Admin</option>
-                  <option value="PM">Project Manager</option>
-                  <option value="Specialist">Specialist</option>
-                </Form.Select>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose1}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose1}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </Container>
     </>
   );
