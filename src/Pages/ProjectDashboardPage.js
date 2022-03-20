@@ -15,7 +15,7 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID, createAccount } from "../Services/DataService";
+import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
@@ -50,25 +50,8 @@ export default function ProjectDashboardPage() {
 
   //for admin addUser modal
   const [show1, setShow1] = useState(false);
+  const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
-
-
-  const [fullname, setFullname] = useState("");
-  const [Username, setUserName] = useState("");
-  const [Password, setPassword] = useState("");
-
-  const handleClose1 = async () => {
-    let userData = {
-      Id: 0,
-      Username: Username,
-      FullName: fullname,
-      Password: Password,
-    };
-    setShow1(false)
-    let result = await createAccount(userData);
-    console.log(result);
-  };
-
 
   const [currentProjects, setCurrentProjects] = useState([]);
 
@@ -156,21 +139,21 @@ export default function ProjectDashboardPage() {
 
 
   //Function to show model when edit button is clicked
-
+  
   const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
   return (
     <>
       <Container className="mt-5">
-        <h4 className="headerTxt">Your Current Projects: </h4>
+        <h4 className="headerTxt">Your Current Projects: {userItems.id} </h4>
         <Row xs={2} lg={4} className="g-3">
+          {
+            userData.userItems.isAdmin ? (
+              <NewProjectComponent />
+            ) : null
+          }
           {/* Map thru current projects here */}
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
-          {
-            userData.userItems.isAdmin || userData.userItems.isProjectManager ?  (
-                <NewProjectComponent />
-            ) : null 
-          }
-          { currentProjects.map((project, idx) => (
+          {currentProjects.map((project, idx) => (
             <div>
               <Card border="danger" style={{ width: '15rem', height: '15rem' }} className="shadow">
                 <Card.Body >
@@ -226,8 +209,8 @@ export default function ProjectDashboardPage() {
                   </Card.Title>
                   <Card.Text>
                     <p>Due Date: <span>{project.dueDate}</span></p>
-                    <p>{project.description}</p>
-                    <p>Status: <span>*figure out logic*</span></p>
+                    <p>Priority: <span>whateverr</span></p>
+                    <p>Status: <span>whateverrr</span></p>
                   </Card.Text>
                   {
             userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
@@ -248,7 +231,6 @@ export default function ProjectDashboardPage() {
               </Card>
             </div>
           ))}
-          <div className="mb-4"></div>
         </Row>
       </Container>
       <Container>
