@@ -54,6 +54,8 @@ function Personnel() {
       setShow1(false)
       let result = await createAccount(userData);
       console.log(result);
+      allFetchedUsers = await getAllUsers();
+      setAllUsers([...allFetchedUsers]);
     };
 
     const [currentProjects, setCurrentProjects] = useState([]);
