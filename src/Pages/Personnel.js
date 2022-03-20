@@ -131,42 +131,6 @@ function Personnel() {
   
   return (
       <>
-    <Container>
-    <Row className="mt-5">
-      {/* Map thru archived projects here */}
-      {/* should this be viewable to specialists or just admin and PM? */}
-      <Accordion defaultActiveKey="1">
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>Archived Projects{viewIcon}</Accordion.Header>
-          <Accordion.Body>
-            <ListGroup>
-              {currentProjects.map((item, i) => {
-                return (
-                  <>
-                    {item.isArchived ? (
-                      <ListGroup.Item key={i} className="d-flex">
-                        <Col>{item.Title}</Col>
-                        <Col className=" d-flex justify-content-end">
-                          <Button
-                            className="editBtn"
-                            // onClick={() => navigate("/taskDashboard")}
-                            onClick = {() => handleClick(item.Title)}
-                          >
-                            View Project {viewIcon}
-                          </Button>
-                        </Col>
-                      </ListGroup.Item>
-                    ) : null}
-                  </>
-                );
-              })}
-            </ListGroup>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    </Row>
-  </Container>
-
   {/* see all users and roles */}
   <Container>
     <Row className="mt-5 mb-5">

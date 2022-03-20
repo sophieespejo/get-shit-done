@@ -114,3 +114,7 @@ body{
 .white{
   color: white !important;
 }
+
+.pointer{
+  cursor: pointer;
+}
