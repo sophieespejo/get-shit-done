@@ -66,7 +66,7 @@ export default function NewProjectComponent() {
 
   return (
     <div>
-         <Card style={{ width: '15rem', height: '15rem'}} className="shadow">
+         <Card style={{ width: '15rem', height: '15rem'}} className="shadow pointer" onClick={handleShow}>
             <Card.Body className="d-flex justify-content-center">
                 <Button className="addProjectBtn" onClick={handleShow}>
                     {plusIcon}
