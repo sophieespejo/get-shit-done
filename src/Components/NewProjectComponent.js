@@ -52,6 +52,7 @@ export default function NewProjectComponent() {
 
       AddProjectItem(newProject);
       console.log(getAllProjectItems());
+      handleClose();
     }
 
     useEffect(async () => {

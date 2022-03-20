@@ -151,7 +151,7 @@ export default function ProjectDashboardPage() {
 
     }, 3000);
 
-  }, [userData])
+  }, [currentProjects, setCurrentProjects])
 
 
 
