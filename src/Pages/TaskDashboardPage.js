@@ -27,7 +27,7 @@ import {
 export default function TaskDashboardPage() {
     let navigate = useNavigate();
   let projectData = useContext(ProjectContext);
-  console.log(projectData);
+  //console.log(projectData);
   let taskData = useContext(TaskContext);
   let { allTasks, setAllTasks, statusBar, setStatusBar } = useContext(TaskContext);
   let {
@@ -56,7 +56,18 @@ export default function TaskDashboardPage() {
   //for the view project modal
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false);
-  const handleShow1 = () => setShow1(true);
+
+
+  const [taskSpecialist, setTaskSpecialist] = useState([]);
+  let uniqueSet = [];
+  const handleShow1 = () => {
+    let taskArr = taskData.allTasks.map((task) => task.assignees);
+    let temp = [];
+    temp = taskArr.toString().split(",");
+    uniqueSet = [... new Set(temp)];
+    setTaskSpecialist(uniqueSet);
+      setShow1(true);
+  }
 
   const [allSpecialist, setAllSpecialist] = useState([]);
 
@@ -73,7 +84,7 @@ export default function TaskDashboardPage() {
   const addUserToArrayId = (e, id, username) => {
     taskMembersId.push(id);
     taskMembersUsernames.push(username);
-    console.log(taskMembersId);
+    //console.log(taskMembersId);
     stringOfMemberIds = taskMembersId.toString();
     stringOfMemberUsernames = taskMembersUsernames.toString();
     e.target.classList.toggle("active");
@@ -82,8 +93,6 @@ export default function TaskDashboardPage() {
   let newTask;
   let numOfCompleted = 0;
   const handleSubmit = async () => {
-    // setProjectMembersUsername(e);
-    // console.log(projectMembersUsername);
 
     newTask = {
       Id: 0,
@@ -122,12 +131,7 @@ export default function TaskDashboardPage() {
     setStatusBar(numOfCompleted);
   }, [])
 
-  //opens up the view project modal
-  const handleClick = () => {};
-
   const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />;
-
-    
 
   return (
     <div>
@@ -166,7 +170,6 @@ export default function TaskDashboardPage() {
             ) : null}
             {/* map thru all tasks */}
             {/* separate into 3 arrays, map into  */}
-            {/* <TaskComponent/> */}
             {taskData.allTasks.map((task) => {
               console.log(task);
             })}
@@ -270,11 +273,13 @@ export default function TaskDashboardPage() {
           <Row>
             Specialists assigned to project:
           </Row>
-          {taskData.allTasks.map((task) => {
-                return (
-                  <Row>{task.assignees}</Row>
-                )
-              })}
+              {
+                taskSpecialist.map((assignee) => {
+                  return (
+                    <Row>{assignee}</Row>
+                  )
+                })
+              }
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose1}>
