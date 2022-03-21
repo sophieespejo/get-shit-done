@@ -166,6 +166,7 @@ export default function TaskComponent({ task }) {
                   className=""
                   // value={blogCategory}
                   onChange={({ target: { value } }) => setTaskStatus(value)}
+                  value={taskStatus}
                 >
                   <option>Status</option>
                   <option value="To Do">To-Do</option>
