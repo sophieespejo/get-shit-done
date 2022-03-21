@@ -15,7 +15,7 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID, createAccount, getProjectItemsByAMemberId } from "../Services/DataService";
+import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID, createAccount, getProjectItemsByAMemberId, updateProjectItem } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
@@ -26,6 +26,7 @@ export default function ProjectDashboardPage() {
   let clickedProject1 = useContext(ProjectContext);
   // console.log(userData.userItems)
   // console.log(userData.userItems.isSpecialist)
+  console.log(userData.userItems);
 
   const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
   const editIcon = <FontAwesomeIcon icon={faEdit} />
@@ -62,8 +63,52 @@ export default function ProjectDashboardPage() {
 
   const [allSpecialist, setAllSpecialist] = useState([]);
 
-  const handleAddMember = () => {
-    
+  const [projectTitle, setProjectTitle] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+  const [projectDueDate, setProjectDueDate] = useState("");
+
+  const handleAddMember = (e, id) => {
+    // Add member to project
+    e.target.classList.toggle("active");
+
+    let updatedProject = { 
+      Id: 0,
+      UserId: id,
+      Title: projectTitle,
+      Description: projectDescription,
+      DateCreated: currentClickedProject.dateCreated,
+      DueDate: projectDueDate,
+      Status: "",
+      MembersId: currentClickedProject.membersId,
+      MembersUsername: currentClickedProject.membersUsername,
+      IsDeleted: false,
+      IsArchived: false
+    }
+
+    updateProjectItem(updatedProject);
+    handleClose();
+  }
+
+  const handleRemoveMember = (e, id) => {
+    e.target.classList.toggle("active");
+    // Remove member from project
+
+    let updatedProject = { 
+      Id: 0,
+      UserId: currentClickedProject.userId,
+      Title: projectTitle,
+      Description: projectDescription,
+      DateCreated: currentClickedProject.dateCreated,
+      DueDate: projectDueDate,
+      Status: "",
+      MembersId: currentClickedProject.membersId,
+      MembersUsername: currentClickedProject.membersUsername,
+      IsDeleted: false,
+      IsArchived: false
+    }
+
+    updateProjectItem(updatedProject);
+    handleClose();
   }
 
 
@@ -119,41 +164,42 @@ export default function ProjectDashboardPage() {
     console.log('asdfasdf')
     setShow2(true);
 
-    splitMembersId = currentClickedProject.membersId.split(",");
+    // splitMembersId = currentClickedProject.membersId.split(",");
     console.log(splitMembersId);
+
 
     allFetchedUsers = await getAllUsers();
     setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
   }
 
 
-
   useEffect(async () => {
-
     allFetchedUsers = await getAllUsers();
     // console.log(allFetchedUsers)
     setAllUsers(allFetchedUsers);
 
     setTimeout(async () => {
+
       let currentFetchedProjects;
       console.log(userData.userItems);
+
       if (userData.userItems.isSpecialist) {
         currentFetchedProjects = await getProjectItemsByAMemberId(userItems.id)
         console.log("specialist")
+
       } else if (userData.userItems.isProjectManager) {
         currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
         console.log("pm")
-      } else {
+      } else if (userData.userItems.isAdmin) {
         currentFetchedProjects = await getAllProjectItems();
         console.log("admin")
 
         console.log(userData.userItems);
       }
-      // console.log(currentFetchedProjects);
+
       setCurrentProjects(currentFetchedProjects);
 
     }, 3000);
-
   }, [])
 
 
@@ -181,33 +227,36 @@ export default function ProjectDashboardPage() {
               <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Project title:</Form.Label>
-                  <Form.Control type="text" placeholder="Edit project title" value={currentClickedProject.title} />
+                  <Form.Control type="text" placeholder="Edit project title" value={currentClickedProject.title} onChange={({target:{value}}) => setProjectTitle(value)}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="">
                   <Form.Label>Description:</Form.Label>
-                  <Form.Control as="textarea" type="text" placeholder="Edit description" value={currentClickedProject.description} />
+                  <Form.Control as="textarea" type="text" placeholder="Edit description" value={currentClickedProject.description} onChange={({target:{value}}) => setProjectDescription(value)}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                   <Form.Label>Due Date:</Form.Label>
-                  <Form.Control type="date" placeholder="Edit due date" value={currentClickedProject.dueDate} />
+                  <Form.Control type="date" placeholder="Edit due date" value={currentClickedProject.dueDate} onChange={({target:{value}}) => setProjectDueDate(value)} />
                 </Form.Group>
                 <Form.Label>Edit Specialist:</Form.Label>
                 <ListGroup as="ul">
                   {
+              
                     allSpecialist.map((user, idx) => {
-
-                      for (let i=0; i<splitMembersId.length; i++) {
-                        if (user.id == splitMembersId[i]) {
+                      // debugger
+                        if (currentClickedProject.membersId.includes(user.id)) {
                           return (
-                            <ListGroup.Item active action as="li" onClick={handleAddMember}>
+                            <ListGroup.Item active action as="li" onClick={(e) => handleRemoveMember(e, user.id)}>
                               {user.fullName}
                             </ListGroup.Item>
                           )
-                        } 
+                        } else {
+                          return (
+                            <ListGroup.Item action as="li" onClick={(e) => handleAddMember(e, user.id)}>
+                              {user.fullName}
+                            </ListGroup.Item>
+                          )
+                    
                       }
-                      <ListGroup.Item action as="li" onClick={handleAddMember}>
-                        {user.fullName}
-                      </ListGroup.Item>
                     })
                   }
                 </ListGroup>

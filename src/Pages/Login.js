@@ -16,18 +16,8 @@ import { getUserByUsername } from "../Services/DataService";
 export default function Login() {
   let navigate = useNavigate();
   let {
-    userId,
-    setUserId,
     username,
     setUsername,
-    isAdmin,
-    setIsAdmin,
-    isProjectManager,
-    setIsProjectManager,
-    isSpecialist,
-    setIsSpecialist,
-    fullName,
-    setFullName,
     userItems,
     setUserItems,
   } = useContext(UserContext);
@@ -54,12 +44,12 @@ export default function Login() {
     if (token.token != null) {
       localStorage.setItem("Token", token.token);
       //GetLoggedInUserData(Username);
-      navigate("/projectDashboard");
       let userItems1 = await getUserByUsername(username);
       setUserItems(userItems1);
-      console.log(userItems);
+      console.log(userItems1);
       let checkAdmin = userItems.isAdmin;
       //console.log(checkAdmin);
+      navigate("/projectDashboard");
     }
     else{
       toggleShowA();
