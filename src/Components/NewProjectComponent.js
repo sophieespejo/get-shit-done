@@ -31,10 +31,11 @@ export default function NewProjectComponent() {
     let projectMembersId = [];
     let stringOfMemberIds = "";
 
-    const addUserToArrayId = (id) => {
+    const addUserToArrayId = (e, id) => {
       projectMembersId.push(id);
       console.log(projectMembersId);
       stringOfMemberIds = projectMembersId.toString();
+      e.target.classList.toggle('active');
     }
 
     let newProject;
@@ -106,7 +107,7 @@ export default function NewProjectComponent() {
               {
                 allSpecialist.map((user, idx) => {
                   return (
-                    <ListGroup.Item action as="li" onClick={() => addUserToArrayId(user.id)}>
+                    <ListGroup.Item action as="li" onClick={(e) => addUserToArrayId(e, user.id)}>
                       {user.fullName}
                     </ListGroup.Item>
                   )
