@@ -148,7 +148,7 @@ export default function TaskComponent({ task }) {
 
   return (
     <>
-      <Card style={{ width: "100%" }} className="mt-2 mb-2 taskCard">
+      <Card style={{ width: "22rem" }} className="mt-2 mb-2 taskCard">
         <Card.Body>
           <Row className="d-flex">
             <Col>
