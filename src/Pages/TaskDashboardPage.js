@@ -84,6 +84,52 @@ export default function TaskDashboardPage() {
           </Col>
         </Row>
       </Container>
+      
+      <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add a new project</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Project Title: </Form.Label>
+                <Form.Control type="email" placeholder="Enter project title" onChange={({target:{value}}) => setProjectTitle(value)}/>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="">
+                <Form.Label>Description: </Form.Label>
+                <Form.Control as="textarea" type="text" placeholder="Description" onChange={({target:{value}}) => setProjectDescription(value)}/>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Project Deadline: </Form.Label>
+                <Form.Control type="date" placeholder="duedate" onChange={({target:{value}}) => setProjectDueDate(value)}/>
+              </Form.Group>
+            <Form.Label>Add Specialists:</Form.Label>
+            <ListGroup as="ul">
+              {
+                allSpecialist.map((user, idx) => {
+                  return (
+                    <ListGroup.Item action as="li" onClick={(e) => addUserToArrayId(e, user.id)}>
+                      {user.fullName}
+                    </ListGroup.Item>
+                  )
+                }) 
+              }
+              </ListGroup>
+              
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleSubmit}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+
+
     </div>
   );
 }
