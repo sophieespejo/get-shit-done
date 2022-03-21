@@ -106,7 +106,7 @@ function Personnel() {
   
     //Delete a user
     const handleDelete = async (user) => {
-      user.IsDeleted = !user.IsDeleted;
+      user.IsDeleted = true;
       let result = await updateUser(user);
       if(result){
         //setBlogItems([]);

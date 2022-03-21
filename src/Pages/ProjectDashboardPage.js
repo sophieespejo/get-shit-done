@@ -216,28 +216,28 @@ export default function ProjectDashboardPage() {
     setShow2(true);
 
   // const [isArchived, setIsArchived] = useState(false);
-  
-  const handleArchived = async (project) => {
-    project.isArchived = true;
-    console.log(project);
-    let result = await updateProjectItem(project);
-    console.log(result)
-    if(result)
-    {
-      let projects = await getAllProjectItems();
-      let filteredProjects = projects.filter(projectItem => !projectItem.isArchived);
-      console.log(filteredProjects);
-      setCurrentProjects([])
-      setCurrentProjects(filteredProjects);
-    }
-    else{
-      alert(`A project has not been archived`)
-    }
-  }
+  allFetchedUsers = await getAllUsers();
+  setAllSpecialist(allFetchedUsers.filter((user) => user.isSpecialist));
+};
 
-    allFetchedUsers = await getAllUsers();
-    setAllSpecialist(allFetchedUsers.filter((user) => user.isSpecialist));
-  };
+const handleArchived = async (project) => {
+  project.isArchived = true;
+  console.log(project);
+  let result = await updateProjectItem(project);
+  console.log(result)
+  if(result)
+  {
+    let projects = await getAllProjectItems();
+    // let filteredProjects = projects.filter(projectItem => !projectItem.isArchived);
+    // console.log(filteredProjects);
+    // setCurrentProjects([])
+    setCurrentProjects(projects);
+  }
+  else{
+    alert(`A project has not been archived`)
+  }
+}
+
 
   useEffect(async () => {
     allFetchedUsers = await getAllUsers();
@@ -264,7 +264,6 @@ export default function ProjectDashboardPage() {
       
       setCurrentProjects(currentFetchedProjects);
 
-      setCurrentProjects(currentFetchedProjects);
     }, 3000);
 
   }, [])
@@ -385,20 +384,18 @@ export default function ProjectDashboardPage() {
                             {project.description}
                           </p>
                         </Card.Text>
-                        {userData.userItems.isAdmin ||
-                        userData.userItems.isProjectManager ? (
+                        {userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
                           <Row>
                             <Col>
                               <Button
                                 className="editBtn"
-                                // onClick={() => navigate("/taskDashboard")}
                                 onClick={(e) => handleClick(e, project)}
                               >
                                 View
                               </Button>
                             </Col>
                             <Col>
-                              <Button variant="info">Archive</Button>
+                              <Button variant="info" onClick ={() => handleArchived(project)}>Archive</Button>
                             </Col>
                           </Row>
                         ) : null}
@@ -410,6 +407,7 @@ export default function ProjectDashboardPage() {
             );
           })}
         </Row>
+        
       </Container>
       <Container>
         <Row className="mt-5">
@@ -430,7 +428,7 @@ export default function ProjectDashboardPage() {
                               <Button
                                 className="editBtn"
                                 // onClick={() => navigate("/taskDashboard")}
-                                onClick={() => handleClick(item.Title)}
+                                onClick={() => handleClick(item.title)}
                               >
                                 View Project {viewIcon}
                               </Button>
