@@ -25,7 +25,7 @@ import {
 } from "../Services/DataService";
 
 export default function TaskDashboardPage() {
-  let navigate = useNavigate();
+    let navigate = useNavigate();
   let projectData = useContext(ProjectContext);
   console.log(projectData);
   let taskData = useContext(TaskContext);
