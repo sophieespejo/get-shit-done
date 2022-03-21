@@ -467,7 +467,6 @@ async function updateTaskItem(TaskUpdate) {
 
 //Soft Delete a TaskItem
 async function deleteTaskItem(TaskDelete) {
-
     let res = await fetch('https://dylanmcfarlinbackend.azurewebsites.net/TaskItem/DeleteTaskItem', {
         method: "POST",
         headers: {
