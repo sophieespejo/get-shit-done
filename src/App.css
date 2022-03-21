@@ -122,3 +122,20 @@ body{
 .projextCardTxt{
   font-family: 'Hubballi';
 }
+
+.taskTitleTxt{
+  font-family: 'Alef';
+  font-weight: bolder;
+  text-decoration: underline;
+  margin-bottom: 0px !important;
+}
+
+.taskTxt{
+  font-family: 'Hubballi';
+  margin-bottom: 0px !important;
+  font-size: 1.2rem;
+}
+
+.taskCard{
+  min-height: 11rem;
+}
