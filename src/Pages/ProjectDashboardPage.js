@@ -15,7 +15,7 @@ import NewProjectComponent from "../Components/NewProjectComponent";
 import { faMagnifyingGlass, faUserPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID, createAccount, getProjectItemsByAMemberId } from "../Services/DataService";
+import { checkToken, getAllUsers, updateUser, getProjectItemsByUserId, getProjectItemsByAMemberUsername, getAllProjectItems, getProjectItemByTitle, updateUserRole, getTaskItemsByProjectID, createAccount, getProjectItemsByAMemberId, updateProjectItem, deleteProjectItem, getArchivedProjectItems } from "../Services/DataService";
 import UserContext from '../Context/UserContext';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
@@ -54,7 +54,7 @@ export default function ProjectDashboardPage() {
   const handleShow1 = () => setShow1(true);
 
   const [currentProjects, setCurrentProjects] = useState([]);
-
+  const [archivedProjects, setArchivedProjects] = useState(getArchivedProjectItems());
 
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState({});
@@ -109,6 +109,25 @@ export default function ProjectDashboardPage() {
     setShow2(true);
   }
 
+  // const [isArchived, setIsArchived] = useState(false);
+  
+  const handleArchived = async (project) => {
+    project.isArchived = true;
+    console.log(project);
+    let result = await updateProjectItem(project);
+    console.log(result)
+    if(result)
+    {
+      let projects = await getAllProjectItems();
+      let filteredProjects = projects.filter(projectItem => !projectItem.isArchived);
+      console.log(filteredProjects);
+      setCurrentProjects([])
+      setCurrentProjects(filteredProjects);
+    }
+    else{
+      alert(`A project has not been archived`)
+    }
+  }
 
 
   useEffect(async () => {
@@ -130,11 +149,12 @@ export default function ProjectDashboardPage() {
         // console.log("admin")
       }
       // console.log(currentFetchedProjects);
+      
       setCurrentProjects(currentFetchedProjects);
 
     }, 3000);
 
-  }, [currentProjects, setCurrentProjects])
+  }, [])
 
 
 
@@ -153,13 +173,6 @@ export default function ProjectDashboardPage() {
           }
           {/* Map thru current projects here */}
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
-          {currentProjects.map((project, idx) => (
-            <div>
-              <Card border="danger" style={{ width: '15rem', height: '15rem' }} className="shadow">
-                <Card.Body >
-                  <Card.Title className="d-flex justify-content-between">{project.title}
-                    <Button className="editBtn" onClick={(e) => handleClick2(e, project)}>{editIcon}</Button>
-
                     <Modal show={show2} onHide={handleClose2}>
 
                       <Modal.Header closeButton>
@@ -205,6 +218,12 @@ export default function ProjectDashboardPage() {
                       </Modal.Footer>
                     </Modal>
 
+          {currentProjects.map((project, idx) => (
+            <div>
+              <Card border="danger" style={{ width: '15rem', height: '15rem' }} className="shadow">
+                <Card.Body >
+                  <Card.Title className="d-flex justify-content-between">{project.title}
+                    <Button className="editBtn" onClick={(e) => handleClick2(e, project)}>{editIcon}</Button>
 
                   </Card.Title>
                   <Card.Text>
@@ -222,7 +241,7 @@ export default function ProjectDashboardPage() {
                   >View</Button>
                 </Col>
                 <Col>
-                  <Button variant="info">Archive</Button>
+                  <Button variant="info"onClick ={() => handleArchived(project)} >Archive</Button>
                 </Col>
               </Row>
             ) : null
@@ -247,12 +266,12 @@ export default function ProjectDashboardPage() {
                   <>
                     {item.isArchived ? (
                       <ListGroup.Item key={i} className="d-flex">
-                        <Col>{item.Title}</Col>
+                        <Col>{item.title}</Col>
                         <Col className=" d-flex justify-content-end">
                           <Button
                             className="editBtn"
                             // onClick={() => navigate("/taskDashboard")}
-                            onClick = {() => handleClick(item.Title)}
+                            onClick = {() => handleClick(item.title)}
                           >
                             View Project {viewIcon}
                           </Button>
