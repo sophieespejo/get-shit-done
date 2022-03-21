@@ -26,6 +26,7 @@ export default function ProjectDashboardPage() {
   let clickedProject1 = useContext(ProjectContext);
   // console.log(userData.userItems)
   // console.log(userData.userItems.isSpecialist)
+  console.log(userData.userItems);
 
   const addUserIcon = <FontAwesomeIcon icon={faUserPlus} />
   const editIcon = <FontAwesomeIcon icon={faEdit} />
@@ -93,7 +94,7 @@ export default function ProjectDashboardPage() {
 
     let updatedProject = { 
       Id: 0,
-      UserId: id,
+      UserId: currentClickedProject.userId,
       Title: projectTitle,
       Description: projectDescription,
       DateCreated: currentClickedProject.dateCreated,
@@ -177,8 +178,10 @@ export default function ProjectDashboardPage() {
     setAllUsers(allFetchedUsers);
 
     setTimeout(async () => {
+
       let currentFetchedProjects;
       console.log(userData.userItems);
+
       if (userData.userItems.isSpecialist) {
         currentFetchedProjects = await getProjectItemsByAMemberId(userItems.id)
         console.log("specialist")
@@ -186,17 +189,17 @@ export default function ProjectDashboardPage() {
       } else if (userData.userItems.isProjectManager) {
         currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
         console.log("pm")
-      } else {
+      } else if (userData.userItems.isAdmin) {
         currentFetchedProjects = await getAllProjectItems();
         console.log("admin")
 
         console.log(userData.userItems);
       }
-      // console.log(currentFetchedProjects);
-      setCurrentProjects(currentFetchedProjects);
-    }, 3000);
 
-  }, [currentProjects, setCurrentProjects])
+      setCurrentProjects(currentFetchedProjects);
+
+    }, 3000);
+  }, [])
 
 
 
