@@ -153,7 +153,7 @@ export default function ProjectDashboardPage() {
 
     }, 3000);
 
-  }, [])
+  }, [currentProjects, setCurrentProjects])
 
 
 
