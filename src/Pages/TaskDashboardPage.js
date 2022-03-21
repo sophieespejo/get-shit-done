@@ -116,7 +116,7 @@ export default function TaskDashboardPage() {
                 console.log(task)
               })
             }
-            { taskData.allTasks.filter((task) => task.Status == "To do").map(todoTasks => {
+            { taskData.allTasks.filter((task) => task.status == "To do").map(todoTasks => {
               console.log(todoTasks)
               return (
                 <TaskComponent task={todoTasks}/>
@@ -126,7 +126,7 @@ export default function TaskDashboardPage() {
           </Col>
           <Col className="inProgressContainer">
             <h3 className="headerTxt mt-2">In Progress</h3>
-            { taskData.allTasks.filter((task) => task.Status == "In Progress").map(inProgressTasks => {
+            { taskData.allTasks.filter((task) => task.status == "In Progress").map(inProgressTasks => {
               
               return (
                 <TaskComponent task={inProgressTasks}/>
@@ -135,7 +135,7 @@ export default function TaskDashboardPage() {
           </Col>
           <Col className="completedContainer">
             <h3 className="headerTxt mt-2">Completed</h3>
-            { taskData.allTasks.filter((task) => task.Status == "Completed").map(completedTasks => {
+            { taskData.allTasks.filter((task) => task.status == "Completed").map(completedTasks => {
               return (
                 <TaskComponent task={completedTasks}/>
               )
