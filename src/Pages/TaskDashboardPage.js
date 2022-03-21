@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import { Container, Row, Col, Button, Card, ProgressBar, Modal, Form, ListGroup } from "react-bootstrap";
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,7 +6,7 @@ import TaskComponent from '../Components/TaskComponent';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
 import UserContext from '../Context/UserContext';
-import {AddTaskItem, getAllTaskItems} from "../Services/DataService";
+import {AddTaskItem, getAllTaskItems, getAllUsers, getTaskItemsByProjectID} from "../Services/DataService";
 
 
 export default function TaskDashboardPage() {
@@ -14,6 +14,7 @@ export default function TaskDashboardPage() {
   let projectData = useContext(ProjectContext);
   console.log(projectData)
   let taskData = useContext(TaskContext);
+  let { allTasks, setAllTasks } = useContext(TaskContext)
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
   let userData = useContext(UserContext);
 
@@ -55,15 +56,24 @@ export default function TaskDashboardPage() {
       DateCreated: new Date(),
       DueDate: taskDueDate,
       Status: "To Do",
-      MembersId: stringOfMemberIds,
-      MembersUsername: stringOfMemberUsernames,
+      // MembersId: stringOfMemberIds,
+      Assignees: stringOfMemberUsernames,
       IsDeleted: false,
     }
 
-    AddTaskItem(newTask);
-    console.log(getAllTaskItems());
+    let result = await AddTaskItem(newTask);
+    let allTasks = await getTaskItemsByProjectID(projectData.clickedProject[0].id);
+    if(result){
+      setAllTasks(allTasks)
+    }
     handleClose();
   }
+
+  useEffect(async () => {
+    let allFetchedUsers = await getAllUsers();
+    setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
+    // setAllSpecialist(allFetchedUsers);
+  }, [])
 
   const handleClick = () => {
     
@@ -106,8 +116,8 @@ export default function TaskDashboardPage() {
                 console.log(task)
               })
             }
-            { taskData.allTasks.filter((task) => task.status == "To do").map(todoTasks => {
-              
+            { taskData.allTasks.filter((task) => task.Status == "To do").map(todoTasks => {
+              console.log(todoTasks)
               return (
                 <TaskComponent task={todoTasks}/>
               )
@@ -116,7 +126,7 @@ export default function TaskDashboardPage() {
           </Col>
           <Col className="inProgressContainer">
             <h3 className="headerTxt mt-2">In Progress</h3>
-            { taskData.allTasks.filter((task) => task.status == "In Progress").map(inProgressTasks => {
+            { taskData.allTasks.filter((task) => task.Status == "In Progress").map(inProgressTasks => {
               
               return (
                 <TaskComponent task={inProgressTasks}/>
@@ -125,7 +135,7 @@ export default function TaskDashboardPage() {
           </Col>
           <Col className="completedContainer">
             <h3 className="headerTxt mt-2">Completed</h3>
-            { taskData.allTasks.filter((task) => task.status == "Completed").map(completedTasks => {
+            { taskData.allTasks.filter((task) => task.Status == "Completed").map(completedTasks => {
               return (
                 <TaskComponent task={completedTasks}/>
               )
@@ -142,7 +152,7 @@ export default function TaskDashboardPage() {
             <Form>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Task Title: </Form.Label>
-                <Form.Control type="email" placeholder="Enter project title" onChange={({target:{value}}) => setTaskTitle(value)}/>
+                <Form.Control type="email" placeholder="Enter task title" onChange={({target:{value}}) => setTaskTitle(value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="">
                 <Form.Label>Description: </Form.Label>
