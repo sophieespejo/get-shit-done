@@ -29,7 +29,7 @@ export default function TaskDashboardPage() {
   let projectData = useContext(ProjectContext);
   console.log(projectData);
   let taskData = useContext(TaskContext);
-  let { allTasks, setAllTasks } = useContext(TaskContext);
+  let { allTasks, setAllTasks, statusBar, setStatusBar } = useContext(TaskContext);
   let {
     userId,
     setUserId,
