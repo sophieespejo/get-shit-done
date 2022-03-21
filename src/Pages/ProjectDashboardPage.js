@@ -195,7 +195,8 @@ export default function ProjectDashboardPage() {
       // console.log(currentFetchedProjects);
       setCurrentProjects(currentFetchedProjects);
     }, 3000);
-  }, [])
+
+  }, [currentProjects, setCurrentProjects])
 
 
 
