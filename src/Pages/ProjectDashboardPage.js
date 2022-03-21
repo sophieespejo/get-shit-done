@@ -32,7 +32,7 @@ export default function ProjectDashboardPage() {
   const editIcon = <FontAwesomeIcon icon={faEdit} />
   let navigate = useNavigate();
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
-  let { clickedProject, setClickedProject } = useContext(ProjectContext);
+  let { clickedProject, setClickedProject, currentProjects, setCurrentProjects } = useContext(ProjectContext);
   let { allTasks, setAllTasks } = useContext(TaskContext)
   const [currentClickedProject, setCurrentClickedProject] = useState({});
 
@@ -55,7 +55,6 @@ export default function ProjectDashboardPage() {
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
 
-  const [currentProjects, setCurrentProjects] = useState([]);
 
 
   const [allUsers, setAllUsers] = useState([]);
