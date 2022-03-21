@@ -90,6 +90,12 @@ export default function TaskComponent({ task }) {
     e.target.classList.toggle("active");
   };
 
+  const handleAddAssignee = (e, id) => {
+    
+  }
+
+
+
   // const handleAddMember = (e, id) => {
   //   e.target.classList.toggle("active");
   //   // Add member to project
