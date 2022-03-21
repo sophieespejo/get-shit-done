@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Button, Card, ProgressBar } from "react-bootstrap";
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TaskComponent from '../Components/TaskComponent';
@@ -22,9 +22,16 @@ export default function TaskDashboardPage() {
     <div>
       <Container className="mt-3 mb-5">
         <Row className="mb-3 text-center">
-          <h1>Name of the project:{projectData.clickedProject[0].title}</h1>
-          <h3>Due Date:{projectData.clickedProject[0].dueDate}</h3>
-          <h3>Status: </h3>
+          <h3>{projectData.clickedProject[0].title}</h3>
+          <h5>Due Date:{projectData.clickedProject[0].dueDate}</h5>
+        </Row>
+        <Row className="justify-content-center">
+          <Col xs={1} className="pb-3">
+            <h5>Status: </h5>
+          </Col>
+          <Col>
+            <ProgressBar animated variant="success" now={80}></ProgressBar>
+          </Col>
         </Row>
         <Row className="text-center taskContainer">
           <Col className="toDoContainer">

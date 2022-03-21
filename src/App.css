@@ -118,3 +118,7 @@ body{
 .pointer{
   cursor: pointer;
 }
+
+.projextCardTxt{
+  font-family: 'Hubballi';
+}

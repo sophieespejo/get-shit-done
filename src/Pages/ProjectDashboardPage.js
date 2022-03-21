@@ -8,7 +8,7 @@ import {
   Button,
   Modal,
   Form,
-  Card
+  Card,
 } from "react-bootstrap";
 import ProjectCardComponent from "../Components/ProjectCardComponent";
 import NewProjectComponent from "../Components/NewProjectComponent";
@@ -31,7 +31,8 @@ export default function ProjectDashboardPage() {
   const editIcon = <FontAwesomeIcon icon={faEdit} />
   let navigate = useNavigate();
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
-  let { clickedProject, setClickedProject } = useContext(ProjectContext)
+  let { clickedProject, setClickedProject } = useContext(ProjectContext);
+  let { allTasks, setAllTasks } = useContext(TaskContext)
   const [currentClickedProject, setCurrentClickedProject] = useState({});
 
   const handleClick = async (e, project) => {
@@ -39,7 +40,7 @@ export default function ProjectDashboardPage() {
     setClickedProject(project1);
     // console.log(clickedProject);
     let allTasks = await getTaskItemsByProjectID(project.id);
-    // setAllTasks(allTasks);
+    setAllTasks(allTasks);
     navigate("/taskDashboard");
   }
 
@@ -203,9 +204,7 @@ export default function ProjectDashboardPage() {
                             </ListGroup.Item>
                           )
                         } 
-                            
                       }
-
                       <ListGroup.Item action as="li" onClick={handleAddMember}>
                         {user.fullName}
                       </ListGroup.Item>
@@ -230,14 +229,10 @@ export default function ProjectDashboardPage() {
                 <Card.Body >
                   <Card.Title className="d-flex justify-content-between">{project.title}
                     <Button className="editBtn" onClick={(e) => handleClick2(e, project)}>{editIcon}</Button>
-
-
-
                   </Card.Title>
                   <Card.Text>
-                    <p>Due Date: <span>{project.dueDate}</span></p>
-                    <p>Priority: <span>whateverr</span></p>
-                    <p>Status: <span>whateverrr</span></p>
+                    <p className="projectCardTxt">Due Date: <span>{project.dueDate}</span></p>
+                    <p className="projectCardTxt">{project.description}</p>
                   </Card.Text>
                   {
                     userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
@@ -296,7 +291,6 @@ export default function ProjectDashboardPage() {
         </Row>
       </Container>
       <div className="mb-5"></div>
-
     </>
   );
 }
