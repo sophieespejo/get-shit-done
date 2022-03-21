@@ -4,9 +4,11 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getAllUsers, AddProjectItem, getAllProjectItems } from '../Services/DataService';
 import UserContext from '../Context/UserContext';
+import ProjectContext from '../Context/ProjectContext';
 
 export default function NewProjectComponent() {
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
+  let { setCurrentProjects } = useContext(ProjectContext);
 
     const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
     const [show, setShow] = useState(false);
@@ -31,16 +33,18 @@ export default function NewProjectComponent() {
     let projectMembersId = [];
     let stringOfMemberIds = "";
 
-    const addUserToArrayId = (id) => {
+    const addUserToArrayId = (e, id) => {
       projectMembersId.push(id);
       console.log(projectMembersId);
       stringOfMemberIds = projectMembersId.toString();
+      e.target.classList.toggle('active');
     }
 
     let newProject;
 
     const handleSubmit = async () => {
-
+      let currentFetchedProjects = [];
+      let result = false;
       // setProjectMembersUsername(e);
       // console.log(projectMembersUsername);
 
@@ -58,8 +62,11 @@ export default function NewProjectComponent() {
         IsArchived: false
       }
 
-      AddProjectItem(newProject);
-      console.log(getAllProjectItems());
+      result = await AddProjectItem(newProject);
+      if(result){
+        let currentFetchedProjects = await getAllProjectItems();
+        setCurrentProjects(currentFetchedProjects);
+      }
       handleClose();
     }
 
@@ -106,7 +113,7 @@ export default function NewProjectComponent() {
               {
                 allSpecialist.map((user, idx) => {
                   return (
-                    <ListGroup.Item action as="li" onClick={() => addUserToArrayId(user.id)}>
+                    <ListGroup.Item action as="li" onClick={(e) => addUserToArrayId(e, user.id)}>
                       {user.fullName}
                     </ListGroup.Item>
                   )

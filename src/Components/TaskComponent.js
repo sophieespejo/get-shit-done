@@ -1,19 +1,87 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Card, Button, Container, Modal, Form, FloatingLabel, Col, Row, ListGroup, ModalBody } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TaskContext from "../Context/TaskContext";
+import { updateTaskItem, getTaskItemsByProjectID, getAllUsers } from "../Services/DataService";
 
 export default function TaskComponent({task}) {
   
   let taskData = useContext(TaskContext);
+  let { allTasks, setAllTasks } = useContext(TaskContext);
+  const [allSpecialist, setAllSpecialist] = useState([]);
+
+
+  const [taskTitle, setTaskTitle] = useState(task.title);
+  const [taskDescription, setTaskDescription] = useState(task.description);
+  const [taskDueDate, setTaskDueDate] = useState(task.dueDate);
+  const [taskPriority, setTaskPriority] = useState(task.priority);
+  const [taskStatus, setTaskStatus] = useState(task.status);
+
 
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleClick = async () => {
+    console.log(task)
+    task.status = taskStatus;
+    let result = await updateTaskItem(task);
+    let allTasks = await getTaskItemsByProjectID(task.projectId);
+    setAllTasks(allTasks);
+  }
+  let stringOfMemberIds = "";
+  let stringOfMemberUsernames = "";
+  let taskMembersId = [];
+  let taskMembersUsernames = [];
+  const addUserToArrayId = (e, id, username) => {
+    taskMembersId.push(id);
+    taskMembersUsernames.push(username);
+    console.log(taskMembersId);
+    stringOfMemberIds = taskMembersId.toString();
+    stringOfMemberUsernames = taskMembersUsernames.toString();
+    e.target.classList.toggle('active');
+  }
+
+
+  // const handleAddMember = (e, id) => {
+  //   e.target.classList.toggle("active");
+  //   // Add member to project
+
+  //   let splitArr = [];
+  //   splitArr = currentClickedProject.membersId.split(",");
+  //   console.log(splitArr);
+  //   let updatedMembers = splitArr.push(id);
+  //   console.log(updatedMembers)
+
+  //   let updatedProject = { 
+  //     Id: currentClickedProject.id,
+  //     UserId: currentClickedProject.userId,
+  //     Title: projectTitle,
+  //     Description: projectDescription,
+  //     DateCreated: currentClickedProject.dateCreated,
+  //     DueDate: projectDueDate,
+  //     Status: "test",
+  //     MembersId: updatedMembers.toString(),
+  //     MembersUsername: "test",
+  //     IsDeleted: currentClickedProject.isDeleted,
+  //   }
+  //   updateProjectItem(updatedProject);
+  //   handleClose();
+  // }
+
+  const handleSubmit = () => {
+    
+  }
+  useEffect(async () => {
+    let allFetchedUsers = await getAllUsers();
+    setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
+    // setAllSpecialist(allFetchedUsers);
+  }, [])
+
 
   const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
 
@@ -25,9 +93,9 @@ export default function TaskComponent({task}) {
             <Card.Title>
               {task.title}</Card.Title>
             <Card.Text>
-              <p>Task Description</p>
-              <p>Due Date:</p>
-              <p>Assignee: </p>
+              <p>{task.description}</p>
+              <p>Due Date: {task.dueDate}</p>
+              <p>Assignee: {task.assignees}</p>
             </Card.Text>
             <Row>
               <Col className="">
@@ -36,17 +104,17 @@ export default function TaskComponent({task}) {
                       aria-label="Default select example"
                       className=""
                       // value={blogCategory}
-                      // onChange={({ target: { value } }) => setBlogCategory(value)}
+                      onChange={({ target: { value } }) => setTaskStatus(value)}
                     >
                       <option>Status</option>
-                      <option value="ToDo">To-Do</option>
-                      <option value="InProgress">In Progress</option>
-                      <option value="Done">Done</option>
+                      <option value="To Do">To-Do</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Completed">Completed</option>
                     </Form.Select>
                 </Form.Group>
               </Col>
               <Col>
-              <Button variant="info">Update Status</Button>
+              <Button variant="info" onClick={handleClick}>Update Status</Button>
               </Col>
             </Row>
             <Row className="mt-2">
@@ -80,8 +148,8 @@ export default function TaskComponent({task}) {
               <Form.Control
                 type="title"
                 placeholder="Enter title"
-                // value={blogTitle}
-                // onChange={(e) => setBlogTitle(e.target.value)}
+                value={taskTitle}
+                onChange={(e) => setTaskTitle(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formGroupPassword">
@@ -90,8 +158,8 @@ export default function TaskComponent({task}) {
                 as="textarea"
                 type="description"
                 placeholder="Description"
-                // value={blogDescription}
-                // onChange={(e) => setBlogDescription(e.target.value)}
+                value={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
               />
             </Form.Group>
             <Form.Group>
@@ -100,9 +168,12 @@ export default function TaskComponent({task}) {
                   <Row>
                     <Col>
                   <Form.Label className="mt-3">Due Date: </Form.Label>
-                    </Col>
-                    <Col>
-                  <input className="mt-3" type="date"></input>
+                  <Form.Control
+                    type="date"
+                    value={taskDueDate}
+                    onChange={(e) => setTaskDueDate(e.target.value)}
+                  >
+                  </Form.Control>
                     </Col>
                   </Row>
                 </Col>
@@ -110,8 +181,8 @@ export default function TaskComponent({task}) {
               <Form.Select
                     aria-label="Default select example"
                     className="mt-2"
-                    // value={blogCategory}
-                    // onChange={({ target: { value } }) => setBlogCategory(value)}
+                    value={taskPriority}
+                    onChange={({ target: { value } }) => setTaskPriority(value)}
                   >
                     <option>Pick a Priority</option>
                     <option value="Low">Low</option>
@@ -122,15 +193,53 @@ export default function TaskComponent({task}) {
               </Row>
             </Form.Group>
             <Form.Group className="mb-3 mt-3" controlId="formGroupPassword">
-              <Form.Label>Roles Assigned</Form.Label>
+              <Form.Label>Edit Assignee</Form.Label>
               {/* have this option only available for admin, subadmin, and PM? */}
               <Row>
-                <Col>
-                  <FloatingLabel controlId="floatingRole" label="Name">
-                    <Form.Control type="password" placeholder="Assignee" />
-                  </FloatingLabel>
-                </Col>
-                <Col>
+              <Form.Label>Assign Specialist:</Form.Label>
+            <ListGroup as="ul">
+              {
+                allSpecialist.map((user, idx) => {
+                  if(user.username.includes(task.assignees)) {
+                    return (
+                    <ListGroup.Item key={user} active action as="li" onClick={(e) => addUserToArrayId(e, user.id, user.username)}>
+                      {user.fullName}
+                    </ListGroup.Item>
+                    )
+                  } else {
+                    return (
+                      <ListGroup.Item action as="li" onClick={(e) => addUserToArrayId(e, user.id, user.username)}>
+                      {user.fullName}
+                    </ListGroup.Item>
+                    )
+
+                  }
+                }) 
+              }
+              </ListGroup>
+                {/* <Col>
+                <ListGroup as="ul">
+                  {
+                    allSpecialist.map((user, idx) => {
+                      // debugger
+                        if (task.asignees.includes(user.username)) {
+                          return (
+                            <ListGroup.Item active action as="li" onClick={(e) => handleRemoveMember(e, user.id)}>
+                              {user.fullName}
+                            </ListGroup.Item>
+                          )
+                        } else {
+                          return (
+                            <ListGroup.Item action as="li" onClick={(e) => handleAddMember(e, user.id)}>
+                              {user.fullName}
+                            </ListGroup.Item>
+                          )
+                      }
+                    })
+                  }
+                </ListGroup>
+                </Col> */}
+                {/* <Col>
                   <Form.Select
                     aria-label="Default select example"
                     className="mt-2"
@@ -143,28 +252,28 @@ export default function TaskComponent({task}) {
                     <option value="PM">Project Manager</option>
                     <option value="Specialist">Specialist</option>
                   </Form.Select>
-                </Col>
-                <Col xs={2} className="mt-2">
+                </Col> */}
+                {/* <Col xs={2} className="mt-2">
                   <Button>Add</Button>
-                </Col>
+                </Col> */}
               </Row>
             </Form.Group>
           </Form>
           <Row>
             {/* map thru roles and add to list group, if none then null? */}
-          <ListGroup variant="flush">
+          {/* <ListGroup variant="flush">
             <ListGroup.Item>Admin: Cras justo odio</ListGroup.Item>
             <ListGroup.Item>SubAdmin: Dapibus ac facilisis in</ListGroup.Item>
             <ListGroup.Item>Project Manager: Morbi leo risus</ListGroup.Item>
             <ListGroup.Item>Specialist: Porta ac consectetur ac</ListGroup.Item>
-          </ListGroup>
+          </ListGroup> */}
           </Row>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSubmit}>
             Save Changes
           </Button>
         </Modal.Footer>

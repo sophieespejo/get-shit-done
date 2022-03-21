@@ -1,6 +1,7 @@
 let successfulCreateAcct = false;
 let userData = {};
 
+
 function checkToken(){
     let result = false;
     let lsData = localStorage.getItem('Token');
@@ -56,12 +57,12 @@ async function logIn(userInfo){
         body: JSON.stringify(userInfo)
     });
     //check status of request
-    if(!res.ok)
-    {
-        const message = `An error has occured ${res.status}`;
-        alert("Username and/or Password is incorrect. Please try again or create a new account.");
-        throw new Error(message);
-    }
+    // if(!res.ok)
+    // {
+    //     const message = `An error has occured ${res.status}`;
+    //     alert("Username and/or Password is incorrect. Please try again or create a new account.");
+    //     throw new Error(message);
+    // }
     let data = await res.json();
     return data;
 }
@@ -459,7 +460,6 @@ async function updateTaskItem(TaskUpdate) {
 
 //Soft Delete a TaskItem
 async function deleteTaskItem(TaskDelete) {
-
     let res = await fetch('https://dylanmcfarlinbackend.azurewebsites.net/TaskItem/DeleteTaskItem', {
         method: "POST",
         headers: {

@@ -14,6 +14,10 @@ import UserContext from "../Context/UserContext";
 function Home() {
   let userData = useContext(UserContext);
 
+  const handleSignout = () => {
+    localStorage.clear();
+  }
+
   return (
     <>
       <BrowserRouter>
@@ -44,7 +48,7 @@ function Home() {
                             {" "}
                             Login/Create an Account{" "}
                           </Nav.Link> */}
-                          <Nav.Link as={Link} to="/" className="white">
+                          <Nav.Link as={Link} to="/" className="white" onClick={handleSignout}>
                             Sign Out
                           </Nav.Link>
                         </Nav>
