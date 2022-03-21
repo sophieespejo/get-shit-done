@@ -29,7 +29,6 @@ const CreateAccount = () => {
       Password: password,
     };
     let result = await createAccount(userData);
-    console.log(result);
     result ? navigate("/projectDashboard") : toggleShowA();
   };
   return (
@@ -74,7 +73,6 @@ const CreateAccount = () => {
                   placeholder="Password"
                   onChange={({ target: { value } }) => setPassword(value)}
                 />
-                {/* <Link to="../">Login</Link> */}
               </Form.Group>
               <Container>
                 <Row className="d-grid gap-2 mt-2 mb-2 ">

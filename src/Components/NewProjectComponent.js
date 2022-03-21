@@ -26,7 +26,6 @@ export default function NewProjectComponent() {
 
     const addUserToArray = (username) => {
       projectMembersUsername.push(username);
-      console.log(projectMembersUsername);
       stringOfMemberUsernames = projectMembersUsername.toString();
     }
 
@@ -35,7 +34,6 @@ export default function NewProjectComponent() {
 
     const addUserToArrayId = (e, id) => {
       projectMembersId.push(id);
-      console.log(projectMembersId);
       stringOfMemberIds = projectMembersId.toString();
       e.target.classList.toggle('active');
     }
@@ -45,8 +43,6 @@ export default function NewProjectComponent() {
     const handleSubmit = async () => {
       let currentFetchedProjects = [];
       let result = false;
-      // setProjectMembersUsername(e);
-      // console.log(projectMembersUsername);
 
       newProject = { 
         Id: 0,
@@ -72,7 +68,6 @@ export default function NewProjectComponent() {
 
     useEffect(async () => {
       let allFetchedUsers = await getAllUsers();
-      // console.log(allFetchedUsers)
 
       setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
       // setAllSpecialist(allFetchedUsers);

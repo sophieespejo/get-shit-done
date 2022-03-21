@@ -43,11 +43,6 @@ function Home() {
                               Personnel{" "}
                             </Nav.Link>
                           ) : null}
-
-                          {/* <Nav.Link as={Link} to="../" className="white">
-                            {" "}
-                            Login/Create an Account{" "}
-                          </Nav.Link> */}
                           <Nav.Link as={Link} to="/" className="white" onClick={handleSignout}>
                             Sign Out
                           </Nav.Link>
@@ -64,7 +59,6 @@ function Home() {
             path="/projectDashboard"
             element={<ProjectDashboardPage />}
           ></Route>
-          {/* <Route path="login" element={<Login></Login>} /> */}
           <Route path="/createaccount" element={<CreateAccount />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/taskDashboard" element={<TaskDashboardPage />} />

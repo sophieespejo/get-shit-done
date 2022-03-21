@@ -9,6 +9,7 @@ export default function useTask(){
     // const [isSpecialist, setIsSpecialist] = useState("");
     // const [fullName, setFullName] = useState("");
     const [allTasks, setAllTasks] = useState("");
+    const [statusBar, setStatusBar] = useState(0);
 
-    return { allTasks, setAllTasks} 
+    return { allTasks, setAllTasks, statusBar, setStatusBar} 
 }
