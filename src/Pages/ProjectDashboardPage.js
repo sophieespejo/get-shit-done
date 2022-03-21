@@ -139,12 +139,12 @@ export default function ProjectDashboardPage() {
 
 
   //Function to show model when edit button is clicked
-  
+
   const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
   return (
     <>
       <Container className="mt-5">
-        <h4 className="headerTxt">Your Current Projects: {userItems.id} </h4>
+        <h4 className="headerTxt">Your Current Projects: </h4>
         <Row xs={2} lg={4} className="g-3">
           {
             userData.userItems.isAdmin ? (
@@ -152,6 +152,48 @@ export default function ProjectDashboardPage() {
             ) : null
           }
           {/* Map thru current projects here */}
+          <Modal show={show2} onHide={handleClose2}>
+
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Project</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control type="text" placeholder="Edit Title" value={currentClickedProject.title} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control as="textarea" type="text" placeholder="Description" value={currentClickedProject.description} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Due Date</Form.Label>
+                  <Form.Control type="date" placeholder="Password" value={currentClickedProject.dueDate} />
+                </Form.Group>
+                <Form.Label>Edit Specialist</Form.Label>
+                <ListGroup as="ul">
+                  {
+                    allSpecialist.map((user, idx) => {
+                      return (
+                        <ListGroup.Item action as="li" onClick={() => addUserToArrayId(user.id)}>
+                          {user.fullName}
+                        </ListGroup.Item>
+                      )
+                    })
+                  }
+                </ListGroup>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose1}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleClose1}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
           {/* need function that fetches all current projects of that user, but if user is an admin will show all projects */}
           {currentProjects.map((project, idx) => (
             <div>
@@ -160,50 +202,6 @@ export default function ProjectDashboardPage() {
                   <Card.Title className="d-flex justify-content-between">{project.title}
                     <Button className="editBtn" onClick={(e) => handleClick2(e, project)}>{editIcon}</Button>
 
-                    <Modal show={show2} onHide={handleClose2}>
-
-                      <Modal.Header closeButton>
-                        <Modal.Title>Add a new user</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <Form>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>{currentClickedProject.title}</Form.Label>
-                            <Form.Control type="email" placeholder="Enter full name" />
-                          </Form.Group>
-                          <Form.Group className="mb-3" controlId="">
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Username" />
-                          </Form.Group>
-                          <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
-                          </Form.Group>
-                          <Form.Group>
-                            <Form.Label>Add a Role</Form.Label>
-                            <Form.Select
-                              aria-label="Default select example"
-                              className="mt-2"
-                            // value={blogCategory}
-                            // onChange={({ target: { value } }) => setBlogCategory(value)}
-                            >
-                              <option>Select Role</option>
-                              <option value="Admin">Admin</option>
-                              <option value="PM">Project Manager</option>
-                              <option value="Specialist">Specialist</option>
-                            </Form.Select>
-                          </Form.Group>
-                        </Form>
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose1}>
-                          Close
-                        </Button>
-                        <Button variant="primary" onClick={handleClose1}>
-                          Save Changes
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
 
 
                   </Card.Title>
@@ -213,20 +211,20 @@ export default function ProjectDashboardPage() {
                     <p>Status: <span>whateverrr</span></p>
                   </Card.Text>
                   {
-            userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
-              <Row>
-                <Col>
-                  <Button className="editBtn"
-                    // onClick={() => navigate("/taskDashboard")}
-                    onClick={(e) => handleClick(e, project)}
-                  >View</Button>
-                </Col>
-                <Col>
-                  <Button variant="info">Archive</Button>
-                </Col>
-              </Row>
-            ) : null
-          }
+                    userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
+                      <Row>
+                        <Col>
+                          <Button className="editBtn"
+                            // onClick={() => navigate("/taskDashboard")}
+                            onClick={(e) => handleClick(e, project)}
+                          >View</Button>
+                        </Col>
+                        <Col>
+                          <Button variant="info">Archive</Button>
+                        </Col>
+                      </Row>
+                    ) : null
+                  }
                 </Card.Body>
               </Card>
             </div>
@@ -234,41 +232,41 @@ export default function ProjectDashboardPage() {
         </Row>
       </Container>
       <Container>
-    <Row className="mt-5">
-      {/* Map thru archived projects here */}
-      {/* should this be viewable to specialists or just admin and PM? */}
-      <Accordion defaultActiveKey="1">
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>Archived Projects{viewIcon}</Accordion.Header>
-          <Accordion.Body>
-            <ListGroup>
-              {currentProjects.map((item, i) => {
-                return (
-                  <>
-                    {item.isArchived ? (
-                      <ListGroup.Item key={i} className="d-flex">
-                        <Col>{item.Title}</Col>
-                        <Col className=" d-flex justify-content-end">
-                          <Button
-                            className="editBtn"
-                            // onClick={() => navigate("/taskDashboard")}
-                            onClick = {() => handleClick(item.Title)}
-                          >
-                            View Project {viewIcon}
-                          </Button>
-                        </Col>
-                      </ListGroup.Item>
-                    ) : null}
-                  </>
-                );
-              })}
-            </ListGroup>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    </Row>
-  </Container>
-  <div className="mb-5"></div>
+        <Row className="mt-5">
+          {/* Map thru archived projects here */}
+          {/* should this be viewable to specialists or just admin and PM? */}
+          <Accordion defaultActiveKey="1">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>Archived Projects{viewIcon}</Accordion.Header>
+              <Accordion.Body>
+                <ListGroup>
+                  {currentProjects.map((item, i) => {
+                    return (
+                      <>
+                        {item.isArchived ? (
+                          <ListGroup.Item key={i} className="d-flex">
+                            <Col>{item.Title}</Col>
+                            <Col className=" d-flex justify-content-end">
+                              <Button
+                                className="editBtn"
+                                // onClick={() => navigate("/taskDashboard")}
+                                onClick={() => handleClick(item.Title)}
+                              >
+                                View Project {viewIcon}
+                              </Button>
+                            </Col>
+                          </ListGroup.Item>
+                        ) : null}
+                      </>
+                    );
+                  })}
+                </ListGroup>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </Row>
+      </Container>
+      <div className="mb-5"></div>
 
     </>
   );
