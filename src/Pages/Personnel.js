@@ -24,7 +24,6 @@ function Personnel() {
     const handleClick = async (e, project) => {
       let project1 = await getProjectItemByTitle(project.title);
       setClickedProject(project1);
-      // console.log(clickedProject);
       let allTasks = await getTaskItemsByProjectID(project.id);
       setAllTasks(allTasks);
       navigate("/taskDashboard");
@@ -53,7 +52,6 @@ function Personnel() {
       };
       setShow1(false)
       let result = await createAccount(userData);
-      console.log(result);
       allFetchedUsers = await getAllUsers();
       setAllUsers([...allFetchedUsers]);
     };
@@ -65,21 +63,7 @@ function Personnel() {
   
     const setRole = async (value) => {
       let result1;
-      // updatedUser = { 
-      //   Id: user.id,
-      //   Username: user.username,
-      //   FullName: user.fullName,
-      //   Salt: user.salt,
-      //   Hash: user.hash,
-      //   IsAdmin: value,
-      //   IsProjectManager: value,
-      //   IsSpecialist: value
-      // }
-  
-      console.log(value);
-      console.log(selectedUser.username);
-  
-  
+
       if (value == 'Admin') {
          result1 = await updateUserRole(selectedUser.username, true, false, false);
       } else if (value == 'PM') {
@@ -92,12 +76,10 @@ function Personnel() {
       }else{
         alert("error")
       }
-      // console.log(allFetchedUsers)
       setAllUsers([...allFetchedUsers]);
     }
   
     useEffect( async() => {
-  
       allFetchedUsers = await getAllUsers();
       setAllUsers([...allFetchedUsers]);
         
@@ -109,9 +91,7 @@ function Personnel() {
       user.IsDeleted = true;
       let result = await updateUser(user);
       if(result){
-        //setBlogItems([]);
         let allUpdatedUsers = await getAllUsers();
-        console.log(allUpdatedUsers);
         setAllUsers(allUpdatedUsers);
         }else{
         alert(`User not Deleted`);

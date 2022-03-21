@@ -75,7 +75,6 @@ export default function ProjectDashboardPage() {
   const handleClick = async (e, project) => {
     let project1 = await getProjectItemByTitle(project.title);
     setClickedProject(project1);
-    // console.log(clickedProject);
     let allTasks = await getTaskItemsByProjectID(project.id);
     setAllTasks(allTasks);
     navigate("/taskDashboard");
@@ -105,17 +104,13 @@ export default function ProjectDashboardPage() {
     e.target.classList.toggle("active");
     // Add member to project
     let stringId = id.toString();
-    console.log(stringId);
 
     let splitArr = [];
     splitArr = currentClickedProject.membersId.split(",");
-    console.log(splitArr);
 
     let updatedMembers = [];
-    console.log(updatedMembers)
     splitArr.push(stringId);
     updatedMembers = splitArr;
-    console.log(updatedMembers)
     
     let updatedProject = { 
       Id: currentClickedProject.id,
@@ -139,20 +134,14 @@ export default function ProjectDashboardPage() {
     // Remove member from project
 
     let stringId = id.toString();
-    console.log(stringId);
 
     let splitArr = [];
     splitArr = currentClickedProject.membersId.split(",");
-    console.log(splitArr);
 
     let updatedMembers = [];
-    console.log(updatedMembers)
 
     splitArr.splice(1, stringId);
-    console.log(splitArr);
     updatedMembers = splitArr;
-
-    console.log(updatedMembers)
 
     let updatedProject = {
       Id: currentClickedProject.id,
@@ -186,7 +175,6 @@ export default function ProjectDashboardPage() {
     }
 
     allFetchedUsers = await getAllUsers();
-    // console.log(allFetchedUsers)
     setAllUsers(allFetchedUsers);
   };
 
@@ -203,16 +191,11 @@ export default function ProjectDashboardPage() {
   const handleClick2 = async (e, project) => {
     let project2 = await getProjectItemByTitle(project.title);
     setClickedProject(project2);
-    console.log(clickedProject);
-    // navigate("/taskDashboard");
     setCurrentClickedProject(project);
-    console.log(project);
 
     setProjectTitle(project.title);
     setProjectDescription(project.description);
     setProjectDueDate(project.dueDate);
-
-    console.log("asdfasdf");
     setShow2(true);
 
   // const [isArchived, setIsArchived] = useState(false);
@@ -222,15 +205,10 @@ export default function ProjectDashboardPage() {
 
 const handleArchived = async (project) => {
   project.isArchived = true;
-  console.log(project);
   let result = await updateProjectItem(project);
-  console.log(result)
   if(result)
   {
     let projects = await getAllProjectItems();
-    // let filteredProjects = projects.filter(projectItem => !projectItem.isArchived);
-    // console.log(filteredProjects);
-    // setCurrentProjects([])
     setCurrentProjects(projects);
   }
   else{
@@ -241,7 +219,6 @@ const handleArchived = async (project) => {
 
   useEffect(async () => {
     allFetchedUsers = await getAllUsers();
-    // console.log(allFetchedUsers)
     setAllUsers(allFetchedUsers);
 
     setTimeout(async () => {
@@ -260,7 +237,6 @@ const handleArchived = async (project) => {
 
         console.log(userData.userItems);
       }
-      // console.log(currentFetchedProjects);
       
       setCurrentProjects(currentFetchedProjects);
 

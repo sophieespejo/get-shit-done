@@ -27,7 +27,6 @@ import {
 export default function TaskDashboardPage() {
     let navigate = useNavigate();
   let projectData = useContext(ProjectContext);
-  //console.log(projectData);
   let taskData = useContext(TaskContext);
   let { allTasks, setAllTasks, statusBar, setStatusBar } = useContext(TaskContext);
   let {
@@ -84,7 +83,6 @@ export default function TaskDashboardPage() {
   const addUserToArrayId = (e, id, username) => {
     taskMembersId.push(id);
     taskMembersUsernames.push(username);
-    //console.log(taskMembersId);
     stringOfMemberIds = taskMembersId.toString();
     stringOfMemberUsernames = taskMembersUsernames.toString();
     e.target.classList.toggle("active");
@@ -102,7 +100,6 @@ export default function TaskDashboardPage() {
       DateCreated: new Date(),
       DueDate: taskDueDate,
       Status: "To Do",
-      // MembersId: stringOfMemberIds,
       Assignees: stringOfMemberUsernames,
       IsDeleted: false,
     };

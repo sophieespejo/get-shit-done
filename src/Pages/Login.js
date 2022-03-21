@@ -36,19 +36,13 @@ export default function Login() {
       Username: username,
       Password: password,
     };
-    console.log(username);
-    console.log(password);
     let token = await logIn(userData);
-    console.log(token);
 
     if (token.token != null) {
       localStorage.setItem("Token", token.token);
-      //GetLoggedInUserData(Username);
       let userItems1 = await getUserByUsername(username);
       setUserItems(userItems1);
-      console.log(userItems1);
       let checkAdmin = userItems.isAdmin;
-      //console.log(checkAdmin);
       navigate("/projectDashboard");
     }
     else{
@@ -80,7 +74,6 @@ export default function Login() {
                   onChange={handleChange}
                 />
               </Form.Group>
-              {/* span contentEditable onKeyDown={(e) => console.log(e.target.textContent)} */}
               <Form.Group
                 className="mb-3 loginTxt"
                 controlId="formBasicPassword"
