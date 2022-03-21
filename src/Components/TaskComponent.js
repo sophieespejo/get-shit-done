@@ -82,6 +82,12 @@ export default function TaskComponent({ task }) {
     e.target.classList.toggle("active");
   };
 
+  const handleAddAssignee = (e, id) => {
+    
+  }
+
+
+
   // const handleAddMember = (e, id) => {
   //   e.target.classList.toggle("active");
   //   // Add member to project
@@ -166,6 +172,7 @@ export default function TaskComponent({ task }) {
                   className=""
                   // value={blogCategory}
                   onChange={({ target: { value } }) => setTaskStatus(value)}
+                  value={taskStatus}
                 >
                   <option>Status</option>
                   <option value="To Do">To-Do</option>
