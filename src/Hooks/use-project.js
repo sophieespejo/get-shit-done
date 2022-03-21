@@ -9,6 +9,7 @@ export default function useProject(){
     // const [isSpecialist, setIsSpecialist] = useState("");
     // const [fullName, setFullName] = useState("");
     const [clickedProject, setClickedProject] = useState("");
+    const [currentProjects, setCurrentProjects] = useState([]);
 
-    return { clickedProject, setClickedProject} 
+    return { clickedProject, setClickedProject, currentProjects, setCurrentProjects} 
 }

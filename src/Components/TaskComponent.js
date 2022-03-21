@@ -4,16 +4,28 @@ import { useNavigate } from "react-router-dom";
 import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TaskContext from "../Context/TaskContext";
+import { updateTaskItem, getTaskItemsByProjectID } from "../Services/DataService";
 
 export default function TaskComponent({task}) {
   
   let taskData = useContext(TaskContext);
+  let { allTasks, setAllTasks } = useContext(TaskContext);
 
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleClick = async () => {
+    console.log(task)
+    task.status = taskStatus;
+    let result = await updateTaskItem(task);
+    let allTasks = await getTaskItemsByProjectID(task.projectId);
+    setAllTasks(allTasks);
+  }
+
+  const [taskStatus, setTaskStatus] = useState("");
 
   const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
 
@@ -25,9 +37,9 @@ export default function TaskComponent({task}) {
             <Card.Title>
               {task.title}</Card.Title>
             <Card.Text>
-              <p>Task Description</p>
-              <p>Due Date:</p>
-              <p>Assignee: </p>
+              <p>{task.description}</p>
+              <p>Due Date: {task.dueDate}</p>
+              <p>Assignee: {task.assignees}</p>
             </Card.Text>
             <Row>
               <Col className="">
@@ -36,17 +48,17 @@ export default function TaskComponent({task}) {
                       aria-label="Default select example"
                       className=""
                       // value={blogCategory}
-                      // onChange={({ target: { value } }) => setBlogCategory(value)}
+                      onChange={({ target: { value } }) => setTaskStatus(value)}
                     >
                       <option>Status</option>
-                      <option value="ToDo">To-Do</option>
-                      <option value="InProgress">In Progress</option>
-                      <option value="Done">Done</option>
+                      <option value="To Do">To-Do</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Completed">Completed</option>
                     </Form.Select>
                 </Form.Group>
               </Col>
               <Col>
-              <Button variant="info">Update Status</Button>
+              <Button variant="info" onClick={handleClick}>Update Status</Button>
               </Col>
             </Row>
             <Row className="mt-2">
