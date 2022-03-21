@@ -24,7 +24,8 @@ import {
   getTaskItemsByProjectID,
   getAllUsers,
   getTaskItemsById,
-  deleteTaskItem
+  deleteTaskItem,
+  getProjectItemById
 } from "../Services/DataService";
 
 export default function TaskComponent({ task }) {
@@ -49,12 +50,17 @@ export default function TaskComponent({ task }) {
   let userData = useContext(UserContext);
   let { allTasks, setAllTasks } = useContext(TaskContext);
   const [allSpecialist, setAllSpecialist] = useState([]);
+  const [projectMembers, setAllProjectMembers] = useState([]);
 
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDescription, setTaskDescription] = useState(task.description);
   const [taskDueDate, setTaskDueDate] = useState(task.dueDate);
   const [taskPriority, setTaskPriority] = useState(task.priority);
   const [taskStatus, setTaskStatus] = useState(task.status);
+  const [taskId, setTaskId] = useState(task.id);
+  const [taskAssignees, setTaskAssignees] = useState(task.assignees);
+  const [projectId, setProjectId] = useState(task.projectId);
+  
 
   const [show, setShow] = useState(false);
 
@@ -81,11 +87,6 @@ export default function TaskComponent({ task }) {
     stringOfMemberUsernames = taskMembersUsernames.toString();
     e.target.classList.toggle("active");
   };
-
-  const handleAddAssignee = (e, id) => {
-    
-  }
-
 
 
   // const handleAddMember = (e, id) => {
@@ -114,22 +115,70 @@ export default function TaskComponent({ task }) {
   //   handleClose();
   // }
 
+  let listOfAssignees = [];
+  const [projectMembersId, setProjectMembersId] = useState([]);
+  let splitProjectMembersId = [];
+
+  const handleAddAssignee = async (e, username) => {
+
+    // Get projectId from by
+    let currentProject = await getProjectItemById(projectId);
+    setProjectMembersId(currentProject.membersId);
+    // projectMembersId.split(','); 
+    console.log(projectMembersId);
+
+    e.target.classList.toggle("active");
+    console.log(username);
+
+    if (taskAssignees == null) {
+      listOfAssignees.push(username);
+    } else {
+      listOfAssignees.push(taskAssignees);
+      listOfAssignees.push(username);
+      // listOfAssignees.join(',');
+    }
+  }
+
+  const handleRemoveAssignees = async (e, username) => {
+
+    // Get projectId from by
+    let currentProject = await getProjectItemById(projectId);
+    setProjectMembersId(currentProject.membersId);
+    // projectMembersId.split(','); 
+    console.log(projectMembersId);
+
+    e.target.classList.toggle("active");
+    console.log(username);
+
+    listOfAssignees.push(taskAssignees);
+    listOfAssignees.splice(1, username);
+      // listOfAssignees.join(',');
+    }
+
+
+
+
   const handleSubmit = async () => {
-    let oldTask = await getTaskItemsById(task.id);
-    let result = await deleteTaskItem(oldTask)
-    let currentTask = {
+    // let oldTask = await getTaskItemsById(task.id);
+    // let result = await deleteTaskItem(oldTask)
+    
+    let updatedTask = {
       Id: task.id,
       ProjectId: task.projectId,
       Title: task.title,
       Description: task.description,
       DateCreated: task.dateCreated,
       DueDate: task.dueDate,
+      Priority: task.priority,
+      Assignees: listOfAssignees.join(','),
       Status: task.status,
-      // MembersId: stringOfMemberIds,
-      Assignees: task.assignees,
       IsDeleted: task.isDeleted,
     }
+    console.log(updatedTask);
+    updateTaskItem(updatedTask);
+    handleClose();
   };
+  
   useEffect(async () => {
     let allFetchedUsers = await getAllUsers();
     setAllSpecialist(allFetchedUsers.filter((user) => user.isSpecialist));
@@ -264,7 +313,7 @@ export default function TaskComponent({ task }) {
                 <Form.Label>Assign Specialist:</Form.Label>
                 <ListGroup as="ul">
                   {allSpecialist.map((user, idx) => {
-                    if (user.username.includes(task.assignees)) {
+                    if (taskAssignees.includes(user.username)) {
                       return (
                         <ListGroup.Item
                           key={user}
@@ -272,7 +321,7 @@ export default function TaskComponent({ task }) {
                           action
                           as="li"
                           onClick={(e) =>
-                            addUserToArrayId(e, user.id, user.username)
+                            handleAddAssignee(e, user.username)
                           }
                         >
                           {user.fullName}
@@ -284,7 +333,7 @@ export default function TaskComponent({ task }) {
                           action
                           as="li"
                           onClick={(e) =>
-                            addUserToArrayId(e, user.id, user.username)
+                            handleRemoveAssignees(e, user.username)
                           }
                         >
                           {user.fullName}
