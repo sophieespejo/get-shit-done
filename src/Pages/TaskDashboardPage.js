@@ -14,7 +14,7 @@ export default function TaskDashboardPage() {
   let projectData = useContext(ProjectContext);
   console.log(projectData)
   let taskData = useContext(TaskContext);
-  let { allTasks, setAllTasks } = useContext(TaskContext)
+  let { allTasks, setAllTasks, setStatusBar, statusBar } = useContext(TaskContext)
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
   let userData = useContext(UserContext);
 
@@ -27,6 +27,7 @@ export default function TaskDashboardPage() {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDueDate, setTaskDueDate] = useState("");
+  
 
   let stringOfMemberIds = "";
   let stringOfMemberUsernames = "";
@@ -42,7 +43,7 @@ export default function TaskDashboardPage() {
   }
 
   let newTask;
-
+  let numOfCompleted = 0;
   const handleSubmit = async () => {
 
     // setProjectMembersUsername(e);
@@ -63,6 +64,7 @@ export default function TaskDashboardPage() {
 
     let result = await AddTaskItem(newTask);
     let allTasks = await getTaskItemsByProjectID(projectData.clickedProject[0].id);
+
     if(result){
       setAllTasks(allTasks)
     }
@@ -73,6 +75,15 @@ export default function TaskDashboardPage() {
     let allFetchedUsers = await getAllUsers();
     setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
     // setAllSpecialist(allFetchedUsers);
+    let allTasks = await getTaskItemsByProjectID(projectData.clickedProject[0].id);
+    let numOfTotalTasks = 0;
+    let numOfTasksToDo = 0;
+    let filteredTasks = [];
+    numOfTotalTasks = allTasks.filter(task => !task.isDeleted).length;
+    filteredTasks = allTasks.filter(task => task.status == "Completed");
+    numOfTasksToDo = filteredTasks.length;
+    numOfCompleted = (numOfTasksToDo / numOfTotalTasks) * 100;
+    setStatusBar(numOfCompleted);
   }, [])
 
   const handleClick = () => {
@@ -80,6 +91,8 @@ export default function TaskDashboardPage() {
   }
 
   const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
+
+    
 
   return (
     <div>
@@ -100,7 +113,7 @@ export default function TaskDashboardPage() {
             <h5>Status: </h5>
           </Col>
           <Col>
-            <ProgressBar animated variant="success" now={80}></ProgressBar>
+            <ProgressBar animated variant="success" now={statusBar}></ProgressBar>
           </Col>
         </Row>
         <Row className="text-center taskContainer">

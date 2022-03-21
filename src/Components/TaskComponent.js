@@ -47,7 +47,7 @@ export default function TaskComponent({ task }) {
 
   let taskData = useContext(TaskContext);
   let userData = useContext(UserContext);
-  let { allTasks, setAllTasks } = useContext(TaskContext);
+  let { allTasks, setAllTasks, setStatusBar } = useContext(TaskContext)
   const [allSpecialist, setAllSpecialist] = useState([]);
 
   const [taskTitle, setTaskTitle] = useState(task.title);
@@ -66,6 +66,14 @@ export default function TaskComponent({ task }) {
     task.status = taskStatus;
     let result = await updateTaskItem(task);
     let allTasks = await getTaskItemsByProjectID(task.projectId);
+    let numOfTotalTasks = 0;
+    let numOfTasksToDo = 0;
+    let filteredTasks = [];
+    numOfTotalTasks = allTasks.filter(task => !task.isDeleted).length;
+    filteredTasks = allTasks.filter(task => task.status == "Completed");
+    numOfTasksToDo = filteredTasks.length;
+    let numOfCompleted = (numOfTasksToDo / numOfTotalTasks) * 100;
+    setStatusBar(numOfCompleted);
     setAllTasks(allTasks);
   };
 
