@@ -67,22 +67,43 @@ export default function ProjectDashboardPage() {
   const [projectDueDate, setProjectDueDate] = useState("");
 
   const handleAddMember = (e, id) => {
-    // Add member to project
     e.target.classList.toggle("active");
+    // Add member to project
+
+    let splitArr = [];
+    splitArr = currentClickedProject.membersId.split(",");
+    console.log(splitArr);
+    let updatedMembers = splitArr.push(id);
+    console.log(updatedMembers)
 
     let updatedProject = { 
-      Id: 0,
-      UserId: id,
+      Id: currentClickedProject.id,
+      UserId: currentClickedProject.userId,
       Title: projectTitle,
       Description: projectDescription,
       DateCreated: currentClickedProject.dateCreated,
       DueDate: projectDueDate,
-      Status: "",
-      MembersId: currentClickedProject.membersId,
-      MembersUsername: currentClickedProject.membersUsername,
-      IsDeleted: false,
-      IsArchived: false
+      Status: "test",
+      MembersId: updatedMembers.toString(),
+      MembersUsername: "test",
+      IsDeleted: currentClickedProject.isDeleted,
+      IsArchived: currentClickedProject.isArchived,
     }
+
+    // console.log(currentClickedProject)
+
+    // console.log(currentClickedProject.id)
+    // console.log(currentClickedProject.userId)
+    // console.log(projectTitle)
+    // console.log(projectDescription)
+    // console.log(currentClickedProject.dateCreated)
+    // console.log(projectDueDate)
+    // console.log("test")
+    // console.log(updatedMembers)
+    // console.log("test")
+    // console.log(currentClickedProject.isDeleted)
+    // console.log(currentClickedProject.isArchived)
+    
 
     updateProjectItem(updatedProject);
     handleClose();
@@ -92,19 +113,40 @@ export default function ProjectDashboardPage() {
     e.target.classList.toggle("active");
     // Remove member from project
 
+    let splitArr = [];
+    splitArr = currentClickedProject.membersId.split(",");
+    console.log(splitArr);
+    let updatedMembers = splitArr.splice(1, id);
+    console.log(updatedMembers)
+
     let updatedProject = { 
-      Id: 0,
+      Id: currentClickedProject.id,
       UserId: currentClickedProject.userId,
       Title: projectTitle,
       Description: projectDescription,
       DateCreated: currentClickedProject.dateCreated,
       DueDate: projectDueDate,
-      Status: "",
-      MembersId: currentClickedProject.membersId,
-      MembersUsername: currentClickedProject.membersUsername,
-      IsDeleted: false,
-      IsArchived: false
+      Status: "test",
+      MembersId: updatedMembers.toString(),
+      MembersUsername: "test",
+      IsDeleted: currentClickedProject.isDeleted,
+      IsArchived: currentClickedProject.isArchived,
     }
+
+    // console.log(currentClickedProject)
+
+    // console.log(currentClickedProject.id)
+    // console.log(currentClickedProject.userId)
+    // console.log(projectTitle)
+    // console.log(projectDescription)
+    // console.log(currentClickedProject.dateCreated)
+    // console.log(projectDueDate)
+    // console.log("test")
+    // console.log(updatedMembers)
+    // console.log("test")
+    // console.log(currentClickedProject.isDeleted)
+    // console.log(currentClickedProject.isArchived)
+    
 
     updateProjectItem(updatedProject);
     handleClose();
@@ -160,6 +202,15 @@ export default function ProjectDashboardPage() {
     console.log(clickedProject);
     // navigate("/taskDashboard");
     setCurrentClickedProject(project);
+    console.log(project);
+
+
+
+    setProjectTitle(project.title);
+    setProjectDescription(project.description);
+    setProjectDueDate(project.dueDate);
+
+
     console.log('asdfasdf')
     setShow2(true);
 
@@ -226,15 +277,15 @@ export default function ProjectDashboardPage() {
               <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Project title:</Form.Label>
-                  <Form.Control type="text" placeholder="Edit project title" value={currentClickedProject.title} onChange={({target:{value}}) => setProjectTitle(value)}/>
+                  <Form.Control type="text" placeholder="Edit project title" onChange={(e) => setProjectTitle(e.target.value)} value={projectTitle}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="">
                   <Form.Label>Description:</Form.Label>
-                  <Form.Control as="textarea" type="text" placeholder="Edit description" value={currentClickedProject.description} onChange={({target:{value}}) => setProjectDescription(value)}/>
+                  <Form.Control as="textarea" type="description" placeholder="Edit description" onChange={(e) => setProjectDescription(e.target.value)} value={projectDescription}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                   <Form.Label>Due Date:</Form.Label>
-                  <Form.Control type="date" placeholder="Edit due date" value={currentClickedProject.dueDate} onChange={({target:{value}}) => setProjectDueDate(value)} />
+                  <Form.Control type="date" placeholder="Edit due date" onChange={(e) => setProjectDueDate(e.target.value)} value={projectDueDate} />
                 </Form.Group>
                 <Form.Label>Edit Specialist:</Form.Label>
                 <ListGroup as="ul">
