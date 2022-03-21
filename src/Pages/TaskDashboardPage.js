@@ -116,7 +116,7 @@ export default function TaskDashboardPage() {
                 console.log(task)
               })
             }
-            { taskData.allTasks.filter((task) => task.status == "To do").map(todoTasks => {
+            { taskData.allTasks.filter((task) => task.status == "To Do").map(todoTasks => {
               console.log(todoTasks)
               return (
                 <TaskComponent task={todoTasks}/>
