@@ -84,9 +84,16 @@ export default function TaskDashboardPage() {
   return (
     <div>
       <Container className="mt-3 mb-5">
-        <Row className="mb-3 text-center">
-          <h3>{projectData.clickedProject[0].title}</h3>
-          <h5>Due Date:{projectData.clickedProject[0].dueDate}</h5>
+        <Row className="justify-content-center text-center">
+          <Col xs={3}>
+            <h3>{projectData.clickedProject[0].title}</h3>
+            <h5>Due Date:{projectData.clickedProject[0].dueDate}</h5>
+          </Col>
+        </Row>
+        <Row className="justify-content-center mb-2">
+          <Col xs={2} className=" d-flex justify-content-center">
+            <Button className="editBtn">View Project</Button>
+          </Col>
         </Row>
         <Row className="justify-content-center">
           <Col xs={1} className="pb-3">

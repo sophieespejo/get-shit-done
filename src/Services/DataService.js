@@ -353,7 +353,6 @@ async function getAllTaskItems(){
 
 //Get a TaskItem by ID
 async function getTaskItemsById(ID) {
-
     let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/TaskItem/GetTaskItemsById/${ID}`);
     let data = await res.json();
     console.log(data);
@@ -362,7 +361,6 @@ async function getTaskItemsById(ID) {
 
 //Get a List of TaskItems by the parent ProjectItem Id, need clarification on what to send over
 async function getTaskItemsByProjectID(ProjectID) {
-
     let res = await fetch(`https://dylanmcfarlinbackend.azurewebsites.net/TaskItem/GetTaskItemsByProjectID/${ProjectID}`);
     let data = await res.json();
     console.log(data);
