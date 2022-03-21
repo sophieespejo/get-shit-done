@@ -91,6 +91,7 @@ export default function ProjectDashboardPage() {
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
 
+
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState({});
 
@@ -214,8 +215,25 @@ export default function ProjectDashboardPage() {
     console.log("asdfasdf");
     setShow2(true);
 
-    // splitMembersId = currentClickedProject.membersId.split(",");
-    console.log(splitMembersId);
+  // const [isArchived, setIsArchived] = useState(false);
+  
+  const handleArchived = async (project) => {
+    project.isArchived = true;
+    console.log(project);
+    let result = await updateProjectItem(project);
+    console.log(result)
+    if(result)
+    {
+      let projects = await getAllProjectItems();
+      let filteredProjects = projects.filter(projectItem => !projectItem.isArchived);
+      console.log(filteredProjects);
+      setCurrentProjects([])
+      setCurrentProjects(filteredProjects);
+    }
+    else{
+      alert(`A project has not been archived`)
+    }
+  }
 
     allFetchedUsers = await getAllUsers();
     setAllSpecialist(allFetchedUsers.filter((user) => user.isSpecialist));
@@ -242,10 +260,16 @@ export default function ProjectDashboardPage() {
 
         console.log(userData.userItems);
       }
+      // console.log(currentFetchedProjects);
+      
+      setCurrentProjects(currentFetchedProjects);
 
       setCurrentProjects(currentFetchedProjects);
     }, 3000);
-  }, []);
+
+  }, [])
+
+
 
   //Function to show model when edit button is clicked
 

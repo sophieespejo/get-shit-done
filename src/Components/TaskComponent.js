@@ -1,17 +1,54 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Card, Button, Container, Modal, Form, FloatingLabel, Col, Row, ListGroup, ModalBody } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Container,
+  Modal,
+  Form,
+  FloatingLabel,
+  Col,
+  Row,
+  ListGroup,
+  ModalBody,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TaskContext from "../Context/TaskContext";
-import { updateTaskItem, getTaskItemsByProjectID, getAllUsers } from "../Services/DataService";
+import UserContext from "../Context/UserContext";
+import {
+  updateTaskItem,
+  getTaskItemsByProjectID,
+  getAllUsers,
+  getTaskItemsById,
+  deleteTaskItem
+} from "../Services/DataService";
 
-export default function TaskComponent({task}) {
-  
+export default function TaskComponent({ task }) {
+  let {
+    userId,
+    setUserId,
+    username,
+    setUsername,
+    isAdmin,
+    setIsAdmin,
+    isProjectManager,
+    setIsProjectManager,
+    isSpecialist,
+    setIsSpecialist,
+    fullName,
+    setFullName,
+    userItems,
+    setUserItems,
+  } = useContext(UserContext);
+
   let taskData = useContext(TaskContext);
+  let userData = useContext(UserContext);
   let { allTasks, setAllTasks } = useContext(TaskContext);
   const [allSpecialist, setAllSpecialist] = useState([]);
-
 
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDescription, setTaskDescription] = useState(task.description);
@@ -19,20 +56,19 @@ export default function TaskComponent({task}) {
   const [taskPriority, setTaskPriority] = useState(task.priority);
   const [taskStatus, setTaskStatus] = useState(task.status);
 
-
-
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleClick = async () => {
-    console.log(task)
+    console.log(task);
     task.status = taskStatus;
     let result = await updateTaskItem(task);
     let allTasks = await getTaskItemsByProjectID(task.projectId);
     setAllTasks(allTasks);
-  }
+  };
+
   let stringOfMemberIds = "";
   let stringOfMemberUsernames = "";
   let taskMembersId = [];
@@ -43,9 +79,8 @@ export default function TaskComponent({task}) {
     console.log(taskMembersId);
     stringOfMemberIds = taskMembersId.toString();
     stringOfMemberUsernames = taskMembersUsernames.toString();
-    e.target.classList.toggle('active');
-  }
-
+    e.target.classList.toggle("active");
+  };
 
   // const handleAddMember = (e, id) => {
   //   e.target.classList.toggle("active");
@@ -57,7 +92,7 @@ export default function TaskComponent({task}) {
   //   let updatedMembers = splitArr.push(id);
   //   console.log(updatedMembers)
 
-  //   let updatedProject = { 
+  //   let updatedProject = {
   //     Id: currentClickedProject.id,
   //     UserId: currentClickedProject.userId,
   //     Title: projectTitle,
@@ -73,60 +108,83 @@ export default function TaskComponent({task}) {
   //   handleClose();
   // }
 
-  const handleSubmit = () => {
-    
-  }
+  const handleSubmit = async () => {
+    let oldTask = await getTaskItemsById(task.id);
+    let result = await deleteTaskItem(oldTask)
+    let currentTask = {
+      Id: task.id,
+      ProjectId: task.projectId,
+      Title: task.title,
+      Description: task.description,
+      DateCreated: task.dateCreated,
+      DueDate: task.dueDate,
+      Status: task.status,
+      // MembersId: stringOfMemberIds,
+      Assignees: task.assignees,
+      IsDeleted: task.isDeleted,
+    }
+  };
   useEffect(async () => {
     let allFetchedUsers = await getAllUsers();
-    setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
+    setAllSpecialist(allFetchedUsers.filter((user) => user.isSpecialist));
     // setAllSpecialist(allFetchedUsers);
-  }, [])
-
+  }, []);
 
   const { viewIcon } = <FontAwesomeIcon icon={faMagnifyingGlass} />;
 
   return (
     <>
-
-        <Card style={{ width: "100%" }} className="mt-2 mb-2">
-          <Card.Body>
-            <Card.Title>
-              {task.title}</Card.Title>
-            <Card.Text>
-              <p>{task.description}</p>
-              <p>Due Date: {task.dueDate}</p>
-              <p>Assignee: {task.assignees}</p>
-            </Card.Text>
-            <Row>
-              <Col className="">
-                <Form.Group>
-                  <Form.Select
-                      aria-label="Default select example"
-                      className=""
-                      // value={blogCategory}
-                      onChange={({ target: { value } }) => setTaskStatus(value)}
-                    >
-                      <option>Status</option>
-                      <option value="To Do">To-Do</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Completed">Completed</option>
-                    </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col>
-              <Button variant="info" onClick={handleClick}>Update Status</Button>
-              </Col>
-            </Row>
-            <Row className="mt-2">
-              <Col>
-                <Button variant="success" onClick={handleShow}>
-                  View/Edit Task
-                </Button>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
+      <Card style={{ width: "100%" }} className="mt-2 mb-2 taskCard">
+        <Card.Body>
+          <Row className="d-flex">
+            <Col>
+              <Card.Title className="taskTitleTxt text-start">{task.title}</Card.Title>
+            </Col>
+            <Col className="d-flex justify-content-end taskTxt">
+              {userData.userItems.isAdmin ||
+              userData.userItems.isProjectManager ? (
+              <Button variant="success" onClick={handleShow}>
+                Edit Task
+              </Button>
+              ) : <Button variant="success" onClick={handleShow}>
+              View Task
+            </Button>}
+            </Col>
+          </Row>
+          <Card.Text className="mb-0">
+            <p className="taskTxt text-start">
+              Description: {task.description}
+            </p>
+            <p className="taskTxt text-start">Due Date: {task.dueDate}</p>
+            <p className="taskTxt text-start">Assignee: {task.assignees}</p>
+          </Card.Text>
+          <Row className="mt-0">
+            <Col className="taskTxt">
+              <Form.Group>
+                <Form.Select
+                  aria-label="Default select example"
+                  className=""
+                  // value={blogCategory}
+                  onChange={({ target: { value } }) => setTaskStatus(value)}
+                >
+                  <option>Status</option>
+                  <option value="To Do">To-Do</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Button className="taskTxt" variant="info" onClick={handleClick}>
+                Update Status
+              </Button>
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col></Col>
+          </Row>
+        </Card.Body>
+      </Card>
 
       <Modal size="lg" show={show} onHide={handleClose}>
         {/* check if user is specialist */}
@@ -167,18 +225,18 @@ export default function TaskComponent({task}) {
                 <Col>
                   <Row>
                     <Col>
-                  <Form.Label className="mt-3">Due Date: </Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={taskDueDate}
-                    onChange={(e) => setTaskDueDate(e.target.value)}
-                  >
-                  </Form.Control>
+                      <Form.Label className="mt-3">Due Date: </Form.Label>
+                      <Form.Control
+                        type="date"
+                        value={taskDueDate}
+                        onChange={(e) => setTaskDueDate(e.target.value)}
+                      ></Form.Control>
                     </Col>
                   </Row>
                 </Col>
                 <Col>
-              <Form.Select
+                <Form.Label>Priority:</Form.Label>
+                  <Form.Select
                     aria-label="Default select example"
                     className="mt-2"
                     value={taskPriority}
@@ -196,27 +254,38 @@ export default function TaskComponent({task}) {
               <Form.Label>Edit Assignee</Form.Label>
               {/* have this option only available for admin, subadmin, and PM? */}
               <Row>
-              <Form.Label>Assign Specialist:</Form.Label>
-            <ListGroup as="ul">
-              {
-                allSpecialist.map((user, idx) => {
-                  if(user.username.includes(task.assignees)) {
-                    return (
-                    <ListGroup.Item key={user} active action as="li" onClick={(e) => addUserToArrayId(e, user.id, user.username)}>
-                      {user.fullName}
-                    </ListGroup.Item>
-                    )
-                  } else {
-                    return (
-                      <ListGroup.Item action as="li" onClick={(e) => addUserToArrayId(e, user.id, user.username)}>
-                      {user.fullName}
-                    </ListGroup.Item>
-                    )
-
-                  }
-                }) 
-              }
-              </ListGroup>
+                <Form.Label>Assign Specialist:</Form.Label>
+                <ListGroup as="ul">
+                  {allSpecialist.map((user, idx) => {
+                    if (user.username.includes(task.assignees)) {
+                      return (
+                        <ListGroup.Item
+                          key={user}
+                          active
+                          action
+                          as="li"
+                          onClick={(e) =>
+                            addUserToArrayId(e, user.id, user.username)
+                          }
+                        >
+                          {user.fullName}
+                        </ListGroup.Item>
+                      );
+                    } else {
+                      return (
+                        <ListGroup.Item
+                          action
+                          as="li"
+                          onClick={(e) =>
+                            addUserToArrayId(e, user.id, user.username)
+                          }
+                        >
+                          {user.fullName}
+                        </ListGroup.Item>
+                      );
+                    }
+                  })}
+                </ListGroup>
                 {/* <Col>
                 <ListGroup as="ul">
                   {
@@ -261,7 +330,7 @@ export default function TaskComponent({task}) {
           </Form>
           <Row>
             {/* map thru roles and add to list group, if none then null? */}
-          {/* <ListGroup variant="flush">
+            {/* <ListGroup variant="flush">
             <ListGroup.Item>Admin: Cras justo odio</ListGroup.Item>
             <ListGroup.Item>SubAdmin: Dapibus ac facilisis in</ListGroup.Item>
             <ListGroup.Item>Project Manager: Morbi leo risus</ListGroup.Item>
