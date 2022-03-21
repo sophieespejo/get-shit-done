@@ -59,6 +59,13 @@ export default function ProjectDashboardPage() {
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState({});
 
+  const [allSpecialist, setAllSpecialist] = useState([]);
+
+  const handleAddMember = () => {
+    
+  }
+
+
   let allFetchedUsers;
 
   const setRole = async (value) => {
@@ -107,6 +114,10 @@ export default function ProjectDashboardPage() {
     setCurrentClickedProject(project);
     console.log('asdfasdf')
     setShow2(true);
+
+
+    allFetchedUsers = await getAllUsers();
+    setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
   }
 
 
@@ -163,25 +174,27 @@ export default function ProjectDashboardPage() {
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Title</Form.Label>
-                  <Form.Control type="text" placeholder="Edit Title" value={currentClickedProject.title} />
+                  <Form.Label>Project title:</Form.Label>
+                  <Form.Control type="text" placeholder="Edit project title" value={currentClickedProject.title} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="">
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control as="textarea" type="text" placeholder="Description" value={currentClickedProject.description} />
+                  <Form.Label>Description:</Form.Label>
+                  <Form.Control as="textarea" type="text" placeholder="Edit description" value={currentClickedProject.description} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Due Date</Form.Label>
-                  <Form.Control type="date" placeholder="Password" value={currentClickedProject.dueDate} />
+                  <Form.Label>Due Date:</Form.Label>
+                  <Form.Control type="date" placeholder="Edit due date" value={currentClickedProject.dueDate} />
                 </Form.Group>
-                <Form.Label>Edit Specialist</Form.Label>
+                <Form.Label>Edit Specialist:</Form.Label>
                 <ListGroup as="ul">
                   {
                     allSpecialist.map((user, idx) => {
                       return (
-                        <ListGroup.Item action as="li" onClick={() => addUserToArrayId(user.id)}>
+                        <>
+                        <ListGroup.Item action as="li" onClick={handleAddMember}>
                           {user.fullName}
                         </ListGroup.Item>
+                        </>
                       )
                     })
                   }
