@@ -16,6 +16,10 @@ export default function TaskDashboardPage() {
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
   let userData = useContext(UserContext);
 
+  const handleClick = () => {
+    console.log("hi")
+  }
+
   const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
 
   return (
@@ -37,10 +41,12 @@ export default function TaskDashboardPage() {
           <Col className="toDoContainer">
             <h3 className="headerTxt mt-2">To-Do</h3>
             {
-          userData.userItems.isAdmin ?  (
-            <Card className="mb-2">
+          userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
+            <div>
+            <Card className="mb-2 pointer"onClick={handleClick} >
               <Card.Body>{plusIcon}</Card.Body>
             </Card>
+            </div>
           ) : null 
         }
         {/* map thru all tasks */}

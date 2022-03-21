@@ -213,7 +213,7 @@ export default function ProjectDashboardPage() {
         <h4 className="headerTxt">Your Current Projects: </h4>
         <Row xs={2} lg={4} className="g-3">
           {
-            userData.userItems.isAdmin ? (
+            userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
               <NewProjectComponent />
             ) : null
           }

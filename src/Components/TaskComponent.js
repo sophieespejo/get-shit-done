@@ -25,9 +25,9 @@ export default function TaskComponent({task}) {
             <Card.Title>
               {task.title}</Card.Title>
             <Card.Text>
-              <p>Task Description</p>
-              <p>Due Date:</p>
-              <p>Assignee: </p>
+              <p>{task.description}</p>
+              <p>Due Date: {task.dueDate}</p>
+              <p>Assignee: {task.assignee}</p>
             </Card.Text>
             <Row>
               <Col className="">
