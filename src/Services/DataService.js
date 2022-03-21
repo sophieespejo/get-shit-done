@@ -276,7 +276,7 @@ async function getDeletedProjectItems(){
 //To The same as NewProject
 
 async function updateProjectItem(UpdatedProject) {
-
+    console.log(UpdatedProject);
     let res = await fetch('https://dylanmcfarlinbackend.azurewebsites.net/ProjectItem/UpdateProjectItem', {
         method: "POST",
         headers: {
@@ -315,13 +315,6 @@ async function deleteProjectItem(DeletedProject) {
     return data;
 
 }
-
-
-
-
-
-
-
 
 
 //--------------------------------------------------------------------------------------------------------------------
