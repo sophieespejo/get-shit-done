@@ -215,10 +215,10 @@ export default function ProjectDashboardPage() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose1}>
+              <Button variant="secondary" onClick={handleClose2}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleClose1}>
+              <Button variant="primary" onClick={handleClose2}>
                 Save Changes
               </Button>
             </Modal.Footer>
