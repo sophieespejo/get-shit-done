@@ -144,7 +144,6 @@ export default function ProjectDashboardPage() {
     let splitArr = [];
     splitArr = currentClickedProject.membersId.split(",");
     console.log(splitArr);
-<<<<<<< HEAD
 
     let updatedMembers = [];
     console.log(updatedMembers)
@@ -154,10 +153,6 @@ export default function ProjectDashboardPage() {
     updatedMembers = splitArr;
 
     console.log(updatedMembers)
-=======
-    let updatedMembers = splitArr.splice(1, id);
-    console.log(updatedMembers);
->>>>>>> bf22f81ab2cbd1d3de3e9fd7b46c20eea856bfde
 
     let updatedProject = {
       Id: currentClickedProject.id,
@@ -171,26 +166,7 @@ export default function ProjectDashboardPage() {
       MembersUsername: "test",
       IsDeleted: currentClickedProject.isDeleted,
       IsArchived: currentClickedProject.isArchived,
-<<<<<<< HEAD
     }
-=======
-    };
-
-    // console.log(currentClickedProject)
-
-    // console.log(currentClickedProject.id)
-    // console.log(currentClickedProject.userId)
-    // console.log(projectTitle)
-    // console.log(projectDescription)
-    // console.log(currentClickedProject.dateCreated)
-    // console.log(projectDueDate)
-    // console.log("test")
-    // console.log(updatedMembers)
-    // console.log("test")
-    // console.log(currentClickedProject.isDeleted)
-    // console.log(currentClickedProject.isArchived)
-
->>>>>>> bf22f81ab2cbd1d3de3e9fd7b46c20eea856bfde
     updateProjectItem(updatedProject);
     handleClose();
   };
@@ -198,20 +174,6 @@ export default function ProjectDashboardPage() {
   let allFetchedUsers;
 
   const setRole = async (value) => {
-<<<<<<< HEAD
-=======
-    // updatedUser = {
-    //   Id: user.id,
-    //   Username: user.username,
-    //   FullName: user.fullName,
-    //   Salt: user.salt,
-    //   Hash: user.hash,
-    //   IsAdmin: value,
-    //   IsProjectManager: value,
-    //   IsSpecialist: value
-    // }
-
->>>>>>> bf22f81ab2cbd1d3de3e9fd7b46c20eea856bfde
     console.log(value);
     console.log(selectedUser.username);
 
