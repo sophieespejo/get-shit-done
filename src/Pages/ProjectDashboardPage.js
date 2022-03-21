@@ -290,7 +290,6 @@ export default function ProjectDashboardPage() {
                 <Form.Label>Edit Specialist:</Form.Label>
                 <ListGroup as="ul">
                   {
-              
                     allSpecialist.map((user, idx) => {
                       // debugger
                         if (currentClickedProject.membersId.includes(user.id)) {
@@ -305,7 +304,6 @@ export default function ProjectDashboardPage() {
                               {user.fullName}
                             </ListGroup.Item>
                           )
-                    
                       }
                     })
                   }
