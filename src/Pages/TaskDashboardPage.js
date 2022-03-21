@@ -1,26 +1,63 @@
-import React, {useContext, useState, useEffect} from "react";
-import { Container, Row, Col, Button, Card, ProgressBar, Modal, Form, ListGroup } from "react-bootstrap";
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import TaskComponent from '../Components/TaskComponent';
+import React, { useContext, useState, useEffect } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Card,
+  ProgressBar,
+  Modal,
+  Form,
+  ListGroup,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TaskComponent from "../Components/TaskComponent";
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
-import UserContext from '../Context/UserContext';
-import {AddTaskItem, getAllTaskItems, getAllUsers, getTaskItemsByProjectID} from "../Services/DataService";
-
+import UserContext from "../Context/UserContext";
+import {
+  AddTaskItem,
+  getAllTaskItems,
+  getAllUsers,
+  getTaskItemsByProjectID,
+} from "../Services/DataService";
 
 export default function TaskDashboardPage() {
-
+  let navigate = useNavigate();
   let projectData = useContext(ProjectContext);
-  console.log(projectData)
+  console.log(projectData);
   let taskData = useContext(TaskContext);
-  let { allTasks, setAllTasks } = useContext(TaskContext)
-  let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
+  let { allTasks, setAllTasks } = useContext(TaskContext);
+  let {
+    userId,
+    setUserId,
+    username,
+    setUsername,
+    isAdmin,
+    setIsAdmin,
+    isProjectManager,
+    setIsProjectManager,
+    isSpecialist,
+    setIsSpecialist,
+    fullName,
+    setFullName,
+    userItems,
+    setUserItems,
+  } = useContext(UserContext);
   let userData = useContext(UserContext);
 
+  //for the add a new task modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  //for the view project modal
+  const [show1, setShow1] = useState(false);
+  const handleClose1 = () => setShow1(false);
+  const handleShow1 = () => setShow1(true);
+
   const [allSpecialist, setAllSpecialist] = useState([]);
 
   // for creating a new task
@@ -38,17 +75,17 @@ export default function TaskDashboardPage() {
     console.log(taskMembersId);
     stringOfMemberIds = taskMembersId.toString();
     stringOfMemberUsernames = taskMembersUsernames.toString();
-    e.target.classList.toggle('active');
-  }
+    e.target.classList.toggle("active");
+  };
 
   let newTask;
 
+  //submit button to create a new task(button is in modal)
   const handleSubmit = async () => {
-
     // setProjectMembersUsername(e);
     // console.log(projectMembersUsername);
 
-    newTask = { 
+    newTask = {
       Id: 0,
       ProjectId: projectData.clickedProject[0].id,
       Title: taskTitle,
@@ -59,27 +96,28 @@ export default function TaskDashboardPage() {
       // MembersId: stringOfMemberIds,
       Assignees: stringOfMemberUsernames,
       IsDeleted: false,
-    }
+    };
 
     let result = await AddTaskItem(newTask);
-    let allTasks = await getTaskItemsByProjectID(projectData.clickedProject[0].id);
-    if(result){
-      setAllTasks(allTasks)
+    let allTasks = await getTaskItemsByProjectID(
+      projectData.clickedProject[0].id
+    );
+    if (result) {
+      setAllTasks(allTasks);
     }
     handleClose();
-  }
+  };
 
   useEffect(async () => {
     let allFetchedUsers = await getAllUsers();
-    setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
+    setAllSpecialist(allFetchedUsers.filter((user) => user.isSpecialist));
     // setAllSpecialist(allFetchedUsers);
-  }, [])
+  }, []);
 
-  const handleClick = () => {
-    
-  }
+  //opens up the view project modal
+  const handleClick = () => {};
 
-  const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
+  const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />;
 
   return (
     <div>
@@ -92,7 +130,9 @@ export default function TaskDashboardPage() {
         </Row>
         <Row className="justify-content-center mb-2">
           <Col xs={2} className=" d-flex justify-content-center">
-            <Button className="editBtn">View Project</Button>
+            <Button className="editBtn" onClick={handleShow1}>
+              View Project
+            </Button>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -106,95 +146,138 @@ export default function TaskDashboardPage() {
         <Row className="text-center taskContainer">
           <Col className="toDoContainer">
             <h3 className="headerTxt mt-2">To-Do</h3>
-            {
-          userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
-            <div>
-            <Card className="mb-2 pointer" onClick={handleShow} >
-              <Card.Body>{plusIcon}</Card.Body>
-            </Card>
-            </div>
-          ) : null 
-        }
-        {/* map thru all tasks */}
-        {/* separate into 3 arrays, map into  */}
+            {userData.userItems.isAdmin ||
+            userData.userItems.isProjectManager ? (
+              <div>
+                <Card className="mb-2 pointer" onClick={handleShow}>
+                  <Card.Body>{plusIcon}</Card.Body>
+                </Card>
+              </div>
+            ) : null}
+            {/* map thru all tasks */}
+            {/* separate into 3 arrays, map into  */}
             {/* <TaskComponent/> */}
-            {
-              taskData.allTasks.map((task) => {
-                console.log(task)
-              })
-            }
-            { taskData.allTasks.filter((task) => task.status == "To Do").map(todoTasks => {
-              console.log(todoTasks)
-              return (
-                <TaskComponent task={todoTasks}/>
-              )
+            {taskData.allTasks.map((task) => {
+              console.log(task);
             })}
-
+            {taskData.allTasks
+              .filter((task) => task.status == "To Do")
+              .map((todoTasks) => {
+                console.log(todoTasks);
+                return <TaskComponent task={todoTasks} />;
+              })}
           </Col>
           <Col className="inProgressContainer">
             <h3 className="headerTxt mt-2">In Progress</h3>
-            { taskData.allTasks.filter((task) => task.status == "In Progress").map(inProgressTasks => {
-              
-              return (
-                <TaskComponent task={inProgressTasks}/>
-              )
-            })}
+            {taskData.allTasks
+              .filter((task) => task.status == "In Progress")
+              .map((inProgressTasks) => {
+                return <TaskComponent task={inProgressTasks} />;
+              })}
           </Col>
           <Col className="completedContainer">
             <h3 className="headerTxt mt-2">Completed</h3>
-            { taskData.allTasks.filter((task) => task.status == "Completed").map(completedTasks => {
-              return (
-                <TaskComponent task={completedTasks}/>
-              )
-            })}
+            {taskData.allTasks
+              .filter((task) => task.status == "Completed")
+              .map((completedTasks) => {
+                return <TaskComponent task={completedTasks} />;
+              })}
           </Col>
         </Row>
       </Container>
-      
+
+      {/* modal for adding a new task */}
       <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add a new Task</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Task Title: </Form.Label>
-                <Form.Control type="email" placeholder="Enter task title" onChange={({target:{value}}) => setTaskTitle(value)}/>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="">
-                <Form.Label>Description: </Form.Label>
-                <Form.Control as="textarea" type="text" placeholder="Description" onChange={({target:{value}}) => setTaskDescription(value)}/>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Task Deadline: </Form.Label>
-                <Form.Control type="date" placeholder="duedate" onChange={({target:{value}}) => setTaskDueDate(value)}/>
-              </Form.Group>
+        <Modal.Header closeButton>
+          <Modal.Title>Add a new Task</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Task Title: </Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter task title"
+                onChange={({ target: { value } }) => setTaskTitle(value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="">
+              <Form.Label>Description: </Form.Label>
+              <Form.Control
+                as="textarea"
+                type="text"
+                placeholder="Description"
+                onChange={({ target: { value } }) => setTaskDescription(value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Task Deadline: </Form.Label>
+              <Form.Control
+                type="date"
+                placeholder="duedate"
+                onChange={({ target: { value } }) => setTaskDueDate(value)}
+              />
+            </Form.Group>
             <Form.Label>Assign Specialist:</Form.Label>
             <ListGroup as="ul">
-              {
-                allSpecialist.map((user, idx) => {
-                  return (
-                    <ListGroup.Item key={user} action as="li" onClick={(e) => addUserToArrayId(e, user.id, user.username)}>
-                      {user.fullName}
-                    </ListGroup.Item>
-                  )
-                }) 
-              }
-              </ListGroup>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleSubmit}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
+              {allSpecialist.map((user, idx) => {
+                return (
+                  <ListGroup.Item
+                    key={user}
+                    action
+                    as="li"
+                    onClick={(e) => addUserToArrayId(e, user.id, user.username)}
+                  >
+                    {user.fullName}
+                  </ListGroup.Item>
+                );
+              })}
+            </ListGroup>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
-
-
+      {/* modal for viewing project */}
+      <Modal show={show1} onHide={handleClose1}>
+      <Modal.Header closeButton>
+          <Modal.Title>{projectData.clickedProject[0].title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            Description: {projectData.clickedProject[0].description}
+          </Row>
+          <Row>
+            Due Date: {projectData.clickedProject[0].dueDate}
+          </Row>
+          <Row>
+            Specialists assigned to project:
+          </Row>
+          {taskData.allTasks.map((task) => {
+                return (
+                  <Row>{task.assignees}</Row>
+                )
+              })}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose1}>
+            Close
+          </Button>
+          {userData.userItems.isAdmin ||
+            userData.userItems.isProjectManager ? (
+              <Button variant="primary" onClick={() => navigate("/projectDashboard")}>
+                Edit Project
+              </Button>
+            ) : null}
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
