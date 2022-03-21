@@ -1,11 +1,12 @@
-import React, {useContext} from "react";
-import { Container, Row, Col, Button, Card, ProgressBar } from "react-bootstrap";
+import React, {useContext, useState} from "react";
+import { Container, Row, Col, Button, Card, ProgressBar, Modal, Form, ListGroup } from "react-bootstrap";
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TaskComponent from '../Components/TaskComponent';
 import ProjectContext from "../Context/ProjectContext";
 import TaskContext from "../Context/TaskContext";
 import UserContext from '../Context/UserContext';
+import {AddTaskItem, getAllTaskItems} from "../Services/DataService";
 
 
 export default function TaskDashboardPage() {
@@ -16,8 +17,56 @@ export default function TaskDashboardPage() {
   let { userId, setUserId, username, setUsername, isAdmin, setIsAdmin, isProjectManager, setIsProjectManager, isSpecialist, setIsSpecialist, fullName, setFullName, userItems, setUserItems } = useContext(UserContext);
   let userData = useContext(UserContext);
 
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [allSpecialist, setAllSpecialist] = useState([]);
+
+  // for creating a new task
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [taskDueDate, setTaskDueDate] = useState("");
+
+  let stringOfMemberIds = "";
+  let stringOfMemberUsernames = "";
+  let taskMembersId = [];
+  let taskMembersUsernames = [];
+  const addUserToArrayId = (e, id, username) => {
+    taskMembersId.push(id);
+    taskMembersUsernames.push(username);
+    console.log(taskMembersId);
+    stringOfMemberIds = taskMembersId.toString();
+    stringOfMemberUsernames = taskMembersUsernames.toString();
+    e.target.classList.toggle('active');
+  }
+
+  let newTask;
+
+  const handleSubmit = async () => {
+
+    // setProjectMembersUsername(e);
+    // console.log(projectMembersUsername);
+
+    newTask = { 
+      Id: 0,
+      ProjectId: projectData.clickedProject[0].id,
+      Title: taskTitle,
+      Description: taskDescription,
+      DateCreated: new Date(),
+      DueDate: taskDueDate,
+      Status: "To Do",
+      MembersId: stringOfMemberIds,
+      MembersUsername: stringOfMemberUsernames,
+      IsDeleted: false,
+    }
+
+    AddTaskItem(newTask);
+    console.log(getAllTaskItems());
+    handleClose();
+  }
+
   const handleClick = () => {
-    console.log("hi")
+    
   }
 
   const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />
@@ -43,7 +92,7 @@ export default function TaskDashboardPage() {
             {
           userData.userItems.isAdmin || userData.userItems.isProjectManager ? (
             <div>
-            <Card className="mb-2 pointer"onClick={handleClick} >
+            <Card className="mb-2 pointer" onClick={handleShow} >
               <Card.Body>{plusIcon}</Card.Body>
             </Card>
             </div>
@@ -87,35 +136,34 @@ export default function TaskDashboardPage() {
       
       <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Add a new project</Modal.Title>
+            <Modal.Title>Add a new Task</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Project Title: </Form.Label>
-                <Form.Control type="email" placeholder="Enter project title" onChange={({target:{value}}) => setProjectTitle(value)}/>
+                <Form.Label>Task Title: </Form.Label>
+                <Form.Control type="email" placeholder="Enter project title" onChange={({target:{value}}) => setTaskTitle(value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="">
                 <Form.Label>Description: </Form.Label>
-                <Form.Control as="textarea" type="text" placeholder="Description" onChange={({target:{value}}) => setProjectDescription(value)}/>
+                <Form.Control as="textarea" type="text" placeholder="Description" onChange={({target:{value}}) => setTaskDescription(value)}/>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Project Deadline: </Form.Label>
-                <Form.Control type="date" placeholder="duedate" onChange={({target:{value}}) => setProjectDueDate(value)}/>
+                <Form.Label>Task Deadline: </Form.Label>
+                <Form.Control type="date" placeholder="duedate" onChange={({target:{value}}) => setTaskDueDate(value)}/>
               </Form.Group>
-            <Form.Label>Add Specialists:</Form.Label>
+            <Form.Label>Assign Specialist:</Form.Label>
             <ListGroup as="ul">
               {
                 allSpecialist.map((user, idx) => {
                   return (
-                    <ListGroup.Item action as="li" onClick={(e) => addUserToArrayId(e, user.id)}>
+                    <ListGroup.Item key={user} action as="li" onClick={(e) => addUserToArrayId(e, user.id, user.username)}>
                       {user.fullName}
                     </ListGroup.Item>
                   )
                 }) 
               }
               </ListGroup>
-              
             </Form>
           </Modal.Body>
           <Modal.Footer>
