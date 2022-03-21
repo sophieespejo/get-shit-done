@@ -119,22 +119,25 @@ export default function ProjectDashboardPage() {
 
     setTimeout(async () => {
       let currentFetchedProjects;
+      console.log(userData.userItems);
       if (userData.userItems.isSpecialist) {
         currentFetchedProjects = await getProjectItemsByAMemberId(userItems.id)
-        // console.log("specialist")
+        console.log("specialist")
       } else if (userData.userItems.isProjectManager) {
         currentFetchedProjects = await getProjectItemsByUserId(userItems.id);
         console.log("pm")
       } else {
         currentFetchedProjects = await getAllProjectItems();
-        // console.log("admin")
+        console.log("admin")
+
+        console.log(userData.userItems);
       }
       // console.log(currentFetchedProjects);
       setCurrentProjects(currentFetchedProjects);
 
     }, 3000);
 
-  }, [currentProjects, setCurrentProjects])
+  }, [])
 
 
 
