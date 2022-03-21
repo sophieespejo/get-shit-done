@@ -69,13 +69,19 @@ export default function ProjectDashboardPage() {
   const handleAddMember = (e, id) => {
     e.target.classList.toggle("active");
     // Add member to project
+    let stringId = id.toString();
+    console.log(stringId);
 
     let splitArr = [];
     splitArr = currentClickedProject.membersId.split(",");
     console.log(splitArr);
-    let updatedMembers = splitArr.push(id);
-    console.log(updatedMembers)
 
+    let updatedMembers = [];
+    console.log(updatedMembers)
+    splitArr.push(stringId);
+    updatedMembers = splitArr;
+    console.log(updatedMembers)
+    
     let updatedProject = { 
       Id: currentClickedProject.id,
       UserId: currentClickedProject.userId,
@@ -84,27 +90,11 @@ export default function ProjectDashboardPage() {
       DateCreated: currentClickedProject.dateCreated,
       DueDate: projectDueDate,
       Status: "test",
-      MembersId: updatedMembers.toString(),
+      MembersId: updatedMembers.join(','),
       MembersUsername: "test",
       IsDeleted: currentClickedProject.isDeleted,
       IsArchived: currentClickedProject.isArchived,
     }
-
-    // console.log(currentClickedProject)
-
-    // console.log(currentClickedProject.id)
-    // console.log(currentClickedProject.userId)
-    // console.log(projectTitle)
-    // console.log(projectDescription)
-    // console.log(currentClickedProject.dateCreated)
-    // console.log(projectDueDate)
-    // console.log("test")
-    // console.log(updatedMembers)
-    // console.log("test")
-    // console.log(currentClickedProject.isDeleted)
-    // console.log(currentClickedProject.isArchived)
-    
-
     updateProjectItem(updatedProject);
     handleClose();
   }
@@ -113,10 +103,20 @@ export default function ProjectDashboardPage() {
     e.target.classList.toggle("active");
     // Remove member from project
 
+    let stringId = id.toString();
+    console.log(stringId);
+
     let splitArr = [];
     splitArr = currentClickedProject.membersId.split(",");
     console.log(splitArr);
-    let updatedMembers = splitArr.splice(1, id);
+
+    let updatedMembers = [];
+    console.log(updatedMembers)
+
+    splitArr.splice(1, stringId);
+    console.log(splitArr);
+    updatedMembers = splitArr;
+
     console.log(updatedMembers)
 
     let updatedProject = { 
@@ -127,27 +127,11 @@ export default function ProjectDashboardPage() {
       DateCreated: currentClickedProject.dateCreated,
       DueDate: projectDueDate,
       Status: "test",
-      MembersId: updatedMembers.toString(),
+      MembersId: updatedMembers.join(',').toString(),
       MembersUsername: "test",
       IsDeleted: currentClickedProject.isDeleted,
       IsArchived: currentClickedProject.isArchived,
     }
-
-    // console.log(currentClickedProject)
-
-    // console.log(currentClickedProject.id)
-    // console.log(currentClickedProject.userId)
-    // console.log(projectTitle)
-    // console.log(projectDescription)
-    // console.log(currentClickedProject.dateCreated)
-    // console.log(projectDueDate)
-    // console.log("test")
-    // console.log(updatedMembers)
-    // console.log("test")
-    // console.log(currentClickedProject.isDeleted)
-    // console.log(currentClickedProject.isArchived)
-    
-
     updateProjectItem(updatedProject);
     handleClose();
   }
@@ -156,17 +140,6 @@ export default function ProjectDashboardPage() {
   let allFetchedUsers;
 
   const setRole = async (value) => {
-    // updatedUser = { 
-    //   Id: user.id,
-    //   Username: user.username,
-    //   FullName: user.fullName,
-    //   Salt: user.salt,
-    //   Hash: user.hash,
-    //   IsAdmin: value,
-    //   IsProjectManager: value,
-    //   IsSpecialist: value
-    // }
-
     console.log(value);
     console.log(selectedUser.username);
 
