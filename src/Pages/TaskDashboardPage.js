@@ -29,7 +29,7 @@ export default function TaskDashboardPage() {
   let projectData = useContext(ProjectContext);
   console.log(projectData);
   let taskData = useContext(TaskContext);
-  let { allTasks, setAllTasks } = useContext(TaskContext);
+  let { allTasks, setAllTasks, statusBar, setStatusBar } = useContext(TaskContext);
   let {
     userId,
     setUserId,
@@ -64,6 +64,7 @@ export default function TaskDashboardPage() {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDueDate, setTaskDueDate] = useState("");
+  
 
   let stringOfMemberIds = "";
   let stringOfMemberUsernames = "";
@@ -79,8 +80,7 @@ export default function TaskDashboardPage() {
   };
 
   let newTask;
-
-  //submit button to create a new task(button is in modal)
+  let numOfCompleted = 0;
   const handleSubmit = async () => {
     // setProjectMembersUsername(e);
     // console.log(projectMembersUsername);
@@ -99,11 +99,10 @@ export default function TaskDashboardPage() {
     };
 
     let result = await AddTaskItem(newTask);
-    let allTasks = await getTaskItemsByProjectID(
-      projectData.clickedProject[0].id
-    );
-    if (result) {
-      setAllTasks(allTasks);
+    let allTasks = await getTaskItemsByProjectID(projectData.clickedProject[0].id);
+
+    if(result){
+      setAllTasks(allTasks)
     }
     handleClose();
   };
@@ -112,12 +111,23 @@ export default function TaskDashboardPage() {
     let allFetchedUsers = await getAllUsers();
     setAllSpecialist(allFetchedUsers.filter((user) => user.isSpecialist));
     // setAllSpecialist(allFetchedUsers);
-  }, []);
+    let allTasks = await getTaskItemsByProjectID(projectData.clickedProject[0].id);
+    let numOfTotalTasks = 0;
+    let numOfTasksToDo = 0;
+    let filteredTasks = [];
+    numOfTotalTasks = allTasks.filter(task => !task.isDeleted).length;
+    filteredTasks = allTasks.filter(task => task.status == "Completed");
+    numOfTasksToDo = filteredTasks.length;
+    numOfCompleted = (numOfTasksToDo / numOfTotalTasks) * 100;
+    setStatusBar(numOfCompleted);
+  }, [])
 
   //opens up the view project modal
   const handleClick = () => {};
 
   const plusIcon = <FontAwesomeIcon icon={faPlusCircle} />;
+
+    
 
   return (
     <div>
@@ -140,7 +150,7 @@ export default function TaskDashboardPage() {
             <h5>Status: </h5>
           </Col>
           <Col>
-            <ProgressBar animated variant="success" now={80}></ProgressBar>
+            <ProgressBar animated variant="success" now={statusBar}></ProgressBar>
           </Col>
         </Row>
         <Row className="text-center taskContainer">
