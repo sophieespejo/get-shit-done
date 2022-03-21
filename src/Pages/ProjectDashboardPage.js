@@ -106,6 +106,9 @@ export default function ProjectDashboardPage() {
 
   }
 
+  let splitMembersId = [];
+  
+
   const handleClick2 = async (e, project) => {
     let project2 = await getProjectItemByTitle(project.title);
     setClickedProject(project2);
@@ -115,6 +118,8 @@ export default function ProjectDashboardPage() {
     console.log('asdfasdf')
     setShow2(true);
 
+    splitMembersId = currentClickedProject.membersId.split(",");
+    console.log(splitMembersId);
 
     allFetchedUsers = await getAllUsers();
     setAllSpecialist(allFetchedUsers.filter(user => user.isSpecialist))
@@ -189,13 +194,21 @@ export default function ProjectDashboardPage() {
                 <ListGroup as="ul">
                   {
                     allSpecialist.map((user, idx) => {
-                      return (
-                        <>
-                        <ListGroup.Item action as="li" onClick={handleAddMember}>
-                          {user.fullName}
-                        </ListGroup.Item>
-                        </>
-                      )
+
+                      for (let i=0; i<splitMembersId.length; i++) {
+                        if (user.id == splitMembersId[i]) {
+                          return (
+                            <ListGroup.Item active action as="li" onClick={handleAddMember}>
+                              {user.fullName}
+                            </ListGroup.Item>
+                          )
+                        } 
+                            
+                      }
+
+                      <ListGroup.Item action as="li" onClick={handleAddMember}>
+                        {user.fullName}
+                      </ListGroup.Item>
                     })
                   }
                 </ListGroup>
