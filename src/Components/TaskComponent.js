@@ -74,10 +74,8 @@ export default function TaskComponent({ task }) {
     let allTasks = await getTaskItemsByProjectID(task.projectId);
     let numOfTotalTasks = 0;
     let numOfTasksToDo = 0;
-    let filteredTasks = [];
     numOfTotalTasks = allTasks.filter(task => !task.isDeleted).length;
-    filteredTasks = allTasks.filter(task => task.status == "Completed");
-    numOfTasksToDo = filteredTasks.length;
+    numOfTasksToDo = allTasks.filter(task => task.status == "Completed").length;
     let numOfCompleted = (numOfTasksToDo / numOfTotalTasks) * 100;
     setStatusBar(numOfCompleted);
     setAllTasks(allTasks);
