@@ -1,27 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-
+import "./App.css";
+import UserContext from "./Context/UserContext";
+import ProjectContext from "./Context/ProjectContext";
+import useUser from './Hooks/use-user';
+import useProject from "./Hooks/use-project";
+import Home from './Pages/Home';
+import TaskDashboardPage from "./Pages/TaskDashboardPage";
+import TaskContext from "./Context/TaskContext";
+import useTask from "./Hooks/use-task";
 
 function App() {
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
-      </header>
-    </div>
+     <UserContext.Provider value={useUser()}>
+       <ProjectContext.Provider value={useProject()}>
+         <TaskContext.Provider value={useTask()}>
+          <Home/>   
+         </TaskContext.Provider>
+        </ProjectContext.Provider>
+     </UserContext.Provider>
   );
 }
 

@@ -37,6 +37,105 @@
   }
 }
 
+body{
+  background-color: #e5e3e6 !important;
+}
+
+.navbar>.container{
+  display: block !important;
+}
+
+.navbar-expand, .navbar-collapse {
+  flex-direction: column;
+}
+
+.navbarBG{
+  background-color: #7951A8;
+}
 .navbarTxt {
   font-family: 'Hubballi';
+  font-size: 1.3rem;
+}
+
+.nav-link{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.headerTxt{
+  font-family: 'Alef';
+  font-weight: bold;
+}
+
+.fa-circle-plus{
+  font-size:50px !important;
+}
+
+.addProjectBtn{
+  background-color: transparent !important;
+  color:#282c34 !important;
+  border-color: transparent !important;
+}
+
+.editBtn{
+  background-color: #7951A8 !important;
+  border-color: transparent !important;
+}
+
+.fa-magnifying-glass{
+  font-size: 100px !important;
+}
+
+.toDoContainer{
+  background-color: rgba(0, 0, 0, 0.229);
+}
+
+.inProgressContainer{
+  background-color: rgba(0, 0, 0, 0.284);
+}
+
+.completedContainer{
+  background-color: rgba(0, 0, 0, 0.427);
+}
+
+.loginTxt{
+  font-family: 'Alef'
+}
+
+.taskContainer{
+  min-height: 700px;
+}
+
+.loginContainer{
+  background-color: rgba(145, 140, 140, 0.523);
+  border-radius: 15px;
+}
+
+.white{
+  color: white !important;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.projextCardTxt{
+  font-family: 'Hubballi';
+}
+
+.taskTitleTxt{
+  font-family: 'Alef';
+  font-weight: bolder;
+  text-decoration: underline;
+  margin-bottom: 0px !important;
+}
+
+.taskTxt{
+  font-family: 'Hubballi';
+  margin-bottom: 0px !important;
+  font-size: 1.2rem;
+}
+
+.taskCard{
+  min-height: 11rem;
 }
